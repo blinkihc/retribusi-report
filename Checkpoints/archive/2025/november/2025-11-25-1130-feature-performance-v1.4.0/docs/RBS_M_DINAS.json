@@ -1,0 +1,77 @@
+[
+  {
+    "CPM_KODE": "PERKIMTAN",
+    "CPM_DINAS": "DINAS PERUMAHAN RAKYAT, KAWASAN PERMUKIMAN DAN PERTANAHAN",
+    "CPM_ALAMAT": "Jln. G. Obos XI Komplek Perkantoran Lingkar Dalam"
+  },
+  {
+    "CPM_KODE": "DPKP",
+    "CPM_DINAS": "DINAS PERTANIAN DAN KETAHANAN PANGAN",
+    "CPM_ALAMAT": "Jln. G. Obos XI Komplek Perkantoran Lingkar Dalam"
+  },
+  {
+    "CPM_KODE": "DAMKAR",
+    "CPM_DINAS": "DINAS PEMADAM KEBAKARAN DAN PENYELAMATAN",
+    "CPM_ALAMAT": "Jln. P.Diponegoro No. 44"
+  },
+  {
+    "CPM_KODE": "DISKOMINFO",
+    "CPM_DINAS": "DINAS KOMUNIKASI INFORMATIKA, STATISTIK DAN PERSANDIAN",
+    "CPM_ALAMAT": "-"
+  },
+  {
+    "CPM_KODE": "DINPER",
+    "CPM_DINAS": "DINAS PERIKANAN",
+    "CPM_ALAMAT": "Jl. Simpang Plasma Komp. Perkantoran Km.85"
+  },
+  {
+    "CPM_KODE": "DISPERINDAGKOP",
+    "CPM_DINAS": "DINAS PERINDUSTRIAN, PERDAGANGAN DAN KOPERASI",
+    "CPM_ALAMAT": "Jl. Simpang Plasma Komp. Perkantoran Km.85"
+  },
+  {
+    "CPM_KODE": "DLH",
+    "CPM_DINAS": "DINAS LINGKUNGAN HIDUP",
+    "CPM_ALAMAT": "Jln. G. Obos XI Komplek Perkantoran Lingkar Dalam"
+  },
+  {
+    "CPM_KODE": "SEKDA",
+    "CPM_DINAS": "SEKRETARIAT  DAERAH",
+    "CPM_ALAMAT": "Jln. Tjilik Riwut No. 98 Palangka Raya"
+  },
+  {
+    "CPM_KODE": "DISBUDPAR",
+    "CPM_DINAS": "DINAS KEBUDAYAAN DAN PARIWISATA",
+    "CPM_ALAMAT": "Gedung Pemangku Adat Kelurahan Muara Rupit Kecamatan Rupit"
+  },
+  {
+    "CPM_KODE": "DISNAKER",
+    "CPM_DINAS": "DINAS TENAGA KERJA",
+    "CPM_ALAMAT": "Jln Tjilik Riwut KM. 6,5 Palangka Raya"
+  },
+  {
+    "CPM_KODE": "DISHUB",
+    "CPM_DINAS": "DINAS PERHUBUNGAN",
+    "CPM_ALAMAT": "Jln. G. Obos XI Komplek Perkantoran Lingkar Dalam"
+  },
+  {
+    "CPM_KODE": "DINKES",
+    "CPM_DINAS": "DINAS KESEHATAN",
+    "CPM_ALAMAT": "Jln. G. Obos XI Komplek Perkantoran Lingkar Dalam"
+  },
+  {
+    "CPM_KODE": "DINPUPR",
+    "CPM_DINAS": "DINAS PEKERJAAN UMUM DAN PENATAAN RUANG",
+    "CPM_ALAMAT": "JL Lintas Sumatera Km.73 Kel.Muara Rupit Kec.Rupit"
+  },
+  {
+    "CPM_KODE": "BAPENDA",
+    "CPM_DINAS": "BADAN PENDAPATAN DAERAH",
+    "CPM_ALAMAT": "JL Lintas Sumatera Km.71 Kel.Muara Rupit Kec.Rupit"
+  },
+  {
+    "CPM_KODE": "DPMPTSP",
+    "CPM_DINAS": "DINAS PENANAMAN MODAL DAN PELAYANAN TERPADU SATU PINTU",
+    "CPM_ALAMAT": ""
+  }
+]

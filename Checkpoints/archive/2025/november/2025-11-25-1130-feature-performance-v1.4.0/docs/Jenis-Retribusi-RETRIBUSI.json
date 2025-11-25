@@ -1,0 +1,302 @@
+[
+  {
+    "kode_rekening": "4.1.02.01.01.0001",
+    "nama_rekening": "Pelayanan Kesehatan di Puskesmas",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kesehatan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.01.0002",
+    "nama_rekening": "Pelayanan Kesehatan di Puskesmas Keliling",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kesehatan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.01.0003",
+    "nama_rekening": "Pelayanan Kesehatan di Puskesmas Pembantu",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kesehatan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.01.0004",
+    "nama_rekening": "Pelayanan Kesehatan di Balai Pengobatan",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kesehatan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.01.0005",
+    "nama_rekening": "Pelayanan Kesehatan di Rumah Sakit Umum Daerah",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kesehatan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.01.0006",
+    "nama_rekening": "Pelayanan Kesehatan di Tempat Pelayanan Kesehatan Lainnya yang Sejenis",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kesehatan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.02.0001",
+    "nama_rekening": "Pelayanan Persampahan/Kebersihan",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Persampahan/Kebersihan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.04.0001",
+    "nama_rekening": "Penyediaan Pelayanan Parkir di Tepi Jalan Umum",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Parkir di Tepi Jalan Umum"
+  },
+  {
+    "kode_rekening": "4.1.02.01.05.0001",
+    "nama_rekening": "Pelataran",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Pasar"
+  },
+  {
+    "kode_rekening": "4.1.02.01.05.0002",
+    "nama_rekening": "Los",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Pasar"
+  },
+  {
+    "kode_rekening": "4.1.02.01.05.0003",
+    "nama_rekening": "Kios",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Pasar"
+  },
+  {
+    "kode_rekening": "4.1.02.01.14.0001",
+    "nama_rekening": "Pelayanan Persampahan",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kebersihan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.14.0002",
+    "nama_rekening": "Penyediaan dan/atau Penyedotan Kakus",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kebersihan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.14.0003",
+    "nama_rekening": "Pengolahan Limbah Cair Rumah Tangga, Perkantoran, dan Industri",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pelayanan Kebersihan"
+  },
+  {
+    "kode_rekening": "4.1.02.01.15.0001",
+    "nama_rekening": "Pengendalian Lalu Lintas",
+    "jenis_retribusi": "Retribusi Jasa Umum",
+    "jenis_pelayanan": "Retribusi Pengendalian Lalu Lintas"
+  },
+  {
+    "kode_rekening": "4.1.02.02.01.0001",
+    "nama_rekening": "Penyewaan Tanah dan Bangunan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pemakaian Kekayaan Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.01.0002",
+    "nama_rekening": "Penyewaan Tanah",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pemakaian Kekayaan Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.01.0003",
+    "nama_rekening": "Penyewaan Bangunan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pemakaian Kekayaan Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.01.0004",
+    "nama_rekening": "Pemakaian Laboratorium",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pemakaian Kekayaan Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.01.0005",
+    "nama_rekening": "Pemakaian Ruangan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pemakaian Kekayaan Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.01.0006",
+    "nama_rekening": "Pemakaian Kendaraan Bermotor",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pemakaian Kekayaan Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.01.0007",
+    "nama_rekening": "Pemakaian Alat",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pemakaian Kekayaan Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.02.0001",
+    "nama_rekening": "Penyediaan Fasilitas Pasar Grosir Berbagai Jenis Barang yang Dikontrakkan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pasar Grosir dan/atau Pertokoan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.02.0002",
+    "nama_rekening": "Penyediaan Fasilitas Pasar/Pertokoan yang Dikontrakkan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pasar Grosir dan/atau Pertokoan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.03.0001",
+    "nama_rekening": "Penyediaan Tempat Pelelangan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Tempat Pelelangan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.03.0002",
+    "nama_rekening": "Penyediaan Fasilitas Lainnya di Tempat Pelelangan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Tempat Pelelangan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.05.0001",
+    "nama_rekening": "Pelayanan Tempat Khusus Parkir",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Tempat Khusus Parkir"
+  },
+  {
+    "kode_rekening": "4.1.02.02.06.0001",
+    "nama_rekening": "Pelayanan Tempat Penginapan/Pesanggrahan/Vila",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Tempat Penginapan/Pesanggrahan/Vila"
+  },
+  {
+    "kode_rekening": "4.1.02.02.07.0001",
+    "nama_rekening": "Pelayanan Rumah Potong Hewan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Rumah Potong Hewan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.08.0001",
+    "nama_rekening": "Pelayanan Kepelabuhanan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pelayanan Kepelabuhanan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.09.0001",
+    "nama_rekening": "Pelayanan Tempat Rekreasi dan Olahraga",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Tempat Rekreasi dan Olahraga"
+  },
+  {
+    "kode_rekening": "4.1.02.02.10.0001",
+    "nama_rekening": "Pelayanan Penyeberangan Orang",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penyeberangan di Air"
+  },
+  {
+    "kode_rekening": "4.1.02.02.10.0002",
+    "nama_rekening": "Pelayanan Penyeberangan Barang",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penyeberangan di Air"
+  },
+  {
+    "kode_rekening": "4.1.02.02.11.0001",
+    "nama_rekening": "Penjualan Produksi hasil Usaha Daerah berupa Bibit atau Benih Tanaman",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penjualan Produksi Usaha Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.11.0002",
+    "nama_rekening": "Penjualan Produksi hasil Usaha Daerah berupa Bibit Ternak",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penjualan Produksi Usaha Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.11.0003",
+    "nama_rekening": "Penjualan Produksi hasil Usaha Daerah berupa Bibit atau Benih Ikan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penjualan Produksi Usaha Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.11.0004",
+    "nama_rekening": "Penjualan Produksi hasil Usaha Daerah berupa Bibit atau Benih Tanaman, Ternak, dan Ikan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penjualan Produksi Usaha Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.12.0001",
+    "nama_rekening": "Penyediaan Tempat Kegiatan Usaha berupa Pasar, Grosir, Pertokoan, dan Tempat Kegiatan Usaha Lainnya",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penyediaan Tempat Kegiatan Usaha berupa Pasar, Grosir, Pertokoan, dan Tempat Kegiatan Usaha Lainnya"
+  },
+  {
+    "kode_rekening": "4.1.02.02.13.0001",
+    "nama_rekening": "Penyediaan Tempat Pelelangan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penyediaan Tempat Pelelangan Ikan, Ternak, Hasil Bumi, dan Hasil Hutan Termasuk Fasilitas Lainnya dalam Lingkungan Tempat Pelelangan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.13.0002",
+    "nama_rekening": "Penyediaan Fasilitas Lainnya di Tempat Pelelangan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penyediaan Tempat Pelelangan Ikan, Ternak, Hasil Bumi, dan Hasil Hutan Termasuk Fasilitas Lainnya dalam Lingkungan Tempat Pelelangan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.14.0001",
+    "nama_rekening": "Penyediaan Tempat Khusus Parkir Diluar Badan Jalan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penyediaan Tempat Khusus Parkir Diluar Badan Jalan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.15.0001",
+    "nama_rekening": "Pelayanan Rumah Pemotongan Hewan Ternak",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pelayanan Rumah Pemotongan Hewan Ternak"
+  },
+  {
+    "kode_rekening": "4.1.02.02.16.0001",
+    "nama_rekening": "Pelayanan Jasa Kepelabuhanan",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pelayanan Jasa Kepelabuhanan"
+  },
+  {
+    "kode_rekening": "4.1.02.02.17.0001",
+    "nama_rekening": "Pelayanan Tempat Rekreasi, Pariwisata, dan Olahraga",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pelayanan Tempat Rekreasi, Pariwisata, dan Olahraga"
+  },
+  {
+    "kode_rekening": "4.1.02.02.18.0001",
+    "nama_rekening": "Penyeberangan Orang atau Barang dengan Menggunakan Kendaraan di Air",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penyeberangan Orang atau Barang dengan Menggunakan Kendaraan di Air"
+  },
+  {
+    "kode_rekening": "4.1.02.02.19.0001",
+    "nama_rekening": "Penjualan Hasil Produksi Usaha Pemerintah Daerah",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Penjualan Hasil Produksi Usaha Pemerintah Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.02.20.0001",
+    "nama_rekening": "Pemanfaatan Aset Daerah",
+    "jenis_retribusi": "Retribusi Jasa Usaha",
+    "jenis_pelayanan": "Retribusi Pemanfaatan Aset Daerah"
+  },
+  {
+    "kode_rekening": "4.1.02.03.07.0001",
+    "nama_rekening": "Persetujuan Bangunan Gedung",
+    "jenis_retribusi": "Retribusi Perizinan Tertentu",
+    "jenis_pelayanan": "Retribusi Persetujuan Bangunan Gedung"
+  },
+  {
+    "kode_rekening": "4.1.02.03.08.0001",
+    "nama_rekening": "Penggunaan Tenaga Kerja Asing (TKA)",
+    "jenis_retribusi": "Retribusi Perizinan Tertentu",
+    "jenis_pelayanan": "Retribusi Penggunaan Tenaga Kerja Asing (TKA)"
+  },
+  {
+    "kode_rekening": "4.1.02.03.09.0001",
+    "nama_rekening": "Pengelolaan Pertambangan Rakyat",
+    "jenis_retribusi": "Retribusi Perizinan Tertentu",
+    "jenis_pelayanan": "Retribusi Pertambangan Rakyat"
+  }
+]

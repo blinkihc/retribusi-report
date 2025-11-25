@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base Colors - Shadcn/ui variables */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+
+    /* Design System - Government Blue (Primary) */
+    --color-primary: 221.2 83.2% 40%;        /* #1e40af - Blue 700 */
+    --color-primary-50: 214 100% 97%;        /* #eff6ff */
+    --color-primary-100: 214 95% 93%;        /* #dbeafe */
+    --color-primary-200: 213 97% 87%;        /* #bfdbfe */
+    --color-primary-500: 217 91% 60%;        /* #3b82f6 */
+    --color-primary-600: 221 83% 53%;        /* #2563eb */
+    --color-primary-700: 224 76% 48%;        /* #1d4ed8 */
+    --color-primary-800: 226 71% 40%;        /* #1e3a8a */
+
+    /* Design System - Neutral Grays */
+    --color-gray-50: 210 20% 98%;           /* #f9fafb */
+    --color-gray-100: 220 14% 96%;          /* #f3f4f6 */
+    --color-gray-200: 220 13% 91%;          /* #e5e7eb */
+    --color-gray-300: 216 12% 84%;          /* #d1d5db */
+    --color-gray-400: 218 11% 65%;          /* #9ca3af */
+    --color-gray-500: 220 9% 46%;           /* #6b7280 */
+    --color-gray-600: 215 14% 34%;          /* #4b5563 */
+    --color-gray-700: 217 19% 27%;          /* #374151 */
+    --color-gray-800: 215 28% 17%;          /* #1f2937 */
+    --color-gray-900: 220 39% 11%;          /* #111827 */
+
+    /* Design System - Semantic Colors */
+    --color-success: 160 84% 39%;           /* #059669 - Green 600 */
+    --color-success-50: 152 81% 96%;        /* #ecfdf5 */
+    --color-success-100: 149 80% 90%;       /* #d1fae5 */
+    --color-success-200: 152 76% 80%;       /* #a7f3d0 */
+    --color-success-500: 160 84% 39%;       /* #10b981 */
+    --color-success-600: 158 64% 52%;       /* #059669 */
+    --color-success-700: 160 84% 39%;       /* #047857 */
+
+    --color-warning: 32 95% 44%;            /* #d97706 - Amber 600 */
+    --color-warning-50: 48 100% 96%;        /* #fffbeb */
+    --color-warning-100: 48 96% 89%;        /* #fef3c7 */
+    --color-warning-200: 48 96% 77%;        /* #fde68a */
+    --color-warning-500: 38 92% 50%;        /* #f59e0b */
+    --color-warning-600: 32 95% 44%;        /* #d97706 */
+    --color-warning-700: 25 95% 53%;        /* #b45309 */
+
+    --color-error: 0 84% 60%;               /* #dc2626 - Red 600 */
+    --color-error-50: 0 86% 97%;            /* #fef2f2 */
+    --color-error-100: 0 93% 94%;           /* #fee2e2 */
+    --color-error-200: 0 96% 89%;           /* #fecaca */
+    --color-error-500: 0 84% 60%;           /* #ef4444 */
+    --color-error-600: 0 72% 51%;           /* #dc2626 */
+    --color-error-700: 0 74% 42%;           /* #b91c1c */
+
+    --color-info: 221 83% 53%;              /* #2563eb - Blue 600 */
+    --color-info-50: 214 100% 97%;          /* #eff6ff */
+    --color-info-100: 214 95% 93%;          /* #dbeafe */
+    --color-info-600: 224 76% 48%;          /* #1d4ed8 */
+    --color-info-700: 221 83% 40%;          /* #1e40af */
+
+    /* Design System - Government Specific */
+    --color-indonesia-red: 0 100% 50%;      /* #ff0000 */
+    --color-indonesia-red-light: 0 93% 94%; /* #fee2e2 */
+    --color-indonesia-red-dark: 0 72% 51%;  /* #b91c1c */
+
+    --color-gold: 38 92% 50%;               /* #f59e0b */
+    --color-gold-50: 48 100% 96%;           /* #fffbeb */
+    --color-gold-100: 48 96% 89%;           /* #fef3c7 */
+    --color-gold-600: 32 95% 44%;           /* #d97706 */
+
+    /* Typography */
+    --text-xs: 0.75rem;      /* 12px */
+    --text-sm: 0.875rem;     /* 14px */
+    --text-base: 1rem;       /* 16px */
+    --text-lg: 1.125rem;     /* 18px */
+    --text-xl: 1.25rem;      /* 20px */
+    --text-2xl: 1.5rem;      /* 24px */
+    --text-3xl: 1.875rem;    /* 30px */
+    --text-4xl: 2.25rem;     /* 36px */
+    --text-5xl: 3rem;        /* 48px */
+
+    --font-light: 300;
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+
+    --leading-tight: 1.25;
+    --leading-snug: 1.375;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+    --leading-loose: 2;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217 19% 27%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 19% 27%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217 19% 27%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 19% 27%;
+    --input: 217 19% 27%;
+    --ring: 224 76% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  /* Neo-Brutalist Geometric Patterns */
+  .bg-grid-pattern {
+    background-image: linear-gradient(to right, #000000 1px, transparent 1px),
+      linear-gradient(to bottom, #000000 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Snappy Transition Utility */
+  .transition-snappy {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+}
+
+/* Typography Utility Classes */
+@layer components {
+  .heading-1 {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    line-height: var(--leading-tight);
+    color: hsl(var(--color-gray-900));
+  }
+
+  .heading-2 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-semibold);
+    line-height: var(--leading-tight);
+    color: hsl(var(--color-gray-800));
+  }
+
+  .heading-3 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-medium);
+    line-height: var(--leading-snug);
+    color: hsl(var(--color-gray-800));
+  }
+
+  .body-large {
+    font-size: var(--text-lg);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-relaxed);
+    color: hsl(var(--color-gray-700));
+  }
+
+  .body-base {
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-normal);
+    color: hsl(var(--color-gray-600));
+  }
+
+  .body-small {
+    font-size: var(--text-sm);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-normal);
+    color: hsl(var(--color-gray-500));
+  }
+}

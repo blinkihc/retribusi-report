@@ -1,0 +1,459 @@
+/**
+ * Profile Page
+ * 
+ * User profile management - view and edit profile information
+ * 
+ * Features:
+ * - Display user information (username, email, full name, role, OPD)
+ * - Edit profile (full name, email)
+ * - Change password with validation
+ * - Show last login time
+ */
+
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Lock, Mail, Save, User as UserIcon } from 'lucide-react'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import AvatarSelector from '../components/AvatarSelector'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../components/ui/alert-dialog'
+import { useAuth } from '../lib/auth/useAuth'
+import { apiClient } from '../lib/api/client'
+import { getOPDList } from '../lib/api/opd'
+import { getAvatarById } from '../lib/avatars'
+
+interface UpdateProfileData {
+  fullName?: string
+  email?: string
+  avatar?: string
+}
+
+interface ChangePasswordData {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
+}
+
+export default function ProfilePage() {
+  const { user } = useAuth()
+  const queryClient = useQueryClient()
+
+  // Form states
+  const [isEditingProfile, setIsEditingProfile] = useState(false)
+  const [isChangingPassword, setIsChangingPassword] = useState(false)
+  
+  const [profileData, setProfileData] = useState({
+    fullName: user?.fullName || '',
+    email: user?.email || '',
+    avatar: user?.avatar || 'male-1',
+  })
+
+  const [passwordData, setPasswordData] = useState<ChangePasswordData>({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  })
+
+  const [alertDialog, setAlertDialog] = useState({
+    open: false,
+    title: '',
+    description: '',
+    type: 'success' as 'success' | 'error',
+  })
+
+  // Fetch OPD info if user is operator
+  const { data: opdList } = useQuery({
+    queryKey: ['opd-list-all'],
+    queryFn: () => getOPDList({ limit: 1000 }),
+    enabled: user?.role === 'operator' && !!user?.opdId,
+  })
+
+  const userOPD = opdList?.data.find((opd) => opd.id === user?.opdId)
+
+  // Update profile mutation
+  const updateProfileMutation = useMutation({
+    mutationFn: async (data: UpdateProfileData) => {
+      const response = await apiClient.put(`/api/users/${user?.id}`, data)
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auth-user'] })
+      setIsEditingProfile(false)
+      setAlertDialog({
+        open: true,
+        title: 'Berhasil!',
+        description: 'Profil berhasil diperbarui',
+        type: 'success',
+      })
+      // Update localStorage
+      const storedUser = JSON.parse(localStorage.getItem('auth_user') || '{}')
+      localStorage.setItem('auth_user', JSON.stringify({ ...storedUser, ...profileData }))
+    },
+    onError: (error: any) => {
+      setAlertDialog({
+        open: true,
+        title: 'Gagal!',
+        description: error.response?.data?.message || 'Gagal memperbarui profil',
+        type: 'error',
+      })
+    },
+  })
+
+  // Change password mutation
+  const changePasswordMutation = useMutation({
+    mutationFn: async (data: ChangePasswordData) => {
+      const response = await apiClient.post('/api/auth/change-password', {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      })
+      return response.data
+    },
+    onSuccess: () => {
+      setIsChangingPassword(false)
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      })
+      setAlertDialog({
+        open: true,
+        title: 'Berhasil!',
+        description: 'Password berhasil diubah',
+        type: 'success',
+      })
+    },
+    onError: (error: any) => {
+      setAlertDialog({
+        open: true,
+        title: 'Gagal!',
+        description: error.response?.data?.message || 'Gagal mengubah password',
+        type: 'error',
+      })
+    },
+  })
+
+  const handleUpdateProfile = () => {
+    updateProfileMutation.mutate(profileData)
+  }
+
+  const handleChangePassword = () => {
+    // Validation
+    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+      setAlertDialog({
+        open: true,
+        title: 'Validasi Gagal',
+        description: 'Semua field password harus diisi',
+        type: 'error',
+      })
+      return
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      setAlertDialog({
+        open: true,
+        title: 'Validasi Gagal',
+        description: 'Password baru minimal 6 karakter',
+        type: 'error',
+      })
+      return
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setAlertDialog({
+        open: true,
+        title: 'Validasi Gagal',
+        description: 'Password baru dan konfirmasi password tidak sama',
+        type: 'error',
+      })
+      return
+    }
+
+    changePasswordMutation.mutate(passwordData)
+  }
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'Belum pernah login'
+    return new Date(dateString).toLocaleString('id-ID', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Profil Pengguna</h1>
+          <p className="mt-1 text-sm text-gray-600">Kelola informasi profil dan keamanan akun Anda</p>
+        </div>
+
+        {/* Profile Information Card */}
+        <div className="bg-white rounded-lg shadow mb-6">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Informasi Profil</h2>
+          </div>
+          <div className="p-6">
+            <div className="space-y-4">
+              {/* Avatar Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Avatar</label>
+                {isEditingProfile ? (
+                  <AvatarSelector
+                    selectedAvatarId={profileData.avatar}
+                    onSelect={(avatarId) => setProfileData({ ...profileData, avatar: avatarId })}
+                  />
+                ) : (
+                  <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                    <div className="text-4xl">{getAvatarById(profileData.avatar).emoji}</div>
+                    <span className="text-gray-700">{getAvatarById(profileData.avatar).name}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Username (Read-only) */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
+                  <UserIcon className="h-5 w-5 text-gray-400" />
+                  <span>{user?.username}</span>
+                </div>
+                <p className="mt-1 text-xs text-gray-500">Username tidak dapat diubah</p>
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                {isEditingProfile ? (
+                  <input
+                    type="email"
+                    value={profileData.email}
+                    onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                ) : (
+                  <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
+                    <Mail className="h-5 w-5 text-gray-400" />
+                    <span>{user?.email}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Full Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+                {isEditingProfile ? (
+                  <input
+                    type="text"
+                    value={profileData.fullName}
+                    onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                ) : (
+                  <div className="px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
+                    {user?.fullName}
+                  </div>
+                )}
+              </div>
+
+              {/* Role (Read-only) */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <div className="px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      user?.role === 'admin'
+                        ? 'bg-purple-100 text-purple-800'
+                        : 'bg-blue-100 text-blue-800'
+                    }`}
+                  >
+                    {user?.role === 'admin' ? 'Administrator' : 'Operator'}
+                  </span>
+                </div>
+              </div>
+
+              {/* OPD (for operators) */}
+              {user?.role === 'operator' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">OPD</label>
+                  <div className="px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
+                    {userOPD?.nama || 'Loading...'}
+                  </div>
+                </div>
+              )}
+
+              {/* Last Login */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Login Terakhir</label>
+                <div className="px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
+                  {formatDate(user?.lastLogin || null)}
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="mt-6 flex gap-3">
+              {isEditingProfile ? (
+                <>
+                  <button
+                    onClick={handleUpdateProfile}
+                    disabled={updateProfileMutation.isPending}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
+                  >
+                    <Save className="h-4 w-4" />
+                    {updateProfileMutation.isPending ? 'Menyimpan...' : 'Simpan Perubahan'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsEditingProfile(false)
+                      setProfileData({
+                        fullName: user?.fullName || '',
+                        email: user?.email || '',
+                        avatar: user?.avatar || 'male-1',
+                      })
+                    }}
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                  >
+                    Batal
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setIsEditingProfile(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+                >
+                  <UserIcon className="h-4 w-4" />
+                  Edit Profil
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Change Password Card */}
+        <div className="bg-white rounded-lg shadow">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Ubah Password</h2>
+          </div>
+          <div className="p-6">
+            {isChangingPassword ? (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Password Saat Ini <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.currentPassword}
+                    onChange={(e) =>
+                      setPasswordData({ ...passwordData, currentPassword: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Password Baru <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.newPassword}
+                    onChange={(e) =>
+                      setPasswordData({ ...passwordData, newPassword: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">Minimal 6 karakter</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Konfirmasi Password Baru <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.confirmPassword}
+                    onChange={(e) =>
+                      setPasswordData({ ...passwordData, confirmPassword: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    onClick={handleChangePassword}
+                    disabled={changePasswordMutation.isPending}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
+                  >
+                    <Lock className="h-4 w-4" />
+                    {changePasswordMutation.isPending ? 'Mengubah...' : 'Ubah Password'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsChangingPassword(false)
+                      setPasswordData({
+                        currentPassword: '',
+                        newPassword: '',
+                        confirmPassword: '',
+                      })
+                    }}
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p className="text-sm text-gray-600 mb-4">
+                  Untuk keamanan akun Anda, pastikan password yang digunakan kuat dan unik.
+                </p>
+                <button
+                  onClick={() => setIsChangingPassword(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+                >
+                  <Lock className="h-4 w-4" />
+                  Ubah Password
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Alert Dialog */}
+        <AlertDialog open={alertDialog.open} onOpenChange={(open) => setAlertDialog({ ...alertDialog, open })}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{alertDialog.title}</AlertDialogTitle>
+              <AlertDialogDescription>{alertDialog.description}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction
+                onClick={() => setAlertDialog({ ...alertDialog, open: false })}
+                className={
+                  alertDialog.type === 'success'
+                    ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
+                    : 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
+                }
+              >
+                OK
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </div>
+  )
+}
