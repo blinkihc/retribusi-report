@@ -21,6 +21,7 @@
 import { Eye, EyeOff, ShieldCheck } from 'lucide-react'
 import { useState } from 'react'
 import { Form, useActionData, useNavigation } from 'react-router-dom'
+import { Footer } from '../components/layout/Footer'
 
 type ActionData = {
   success: boolean
@@ -38,7 +39,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-50 relative flex items-center justify-center p-4 overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-dot-pattern opacity-[0.03] pointer-events-none" />
-      
+
       {/* Geometric Decorations (Abstract/Wireframe) */}
       <div className="absolute top-0 left-0 w-64 h-64 border-r-2 border-b-2 border-slate-200 opacity-20 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 border-l-2 border-t-2 border-slate-200 opacity-20 pointer-events-none rounded-tl-3xl" />
@@ -61,9 +62,7 @@ export default function LoginPage() {
           {/* Error Alert */}
           {actionData && !actionData.success && (
             <div className="p-4 bg-red-50 border-2 border-red-700 text-red-900 rounded-lg shadow-hard-sm animate-in slide-in-from-top-2 duration-200">
-              <p className="font-bold flex items-center gap-2">
-                ⚠️ Login Gagal
-              </p>
+              <p className="font-bold flex items-center gap-2">⚠️ Login Gagal</p>
               <p className="text-sm mt-1 font-medium">
                 {actionData.message || 'Periksa kembali username dan password.'}
               </p>
@@ -79,7 +78,10 @@ export default function LoginPage() {
 
           {/* Username Input */}
           <div>
-            <label htmlFor="username" className="block text-sm font-bold text-slate-800 mb-2 uppercase tracking-wide">
+            <label
+              htmlFor="username"
+              className="block text-sm font-bold text-slate-800 mb-2 uppercase tracking-wide"
+            >
               Username
             </label>
             <input
@@ -96,7 +98,10 @@ export default function LoginPage() {
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-sm font-bold text-slate-800 mb-2 uppercase tracking-wide">
+            <label
+              htmlFor="password"
+              className="block text-sm font-bold text-slate-800 mb-2 uppercase tracking-wide"
+            >
               Password
             </label>
             <div className="relative">
@@ -116,7 +121,11 @@ export default function LoginPage() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-black transition-colors"
                 aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
               >
-                {showPassword ? <EyeOff className="w-5 h-5" strokeWidth={2.5} /> : <Eye className="w-5 h-5" strokeWidth={2.5} />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" strokeWidth={2.5} />
+                ) : (
+                  <Eye className="w-5 h-5" strokeWidth={2.5} />
+                )}
               </button>
             </div>
           </div>
@@ -140,7 +149,10 @@ export default function LoginPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <label htmlFor="rememberMe" className="ml-3 text-sm font-medium text-slate-700 cursor-pointer select-none">
+            <label
+              htmlFor="rememberMe"
+              className="ml-3 text-sm font-medium text-slate-700 cursor-pointer select-none"
+            >
               Ingat saya selama 7 hari
             </label>
           </div>
@@ -167,7 +179,7 @@ export default function LoginPage() {
           </button>
         </Form>
 
-        {/* Footer / Help Text */}
+        {/* Help Text */}
         <div className="mt-8 pt-6 border-t-2 border-dashed border-slate-200 text-center">
           <p className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-2">
             Credentials Default
@@ -177,6 +189,9 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer className="absolute bottom-4 left-0 right-0" />
     </div>
   )
 }

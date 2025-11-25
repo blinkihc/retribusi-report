@@ -4,12 +4,22 @@
  * Main layout untuk dashboard pages dengan sidebar dan header
  */
 
-import { BarChart3, FileText, HelpCircle, Home, PlusCircle, Settings, User, Users } from 'lucide-react'
+import { motion } from 'framer-motion'
+import {
+  BarChart3,
+  FileText,
+  HelpCircle,
+  Home,
+  PlusCircle,
+  Settings,
+  User,
+  Users,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { toast } from 'sonner'
-import { motion } from 'framer-motion'
 import UserDropdown from '../UserDropdown'
+import { Footer } from './Footer'
 
 export default function DashboardLayout() {
   // Get user role from localStorage with state to ensure reactivity
@@ -152,10 +162,14 @@ export default function DashboardLayout() {
         {/* Main Content */}
         <main
           id="main-content"
-          className="flex-1 p-4 lg:p-8 pb-24 lg:pb-8 w-full max-w-full overflow-x-hidden focus:outline-none"
+          className="flex-1 p-4 lg:p-8 pb-24 lg:pb-8 w-full max-w-full overflow-x-hidden focus:outline-none flex flex-col min-h-[calc(100vh-4rem)]"
           tabIndex={-1}
         >
-          <Outlet />
+          <div className="flex-1">
+            <Outlet />
+          </div>
+          {/* Desktop Footer */}
+          <Footer className="hidden lg:block mt-8 pt-4 border-t border-slate-200" />
         </main>
       </div>
 
@@ -167,6 +181,9 @@ export default function DashboardLayout() {
       >
         <HelpCircle className="h-6 w-6 lg:h-8 lg:w-8" />
       </Link>
+
+      {/* Mobile Footer - Above bottom navigation */}
+      <Footer variant="mobile" className="lg:hidden fixed bottom-16 left-0 right-0 z-40" />
 
       {/* Bottom Navigation - Visible only on mobile/tablet */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-black z-50 safe-bottom shadow-[0_-4px_0_0_rgba(0,0,0,0.1)]">
@@ -192,7 +209,7 @@ export default function DashboardLayout() {
                       layoutId="bottomNavActive"
                       className="absolute inset-0 bg-black z-0"
                       initial={false}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     />
                   )}
                   <motion.div
@@ -200,7 +217,9 @@ export default function DashboardLayout() {
                     whileTap={{ scale: 0.9 }}
                   >
                     <Icon className={`h-5 w-5 ${active ? 'stroke-[2.5]' : 'stroke-2'}`} />
-                    <span className={`text-[10px] uppercase tracking-wider ${active ? 'font-bold' : 'font-medium'}`}>
+                    <span
+                      className={`text-[10px] uppercase tracking-wider ${active ? 'font-bold' : 'font-medium'}`}
+                    >
                       {item.label}
                     </span>
                   </motion.div>
