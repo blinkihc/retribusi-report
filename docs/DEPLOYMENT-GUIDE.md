@@ -150,7 +150,106 @@ git push origin main
 
 ---
 
-### Option B: VPS / Server
+### Option B: Easypanel (VPS dengan Panel)
+
+Easypanel mendukung deploy Node.js apps dengan mudah.
+
+#### Prerequisites
+- Easypanel sudah terinstall di VPS
+- PostgreSQL sudah running di Easypanel
+- Repository sudah di-push ke GitHub
+
+#### Step 1: Buat Project Baru
+1. Login ke Easypanel dashboard
+2. Click **+ Create Project**
+3. Nama: `retribusi`
+
+#### Step 2: Deploy Backend (API)
+1. Di dalam project, click **+ Create Service**
+2. Pilih **App**
+3. Pilih **GitHub** sebagai source
+4. Connect repository `retribusi-report`
+5. Konfigurasi:
+   - **Name**: `api`
+   - **Branch**: `main`
+   - **Build Command**: `bun install`
+   - **Start Command**: `bun run tsx server/index.ts`
+   - **Port**: `5000`
+
+6. **Environment Variables** (click Environment tab):
+   ```
+   DATABASE_URL=postgresql://user:password@postgres:5432/retribusi_db
+   JWT_SECRET=your-super-secret-key-min-32-chars
+   NODE_ENV=production
+   PORT=5000
+   ```
+   > **Note**: Untuk DATABASE_URL, gunakan internal hostname PostgreSQL dari Easypanel (biasanya nama service postgres)
+
+7. **Domain** (click Domains tab):
+   - Add domain: `api.retribusi.yourdomain.com`
+   - Enable HTTPS
+
+8. Click **Deploy**
+
+#### Step 3: Deploy Frontend
+1. Di project yang sama, click **+ Create Service**
+2. Pilih **App**
+3. Pilih **GitHub** → repository `retribusi-report`
+4. Konfigurasi:
+   - **Name**: `web`
+   - **Branch**: `main`
+   - **Build Command**: `bun install && bun run build`
+   - **Start Command**: (kosongkan, static files)
+   - **Publish Directory**: `dist`
+
+5. Atau pilih **Static** service type:
+   - **Build Command**: `bun install && bun run build`
+   - **Publish Directory**: `dist`
+
+6. **Environment Variables** (untuk build):
+   ```
+   VITE_API_URL=https://api.retribusi.yourdomain.com
+   ```
+
+7. **Domain**:
+   - Add domain: `retribusi.yourdomain.com`
+   - Enable HTTPS
+
+8. Click **Deploy**
+
+#### Step 4: Setup Database
+1. Jika belum ada database, di PostgreSQL service:
+   ```sql
+   CREATE DATABASE retribusi_db;
+   ```
+
+2. Run migrations (via Easypanel terminal atau SSH):
+   ```bash
+   cd /app
+   bun run db:push
+   bun run db:seed
+   ```
+
+#### Step 5: Verify
+- Frontend: `https://retribusi.yourdomain.com`
+- Backend: `https://api.retribusi.yourdomain.com/health`
+
+#### Troubleshooting Easypanel
+
+**Build gagal:**
+- Check logs di Easypanel dashboard
+- Pastikan `bun` tersedia (atau ganti dengan `npm`)
+
+**Database connection error:**
+- Gunakan internal hostname PostgreSQL (bukan localhost)
+- Format: `postgresql://user:pass@SERVICE_NAME:5432/db`
+
+**CORS error:**
+- Pastikan `VITE_API_URL` sesuai dengan domain backend
+
+---
+
+### Option C: VPS Manual (PM2 + Nginx)
 
 #### 1. Setup PM2 (Process Manager)
 ```bash
