@@ -16,6 +16,7 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
+  CheckSquare,
   ChevronDown,
   Download,
   Edit2,
@@ -52,12 +53,12 @@ import { formatCurrency, formatDate } from '../lib/utils'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
-type TabType = 'draft' | 'final' | 'ditolak'
+type TabType = 'draft' | 'final' | 'disetujui' | 'ditolak'
 
 interface Tab {
   id: TabType
   label: string
-  status: 'draft' | 'submitted' | 'rejected'
+  status: 'draft' | 'submitted' | 'verified' | 'rejected'
   color: string
   bgColor: string
 }
@@ -72,10 +73,17 @@ const tabs: Tab[] = [
   },
   {
     id: 'final',
-    label: 'Final',
+    label: 'Verifikasi',
     status: 'submitted',
-    color: 'text-green-900',
-    bgColor: 'bg-green-100 border-green-700',
+    color: 'text-orange-900',
+    bgColor: 'bg-orange-100 border-orange-700',
+  },
+  {
+    id: 'disetujui',
+    label: 'Final',
+    status: 'verified',
+    color: 'text-blue-900',
+    bgColor: 'bg-blue-100 border-blue-700',
   },
   {
     id: 'ditolak',
@@ -121,6 +129,20 @@ export default function LaporanRetribusiListPage() {
   // Modal state
   const [selectedLaporan, setSelectedLaporan] = useState<LaporanRetribusi | null>(null)
   const [showDetailModal, setShowDetailModal] = useState(false)
+
+  // Bulk action state (admin only, hanya untuk tab submitted)
+  const [selectedIds, setSelectedIds] = useState<number[]>([])
+  const [bulkLoading, setBulkLoading] = useState(false)
+  const [showRejectDialog, setShowRejectDialog] = useState(false)
+  const [rejectReason, setRejectReason] = useState('')
+
+  // Ambil role user dari localStorage
+  const storedUser = localStorage.getItem('auth_user')
+  const currentUser = storedUser ? JSON.parse(storedUser) : null
+  const isAdmin = currentUser?.role === 'admin'
+
+  // Hanya tampilkan checkbox di tab submitted dan user adalah admin
+  const showBulkSelect = isAdmin && activeTabId === 'final'
 
   // Handle view detail
   const handleViewDetail = (laporan: LaporanRetribusi) => {
@@ -170,6 +192,42 @@ export default function LaporanRetribusiListPage() {
       toast.error('Gagal mengirim laporan')
     },
   })
+
+  // Bulk action handler
+  const handleBulkAction = async (action: 'verify' | 'reject') => {
+    if (selectedIds.length === 0) return
+    if (action === 'reject' && !rejectReason.trim()) return
+    setBulkLoading(true)
+    try {
+      const token = localStorage.getItem('auth_token')
+      const res = await fetch('/api/laporan-retribusi/bulk-status', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ids: selectedIds,
+          action,
+          rejectionReason: action === 'reject' ? rejectReason : undefined,
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        toast.success(data.message)
+        setSelectedIds([])
+        setShowRejectDialog(false)
+        setRejectReason('')
+        queryClient.invalidateQueries({ queryKey: ['laporan-retribusi'] })
+      } else {
+        toast.error(data.message || 'Gagal memproses bulk action')
+      }
+    } catch {
+      toast.error('Gagal menghubungi server')
+    } finally {
+      setBulkLoading(false)
+    }
+  }
 
   // Handle tab change
   const handleTabChange = (tabId: TabType) => {
@@ -442,11 +500,10 @@ export default function LaporanRetribusiListPage() {
                     key={tab.id}
                     type="button"
                     onClick={() => handleTabChange(tab.id)}
-                    className={`whitespace-nowrap border-x-2 border-t-2 px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all relative top-0.5 rounded-t-lg ${
-                      isActive
-                        ? 'bg-white border-black text-black z-10 shadow-[0_-4px_0_0_rgba(0,0,0,0.1)]'
-                        : 'bg-slate-200 border-transparent text-slate-500 hover:bg-slate-300 hover:text-slate-700'
-                    }`}
+                    className={`whitespace-nowrap border-x-2 border-t-2 px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all relative top-0.5 rounded-t-lg ${isActive
+                      ? 'bg-white border-black text-black z-10 shadow-[0_-4px_0_0_rgba(0,0,0,0.1)]'
+                      : 'bg-slate-200 border-transparent text-slate-500 hover:bg-slate-300 hover:text-slate-700'
+                      }`}
                   >
                     {tab.label}
                   </button>
@@ -478,11 +535,10 @@ export default function LaporanRetribusiListPage() {
             <button
               type="button"
               onClick={() => setShowFilters(!showFilters)}
-              className={`inline-flex items-center justify-center gap-2 rounded-lg border-2 border-black px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all ${
-                showFilters || params.opdId || params.jenisRetribusiId || params.startDate || params.endDate
-                  ? 'bg-black text-white'
-                  : 'bg-white text-black hover:bg-slate-100'
-              }`}
+              className={`inline-flex items-center justify-center gap-2 rounded-lg border-2 border-black px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all ${showFilters || params.opdId || params.jenisRetribusiId || params.startDate || params.endDate
+                ? 'bg-black text-white'
+                : 'bg-white text-black hover:bg-slate-100'
+                }`}
               aria-expanded={showFilters}
               aria-controls={isDesktop ? 'desktop-filter-panel' : 'mobile-filter-sheet'}
               aria-label="Filter laporan"
@@ -496,6 +552,74 @@ export default function LaporanRetribusiListPage() {
               )}
             </button>
           </div>
+
+          {/* ── Bulk Action Toolbar (admin only, tab submitted) ── */}
+          {showBulkSelect && selectedIds.length > 0 && (
+            <div className="mt-4 flex items-center gap-3 px-4 py-3 bg-blue-50 border-2 border-blue-600 rounded-lg animate-in slide-in-from-top-1 duration-150">
+              <CheckSquare className="h-5 w-5 text-blue-600 shrink-0" />
+              <span className="font-bold text-blue-800 text-sm">{selectedIds.length} laporan dipilih</span>
+              <div className="ml-auto flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleBulkAction('verify')}
+                  disabled={bulkLoading}
+                  className="px-4 py-2 bg-green-600 text-white text-sm font-bold rounded-lg border-2 border-green-800 hover:bg-green-700 disabled:opacity-50 transition-colors uppercase tracking-wide"
+                >
+                  ✅ Setujui ({selectedIds.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowRejectDialog(true)}
+                  disabled={bulkLoading}
+                  className="px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-lg border-2 border-red-800 hover:bg-red-700 disabled:opacity-50 transition-colors uppercase tracking-wide"
+                >
+                  ❌ Tolak ({selectedIds.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedIds([])}
+                  className="px-3 py-2 bg-white text-slate-600 text-sm font-bold rounded-lg border-2 border-slate-300 hover:bg-slate-100 transition-colors"
+                >
+                  Batal
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ── Reject Reason Dialog ── */}
+          {showRejectDialog && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
+              <div className="bg-white border-2 border-black rounded-xl shadow-[6px_6px_0_0_rgba(0,0,0,1)] p-6 w-full max-w-md mx-4">
+                <h3 className="text-lg font-extrabold uppercase tracking-tight mb-2">Alasan Penolakan</h3>
+                <p className="text-sm text-slate-600 mb-4">{selectedIds.length} laporan akan ditolak dengan alasan:</p>
+                <textarea
+                  className="w-full border-2 border-slate-300 rounded-lg px-3 py-2 text-sm font-medium focus:border-black focus:ring-0 outline-none resize-none"
+                  rows={3}
+                  placeholder="Tulis alasan penolakan…"
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value)}
+                  autoFocus
+                />
+                <div className="flex gap-3 mt-4">
+                  <button
+                    type="button"
+                    onClick={() => handleBulkAction('reject')}
+                    disabled={!rejectReason.trim() || bulkLoading}
+                    className="flex-1 py-2 bg-red-600 text-white font-bold rounded-lg border-2 border-red-800 hover:bg-red-700 disabled:opacity-50 uppercase"
+                  >
+                    {bulkLoading ? 'Memproses…' : 'Konfirmasi Tolak'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setShowRejectDialog(false); setRejectReason('') }}
+                    className="px-4 py-2 bg-white text-slate-700 font-bold rounded-lg border-2 border-slate-300 hover:bg-slate-100 uppercase"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Active Filter Badges */}
           {(params.opdId || params.jenisRetribusiId || params.startDate || params.endDate) && (
@@ -611,38 +735,38 @@ export default function LaporanRetribusiListPage() {
                         key={laporan.id}
                         className="border-b-2 border-slate-100 last:border-0"
                         actions={{
-                          right: laporan.status === 'draft' 
+                          right: laporan.status === 'draft'
                             ? [
-                                {
-                                  icon: <Edit2 />,
-                                  label: 'Edit',
-                                  color: 'bg-blue-600',
-                                  onClick: () => handleEdit(laporan.id)
-                                },
-                                {
-                                  icon: <Trash2 />,
-                                  label: 'Hapus',
-                                  color: 'bg-red-600',
-                                  onClick: () => handleDelete(laporan.id, laporan.nomorLaporan)
-                                }
-                              ]
+                              {
+                                icon: <Edit2 />,
+                                label: 'Edit',
+                                color: 'bg-blue-600',
+                                onClick: () => handleEdit(laporan.id)
+                              },
+                              {
+                                icon: <Trash2 />,
+                                label: 'Hapus',
+                                color: 'bg-red-600',
+                                onClick: () => handleDelete(laporan.id, laporan.nomorLaporan)
+                              }
+                            ]
                             : [
-                                {
-                                  icon: <Eye />,
-                                  label: 'Detail',
-                                  color: 'bg-slate-600',
-                                  onClick: () => handleViewDetail(laporan)
-                                }
-                              ],
+                              {
+                                icon: <Eye />,
+                                label: 'Detail',
+                                color: 'bg-slate-600',
+                                onClick: () => handleViewDetail(laporan)
+                              }
+                            ],
                           left: laporan.status === 'draft'
                             ? [
-                                {
-                                  icon: <Send />,
-                                  label: 'Kirim',
-                                  color: 'bg-green-600',
-                                  onClick: () => handleSubmit(laporan.id, laporan.nomorLaporan)
-                                }
-                              ]
+                              {
+                                icon: <Send />,
+                                label: 'Kirim',
+                                color: 'bg-green-600',
+                                onClick: () => handleSubmit(laporan.id, laporan.nomorLaporan)
+                              }
+                            ]
                             : undefined
                         }}
                       >
@@ -658,19 +782,22 @@ export default function LaporanRetribusiListPage() {
                               </div>
                             </div>
                             <span
-                              className={`inline-flex rounded-none px-2 py-1 text-[10px] font-black uppercase tracking-wider border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${
-                                laporan.status === 'draft'
+                              className={`inline-flex rounded-none px-2 py-1 text-[10px] font-black uppercase tracking-wider border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${laporan.status === 'draft'
                                   ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
                                   : laporan.status === 'submitted'
-                                    ? 'bg-green-100 border-green-700 text-green-800'
-                                    : 'bg-red-100 border-red-700 text-red-800'
-                              }`}
+                                    ? 'bg-orange-100 border-orange-600 text-orange-800'
+                                    : laporan.status === 'verified'
+                                      ? 'bg-blue-100 border-blue-700 text-blue-800'
+                                      : 'bg-red-100 border-red-700 text-red-800'
+                                }`}
                             >
                               {laporan.status === 'draft'
                                 ? 'Draft'
                                 : laporan.status === 'submitted'
-                                  ? 'Final'
-                                  : 'Ditolak'}
+                                  ? 'Verifikasi'
+                                  : laporan.status === 'verified'
+                                    ? 'Final'
+                                    : 'Ditolak'}
                             </span>
                           </div>
 
@@ -728,7 +855,7 @@ export default function LaporanRetribusiListPage() {
                                 </a>
                               )}
                             </div>
-                            
+
                             <div className="flex items-center gap-1">
                               <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-2 animate-pulse">
                                 ← Geser untuk aksi
@@ -750,6 +877,25 @@ export default function LaporanRetribusiListPage() {
                   >
                     <thead className="bg-slate-900 text-white">
                       <tr>
+                        {/* Checkbox column — hanya untuk admin di tab submitted */}
+                        {showBulkSelect && (
+                          <th scope="col" className="px-4 py-4 border-r border-slate-700">
+                            <input
+                              type="checkbox"
+                              className="w-4 h-4 rounded cursor-pointer"
+                              checked={selectedIds.length > 0 && selectedIds.length === data?.data.length}
+                              ref={(el) => { if (el) el.indeterminate = selectedIds.length > 0 && selectedIds.length < (data?.data.length ?? 0) }}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedIds(data?.data.map((l) => l.id) ?? [])
+                                } else {
+                                  setSelectedIds([])
+                                }
+                              }}
+                              aria-label="Pilih semua"
+                            />
+                          </th>
+                        )}
                         <th
                           scope="col"
                           className="px-6 py-4 text-xs font-bold uppercase tracking-wider border-r border-slate-700 cursor-pointer hover:bg-slate-800 transition-colors focus:outline-none focus:bg-slate-800"
@@ -910,10 +1056,27 @@ export default function LaporanRetribusiListPage() {
                         data?.data.map((laporan, index) => (
                           <tr
                             key={laporan.id}
-                            className={`hover:bg-yellow-50 transition-colors group ${
-                              index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
-                            }`}
+                            className={`hover:bg-yellow-50 transition-colors group ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
+                              } ${selectedIds.includes(laporan.id) ? 'bg-blue-50' : ''}`}
                           >
+                            {/* Checkbox */}
+                            {showBulkSelect && (
+                              <td className="px-4 py-4 border-r border-slate-200">
+                                <input
+                                  type="checkbox"
+                                  className="w-4 h-4 rounded cursor-pointer"
+                                  checked={selectedIds.includes(laporan.id)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setSelectedIds((prev) => [...prev, laporan.id])
+                                    } else {
+                                      setSelectedIds((prev) => prev.filter((id) => id !== laporan.id))
+                                    }
+                                  }}
+                                  aria-label={`Pilih ${laporan.nomorLaporan}`}
+                                />
+                              </td>
+                            )}
                             <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-900 font-medium tabular-nums border-r border-slate-200">
                               {formatDate(laporan.createdAt)}
                             </td>
@@ -949,19 +1112,22 @@ export default function LaporanRetribusiListPage() {
                             </td>
                             <td className="whitespace-nowrap px-6 py-4 text-center border-r border-slate-200">
                               <span
-                                className={`inline-flex rounded-md px-2.5 py-1 text-xs font-bold uppercase tracking-wide border shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${
-                                  laporan.status === 'draft'
+                                className={`inline-flex rounded-md px-2.5 py-1 text-xs font-bold uppercase tracking-wide border shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${laporan.status === 'draft'
                                     ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
                                     : laporan.status === 'submitted'
-                                      ? 'bg-green-100 border-green-700 text-green-800'
-                                      : 'bg-red-100 border-red-700 text-red-800'
-                                }`}
+                                      ? 'bg-orange-100 border-orange-600 text-orange-800'
+                                      : laporan.status === 'verified'
+                                        ? 'bg-blue-100 border-blue-700 text-blue-800'
+                                        : 'bg-red-100 border-red-700 text-red-800'
+                                  }`}
                               >
                                 {laporan.status === 'draft'
                                   ? 'Draft'
                                   : laporan.status === 'submitted'
-                                    ? 'Final'
-                                    : 'Ditolak'}
+                                    ? 'Verifikasi'
+                                    : laporan.status === 'verified'
+                                      ? 'Final'
+                                      : 'Ditolak'}
                               </span>
                             </td>
                             <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
@@ -976,17 +1142,19 @@ export default function LaporanRetribusiListPage() {
                                   <Eye className="h-4 w-4" />
                                 </button>
 
-                                {/* Download PDF button - available for all */}
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    handleDownloadPDF(laporan.id, laporan.nomorLaporan)
-                                  }
-                                  className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded border border-transparent hover:border-red-200 transition-all"
-                                  title="Download PDF"
-                                >
-                                  <Download className="h-4 w-4" />
-                                </button>
+                                {/* Download PDF — hanya untuk laporan FINAL (verified) */}
+                                {laporan.status === 'verified' && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleDownloadPDF(laporan.id, laporan.nomorLaporan)
+                                    }
+                                    className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded border border-transparent hover:border-red-200 transition-all"
+                                    title="Unduh PDF"
+                                  >
+                                    <Download className="h-4 w-4" />
+                                  </button>
+                                )}
 
                                 {/* Actions based on status */}
                                 {laporan.status === 'draft' && (

@@ -32,6 +32,10 @@ import { opdPelayananRouter } from './routes/opd-pelayanan'
 import { reportsRouter } from './routes/reports'
 import { settingsRouter } from './routes/settings'
 import { usersRouter } from './routes/users'
+import { targetRetribusiRouter } from './routes/target-retribusi'
+import { laporanTargetRealisasiRouter } from './routes/laporan-target-realisasi'
+import { captchaRouter } from './middleware/captcha'
+import { notificationsRouter } from './routes/notifications'
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -91,6 +95,10 @@ app.use('/api/laporan-retribusi', laporanRetribusiRouter) // Protected (auth ins
 app.use('/api/settings', settingsRouter) // Protected (auth inside routes)
 app.use('/api/reports', authMiddleware, reportsRouter) // Protected
 app.use('/api/users', authMiddleware, usersRouter) // Protected
+app.use('/api/target-retribusi', authMiddleware, targetRetribusiRouter) // Protected - Admin CRUD
+app.use('/api/target-realisasi', authMiddleware, laporanTargetRealisasiRouter) // Protected - Data & Export
+app.use('/api/captcha', captchaRouter) // Public - CAPTCHA matematis
+app.use('/api/notifications', authMiddleware, notificationsRouter) // Protected
 app.use('/api/debug', debugRouter) // Debug only - remove in production
 
 // 404 handler

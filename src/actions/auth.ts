@@ -19,6 +19,8 @@ export async function loginAction({ request }: ActionFunctionArgs) {
   const username = formData.get('username') as string
   const password = formData.get('password') as string
   const rememberMe = formData.get('rememberMe') === 'on'
+  const captchaId = formData.get('captchaId') as string
+  const captchaAnswer = formData.get('captchaAnswer') as string
 
   // Validate input
   const validationResult = loginSchema.safeParse({ username, password })
@@ -31,13 +33,20 @@ export async function loginAction({ request }: ActionFunctionArgs) {
   }
 
   try {
-    // Call login API using API client with rememberMe flag
-    const data = await api.login(username, password, rememberMe)
+    // Call login API — sertakan captchaId dan captchaAnswer
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password, rememberMe, captchaId, captchaAnswer }),
+    })
+    const data = await response.json()
 
     if (!data.success) {
       return {
         success: false,
         message: data.message || 'Login gagal',
+        captchaError: data.captchaError ?? false,
+        remainingAttempts: data.remainingAttempts,
       }
     }
 

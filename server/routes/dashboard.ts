@@ -133,8 +133,11 @@ dashboardRouter.get('/stats', async (req, res, next) => {
       .from(laporanRetribusi)
       .where(and(...lastMonthConditions))
 
-    // Total revenue (all time) - count submitted and verified reports
-    const totalRevenueConditions = [sql`${laporanRetribusi.status} IN ('submitted', 'verified')`]
+    // Total revenue (current year) - count submitted and verified reports
+    const totalRevenueConditions = [
+      sql`${laporanRetribusi.status} IN ('submitted', 'verified')`,
+      sql`EXTRACT(YEAR FROM ${laporanRetribusi.tanggalSetor}) = ${currentYear}`,
+    ]
     if (userFilter) totalRevenueConditions.push(userFilter)
 
     const [totalRevenue] = await db
@@ -142,11 +145,16 @@ dashboardRouter.get('/stats', async (req, res, next) => {
       .from(laporanRetribusi)
       .where(and(...totalRevenueConditions))
 
-    // Total reports (all time) - count all reports (including draft)
+    // Total reports (current year) - count all reports (including draft)
+    const totalReportsConditions = [
+      sql`EXTRACT(YEAR FROM ${laporanRetribusi.tanggalSetor}) = ${currentYear}`,
+    ]
+    if (userFilter) totalReportsConditions.push(userFilter)
+
     const [totalReports] = await db
       .select({ count: sql<number>`count(*)::int` })
       .from(laporanRetribusi)
-      .where(userFilter || undefined)
+      .where(and(...totalReportsConditions))
 
     // Calculate Growth Helper
     const calculateGrowth = (current: number, previous: number) => {
@@ -156,7 +164,7 @@ dashboardRouter.get('/stats', async (req, res, next) => {
 
     const dailyTotal = Number(dailyRevenue?.total || 0)
     const yesterdayTotal = Number(yesterdayRevenue?.total || 0)
-    
+
     const weeklyTotal = Number(weeklyRevenue?.total || 0)
     const lastWeekTotal = Number(lastWeekRevenue?.total || 0)
 
@@ -322,12 +330,12 @@ dashboardRouter.get('/revenue-trend-daily', async (req, res, next) => {
     // Fill in missing days with 0
     const result = []
     const map = new Map(trend.map((item) => [item.date, item]))
-    
+
     for (let i = 0; i < days; i++) {
       const d = new Date(startDate)
       d.setDate(startDate.getDate() + i)
       const dateStr = d.toISOString().split('T')[0]
-      
+
       if (map.has(dateStr)) {
         result.push({
           ...map.get(dateStr),

@@ -29,14 +29,16 @@ import { db } from '../../src/lib/db'
 import { auditLog, users } from '../../src/lib/db/schema'
 import { loginSchema } from '../../src/lib/validation/user'
 import { authMiddleware } from '../middleware/auth'
+import { validateCaptcha } from '../middleware/captcha'
+import { loginRateLimiter, recordFailedAttempt, resetAttempts } from '../middleware/rate-limiter'
 
 export const authRouter = Router()
 
 /**
  * POST /api/auth/login
- * User login
+ * User login — dilindungi rate limiter + CAPTCHA
  */
-authRouter.post('/login', async (req, res, next) => {
+authRouter.post('/login', loginRateLimiter, validateCaptcha, async (req, res, next) => {
   try {
     // Validate request body
     const validationResult = loginSchema.safeParse(req.body)
@@ -74,11 +76,20 @@ authRouter.post('/login', async (req, res, next) => {
     const isPasswordValid = await comparePassword(password, user.password)
 
     if (!isPasswordValid) {
+      const ip = req.ip || req.socket?.remoteAddress || 'unknown'
+      const { remainingAttempts, blocked, blockMinutes } = recordFailedAttempt(ip)
       return res.status(401).json({
         success: false,
-        message: 'Username atau password salah',
+        message: blocked
+          ? `Terlalu banyak percobaan gagal. Akun diblokir ${blockMinutes} menit.`
+          : `Username atau password salah. Sisa percobaan: ${remainingAttempts}`,
+        remainingAttempts: blocked ? 0 : remainingAttempts,
       })
     }
+
+    // Reset rate limit counter untuk IP ini
+    const ip = req.ip || req.socket?.remoteAddress || 'unknown'
+    resetAttempts(ip)
 
     // Generate JWT token (7 days if rememberMe, 8 hours default)
     const token = generateToken(

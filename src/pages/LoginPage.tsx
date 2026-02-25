@@ -1,25 +1,18 @@
 /**
- * Login Page
- *
- * User authentication page dengan style Government Structured Brutalism
+ * Login Page — dengan Rate Limiting & CAPTCHA Matematika
  *
  * Features:
  * - Username & password input
- * - Password visibility toggle (Eye/EyeOff icon)
- * - Remember Me checkbox (extends JWT to 7 days)
- * - Loading state with snappy transition
- * - Error message display with brutalist alert
+ * - CAPTCHA matematika (generate on mount, refresh otomatis jika salah)
+ * - Password visibility toggle
+ * - Remember Me checkbox (JWT 7 hari)
+ * - Feedback sisa percobaan login
  *
- * Design Concept:
- * - Background: Geometric Dot Pattern
- * - Inputs: Thick borders, focus feedback
- * - Buttons: Hard shadows, snappy interaction
- *
- * Last Updated: 2025-11-23
+ * Last Updated: 2026-02-24
  */
 
-import { Eye, EyeOff, ShieldCheck } from 'lucide-react'
-import { useState } from 'react'
+import { Eye, EyeOff, RefreshCw, ShieldCheck } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Form, useActionData, useNavigation } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 
@@ -27,6 +20,19 @@ type ActionData = {
   success: boolean
   message?: string
   errors?: string[]
+  captchaError?: boolean
+  remainingAttempts?: number
+}
+
+async function fetchCaptcha(): Promise<{ id: string; question: string } | null> {
+  try {
+    const res = await fetch('/api/captcha')
+    if (!res.ok) return null
+    const json = await res.json()
+    return json.data ?? null
+  } catch {
+    return null
+  }
 }
 
 export default function LoginPage() {
@@ -35,12 +41,34 @@ export default function LoginPage() {
   const isSubmitting = navigation.state === 'submitting'
   const [showPassword, setShowPassword] = useState(false)
 
+  // CAPTCHA state
+  const [captcha, setCaptcha] = useState<{ id: string; question: string } | null>(null)
+  const [captchaLoading, setCaptchaLoading] = useState(false)
+
+  const loadCaptcha = async () => {
+    setCaptchaLoading(true)
+    const data = await fetchCaptcha()
+    setCaptcha(data)
+    setCaptchaLoading(false)
+  }
+
+  useEffect(() => {
+    loadCaptcha()
+  }, [])
+
+  // Refresh CAPTCHA otomatis jika ada captchaError
+  useEffect(() => {
+    if (actionData?.captchaError) {
+      loadCaptcha()
+    }
+  }, [actionData])
+
   return (
     <div className="min-h-screen bg-slate-50 relative flex items-center justify-center p-4 overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-dot-pattern opacity-[0.03] pointer-events-none" />
 
-      {/* Geometric Decorations (Abstract/Wireframe) */}
+      {/* Geometric Decorations */}
       <div className="absolute top-0 left-0 w-64 h-64 border-r-2 border-b-2 border-slate-200 opacity-20 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 border-l-2 border-t-2 border-slate-200 opacity-20 pointer-events-none rounded-tl-3xl" />
 
@@ -54,7 +82,7 @@ export default function LoginPage() {
             LOGIN SISTEM
           </h1>
           <p className="text-slate-600 font-medium border-b-2 border-slate-100 pb-4 inline-block">
-            Monitoring & Pelaporan Retribusi Daerah
+            Monitoring &amp; Pelaporan Retribusi Daerah
           </p>
         </div>
 
@@ -66,12 +94,10 @@ export default function LoginPage() {
               <p className="text-sm mt-1 font-medium">
                 {actionData.message || 'Periksa kembali username dan password.'}
               </p>
-              {actionData.errors && (
-                <ul className="mt-2 list-disc list-inside text-sm">
-                  {actionData.errors.map((error) => (
-                    <li key={error}>{error}</li>
-                  ))}
-                </ul>
+              {typeof actionData.remainingAttempts === 'number' && actionData.remainingAttempts > 0 && (
+                <p className="text-xs mt-1 text-red-700">
+                  Sisa percobaan: <strong>{actionData.remainingAttempts}</strong>
+                </p>
               )}
             </div>
           )}
@@ -130,6 +156,58 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* CAPTCHA */}
+          <div>
+            <label className="block text-sm font-bold text-slate-800 mb-2 uppercase tracking-wide">
+              Verifikasi Anti-Bot
+            </label>
+            <div className={`flex items-center gap-3 p-4 rounded-lg border-2 mb-3 ${actionData?.captchaError ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-slate-50'
+              }`}>
+              {captchaLoading ? (
+                <span className="text-slate-400 text-sm italic">Memuat soal…</span>
+              ) : captcha ? (
+                <>
+                  <span className="font-mono text-lg font-extrabold text-slate-800 tracking-widest select-none">
+                    {captcha.question}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={loadCaptcha}
+                    className="ml-auto text-slate-400 hover:text-slate-700 transition-colors"
+                    title="Muat soal baru"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                  </button>
+                  {/* Hidden fields untuk dikirim ke server */}
+                  <input type="hidden" name="captchaId" value={captcha.id} />
+                </>
+              ) : (
+                <button type="button" onClick={loadCaptcha} className="text-sm text-blue-600 underline">
+                  Gagal memuat CAPTCHA — klik untuk coba lagi
+                </button>
+              )}
+            </div>
+            <input
+              id="captchaAnswer"
+              name="captchaAnswer"
+              type="number"
+              inputMode="numeric"
+              className={`w-full px-4 py-3 bg-white border-2 rounded-lg 
+                focus:ring-0 outline-none transition-colors duration-150 font-mono text-lg
+                ${actionData?.captchaError
+                  ? 'border-red-400 focus:border-red-600 bg-red-50'
+                  : 'border-slate-300 focus:border-black focus:bg-yellow-50'
+                }`}
+              placeholder="Masukkan jawaban…"
+              required
+            />
+            {actionData?.captchaError && (
+              <p className="text-xs text-red-600 mt-1 font-medium">
+                Jawaban salah atau CAPTCHA kadaluarsa. Soal baru telah dimuat.
+              </p>
+            )}
+          </div>
+
           {/* Remember Me */}
           <div className="flex items-center">
             <div className="relative flex items-center">
@@ -160,7 +238,7 @@ export default function LoginPage() {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !captcha}
             className="w-full px-4 py-3.5 bg-primary-600 text-white text-lg font-bold uppercase tracking-wider
               border-2 border-black rounded-lg shadow-hard-sm
               hover:bg-primary-700 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none
@@ -178,16 +256,6 @@ export default function LoginPage() {
             )}
           </button>
         </Form>
-
-        {/* Help Text */}
-        <div className="mt-8 pt-6 border-t-2 border-dashed border-slate-200 text-center">
-          <p className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-2">
-            Credentials Default
-          </p>
-          <div className="inline-block px-3 py-1 bg-slate-100 border border-slate-300 rounded font-mono text-sm text-slate-700">
-            admin / Admin123
-          </div>
-        </div>
       </div>
 
       {/* Footer */}

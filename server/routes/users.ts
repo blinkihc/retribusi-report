@@ -419,6 +419,7 @@ usersRouter.put('/:id', async (req, res, next) => {
   }
 })
 
+
 /**
  * DELETE /api/users/:id
  * Delete user (soft delete - set isActive to false)
@@ -465,3 +466,61 @@ usersRouter.delete('/:id', async (req, res, next) => {
     next(error)
   }
 })
+
+/**
+ * POST /api/users/:id/reset-password
+ * Reset user password — generate password random, admin menerima hasil plaintext
+ * Permission: Admin only
+ */
+usersRouter.post('/:id/reset-password', async (req, res, next) => {
+  try {
+    if (req.user?.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Akses ditolak. Hanya admin yang dapat mereset password.',
+      })
+    }
+
+    const id = Number(req.params.id)
+
+    // Cegah admin reset password sendiri lewat endpoint ini
+    if (id === req.user.userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Gunakan fitur "Ganti Password" untuk mengubah password sendiri.',
+      })
+    }
+
+    const [target] = await db
+      .select({ id: users.id, username: users.username, isActive: users.isActive })
+      .from(users)
+      .where(eq(users.id, id))
+
+    if (!target) {
+      return res.status(404).json({ success: false, message: 'User tidak ditemukan' })
+    }
+
+    if (!target.isActive) {
+      return res.status(400).json({ success: false, message: 'User tidak aktif' })
+    }
+
+    // Generate password random 8 karakter (huruf + angka)
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'
+    let newPassword = ''
+    for (let i = 0; i < 8; i++) {
+      newPassword += chars[Math.floor(Math.random() * chars.length)]
+    }
+
+    const hashedPassword = await hashPassword(newPassword)
+    await db.update(users).set({ password: hashedPassword }).where(eq(users.id, id))
+
+    res.json({
+      success: true,
+      message: `Password ${target.username} berhasil direset`,
+      data: { newPassword },
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+

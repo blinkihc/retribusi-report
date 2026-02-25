@@ -172,32 +172,25 @@ export const laporanRetribusi = pgTable(
   })
 )
 
-// Target Retribusi Table (Phase 1.5)
+// Target Retribusi Table
+// Target per Jenis Retribusi per Tahun (bukan per OPD/bulan)
+// Realisasi dihitung on-the-fly dari laporan_retribusi
 export const targetRetribusi = pgTable(
   'target_retribusi',
   {
     id: serial('id').primaryKey(),
-    opdId: integer('opd_id')
-      .notNull()
-      .references(() => opd.id),
     jenisRetribusiId: integer('jenis_retribusi_id')
       .notNull()
       .references(() => jenisRetribusi.id),
     tahun: integer('tahun').notNull(),
-    bulan: integer('bulan').notNull(),
     targetNominal: decimal('target_nominal', { precision: 15, scale: 2 }).notNull(),
-    realisasiNominal: decimal('realisasi_nominal', { precision: 15, scale: 2 })
-      .notNull()
-      .default('0'),
-    persentase: decimal('persentase', { precision: 5, scale: 2 }).notNull().default('0'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
-    deletedAt: timestamp('deleted_at'),
   },
   (table) => ({
-    opdIdx: index('target_opd_idx').on(table.opdId),
     jenisIdx: index('target_jenis_idx').on(table.jenisRetribusiId),
-    tahunBulanIdx: index('target_tahun_bulan_idx').on(table.tahun, table.bulan),
+    tahunIdx: index('target_tahun_idx').on(table.tahun),
+    uniqueJenisTahun: unique('target_jenis_tahun_unique').on(table.jenisRetribusiId, table.tahun),
   })
 )
 
@@ -212,6 +205,7 @@ export const auditLog = pgTable(
     recordId: integer('record_id'),
     oldValues: text('old_values'),
     newValues: text('new_values'),
+    details: text('details'),
     ipAddress: varchar('ip_address', { length: 45 }),
     userAgent: text('user_agent'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -221,6 +215,28 @@ export const auditLog = pgTable(
     actionIdx: index('audit_action_idx').on(table.action),
     tableIdx: index('audit_table_idx').on(table.tableName),
     createdAtIdx: index('audit_created_at_idx').on(table.createdAt),
+  })
+)
+
+// Notifications Table — untuk notifikasi approve/reject ke operator
+export const notifications = pgTable(
+  'notifications',
+  {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id),
+    type: varchar('type', { length: 30 }).notNull(), // 'approved' | 'rejected' | 'info'
+    title: varchar('title', { length: 200 }).notNull(),
+    message: text('message').notNull(),
+    laporanId: integer('laporan_id').references(() => laporanRetribusi.id),
+    isRead: boolean('is_read').notNull().default(false),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (table) => ({
+    userIdx: index('notif_user_idx').on(table.userId),
+    isReadIdx: index('notif_is_read_idx').on(table.isRead),
+    createdAtIdx: index('notif_created_at_idx').on(table.createdAt),
   })
 )
 
@@ -268,10 +284,6 @@ export const laporanRetribusiRelations = relations(laporanRetribusi, ({ one }) =
 }))
 
 export const targetRetribusiRelations = relations(targetRetribusi, ({ one }) => ({
-  opd: one(opd, {
-    fields: [targetRetribusi.opdId],
-    references: [opd.id],
-  }),
   jenisRetribusi: one(jenisRetribusi, {
     fields: [targetRetribusi.jenisRetribusiId],
     references: [jenisRetribusi.id],
@@ -310,3 +322,30 @@ export type AuditLog = typeof auditLog.$inferSelect
 export type NewAuditLog = typeof auditLog.$inferInsert
 export type Settings = typeof settings.$inferSelect
 export type NewSettings = typeof settings.$inferInsert
+
+// Computed types for Target-Realisasi feature
+export type TargetRealisasiBulanan = {
+  bulan: number
+  namabulan: string
+  realisasi: number
+}
+
+export type TargetRealisasiRekap = {
+  jenisRetribusiId: number
+  namaRetribusi: string
+  target: number
+  realisasiBulanLalu: number
+  realisasiBulanIni: number
+  realisasiTotal: number
+  persentase: number
+  sisaTarget: number
+}
+
+export type TargetRealisasiMatrix = {
+  jenisRetribusiId: number
+  namaRetribusi: string
+  target: number
+  bulanan: Record<number, number> // bulan 1-12 → nominal
+  total: number
+  persentase: number
+}

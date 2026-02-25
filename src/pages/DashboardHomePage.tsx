@@ -379,6 +379,7 @@ export default function DashboardHomePage() {
                   outerRadius={80}
                   paddingAngle={5}
                   dataKey="total"
+                  nameKey="kategori"
                 >
                   {data.categoryRevenue.map((entry, index) => (
                     <Cell
@@ -542,13 +543,12 @@ export default function DashboardHomePage() {
                     </div>
                     <div className="mt-1">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-bold uppercase tracking-wide border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${
-                          report.status === 'verified'
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-bold uppercase tracking-wide border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${report.status === 'verified'
                             ? 'bg-green-100 border-green-700 text-green-800'
                             : report.status === 'draft'
                               ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
                               : 'bg-slate-100 border-slate-600 text-slate-700'
-                        }`}
+                          }`}
                       >
                         {report.status}
                       </span>

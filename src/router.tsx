@@ -31,6 +31,7 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const ReportsPage = lazy(() => import('./pages/ReportsPage'))
 const SettingsPage = lazy(() => import('./pages/SettingsPage'))
 const UsersPage = lazy(() => import('./pages/UsersPage'))
+const TargetRealisasiPage = lazy(() => import('./pages/TargetRealisasiPage'))
 
 // Loading fallback
 const PageLoader = () => (
@@ -64,6 +65,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<DashboardSkeleton />}>
             <DashboardHomePage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'target-realisasi',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <TargetRealisasiPage />
           </Suspense>
         ),
       },

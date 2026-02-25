@@ -25,13 +25,14 @@
  * Last Updated: 2025-11-14
  */
 
-import { and, desc, eq, ilike, or, sql } from 'drizzle-orm'
+import { and, desc, eq, ilike, inArray, or, sql } from 'drizzle-orm'
 import { Router } from 'express'
 import { z } from 'zod'
 import { db } from '../../src/lib/db'
 import {
   jenisRetribusi,
   laporanRetribusi,
+  notifications,
   opd,
   opdPelayanan,
   settings,
@@ -124,7 +125,7 @@ const laporanRetribusiQuerySchema = z.object({
   search: z.string().optional(),
   opdId: z.coerce.number().int().positive().optional(),
   jenisRetribusiId: z.coerce.number().int().positive().optional(),
-  status: z.enum(['draft', 'submitted', 'rejected', 'all']).optional().default('all'),
+  status: z.enum(['draft', 'submitted', 'verified', 'rejected', 'all']).optional().default('all'),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   sortBy: z
@@ -1023,6 +1024,26 @@ laporanRetribusiRouter.post('/:id/submit', authMiddleware, async (req, res, next
       })
       .where(eq(laporanRetribusi.id, id))
 
+    // ── Buat notifikasi untuk semua admin ──
+    try {
+      const adminUsers = await db.select({ id: users.id }).from(users).where(eq(users.role, 'admin'))
+
+      if (adminUsers.length > 0) {
+        const notifValues = adminUsers.map((admin) => ({
+          userId: admin.id,
+          type: 'info',
+          title: 'Laporan Baru',
+          message: `Laporan baru ${existing.nomorLaporan} menunggu verifikasi.`,
+          laporanId: id,
+          isRead: false,
+        }))
+
+        await db.insert(notifications).values(notifValues).catch(() => { })
+      }
+    } catch (e) {
+      // Abaikan jika notifikasi gagal
+    }
+
     res.json({
       success: true,
       message: 'Laporan berhasil disubmit',
@@ -1083,13 +1104,157 @@ laporanRetribusiRouter.post('/:id/reject', authMiddleware, async (req, res, next
       .set({
         status: 'rejected',
         rejectionReason,
+        verifiedBy: req.user.userId,
+        verifiedAt: new Date(),
         updatedAt: new Date(),
       })
       .where(eq(laporanRetribusi.id, id))
 
+    // ── Buat notifikasi untuk operator pemilik laporan ──
+    await db.insert(notifications).values({
+      userId: existing.submittedBy,
+      type: 'rejected',
+      title: 'Laporan Ditolak',
+      message: `Laporan ${existing.nomorLaporan} ditolak. Alasan: ${rejectionReason}`,
+      laporanId: id,
+      isRead: false,
+    }).catch(() => {/* Notif gagal tidak block response */ })
+
     res.json({
       success: true,
       message: 'Laporan berhasil ditolak',
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+/**
+ * POST /api/laporan-retribusi/:id/verify
+ * Verify laporan (admin only, submitted → verified)
+ */
+laporanRetribusiRouter.post('/:id/verify', authMiddleware, async (req, res, next) => {
+  try {
+    if (req.user?.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Akses ditolak. Hanya admin yang dapat menyetujui laporan.',
+      })
+    }
+
+    const id = Number(req.params.id)
+
+    const [existing] = await db
+      .select()
+      .from(laporanRetribusi)
+      .where(and(eq(laporanRetribusi.id, id), sql`${laporanRetribusi.deletedAt} IS NULL`))
+
+    if (!existing) {
+      return res.status(404).json({ success: false, message: 'Laporan tidak ditemukan' })
+    }
+
+    if (existing.status !== 'submitted') {
+      return res.status(400).json({
+        success: false,
+        message: 'Hanya laporan dengan status submitted yang dapat diverifikasi.',
+      })
+    }
+
+    await db
+      .update(laporanRetribusi)
+      .set({
+        status: 'verified',
+        verifiedBy: req.user.userId,
+        verifiedAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .where(eq(laporanRetribusi.id, id))
+
+    // ── Buat notifikasi untuk operator ──
+    await db.insert(notifications).values({
+      userId: existing.submittedBy,
+      type: 'approved',
+      title: 'Laporan Disetujui',
+      message: `Laporan ${existing.nomorLaporan} telah diverifikasi dan disetujui.`,
+      laporanId: id,
+      isRead: false,
+    }).catch(() => {/* Notif gagal tidak block response */ })
+
+    res.json({ success: true, message: 'Laporan berhasil diverifikasi' })
+  } catch (error) {
+    next(error)
+  }
+})
+
+/**
+ * PATCH /api/laporan-retribusi/bulk-status
+ * Bulk approve atau reject laporan (admin only)
+ * Body: { ids: number[], action: 'verify' | 'reject', rejectionReason?: string }
+ */
+laporanRetribusiRouter.patch('/bulk-status', authMiddleware, async (req, res, next) => {
+  try {
+    if (req.user?.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Akses ditolak.' })
+    }
+
+    const { ids, action, rejectionReason } = req.body
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ success: false, message: 'ids wajib berupa array tidak kosong' })
+    }
+    if (!['verify', 'reject'].includes(action)) {
+      return res.status(400).json({ success: false, message: 'action harus verify atau reject' })
+    }
+    if (action === 'reject' && (!rejectionReason || !String(rejectionReason).trim())) {
+      return res.status(400).json({ success: false, message: 'rejectionReason wajib diisi untuk reject' })
+    }
+
+    const idList = ids.map(Number)
+    const newStatus = action === 'verify' ? 'verified' : 'rejected'
+
+    // Ambil semua laporan yang valid (submitted)
+    const rows = await db
+      .select({ id: laporanRetribusi.id, submittedBy: laporanRetribusi.submittedBy, nomorLaporan: laporanRetribusi.nomorLaporan, status: laporanRetribusi.status })
+      .from(laporanRetribusi)
+      .where(and(inArray(laporanRetribusi.id, idList), sql`${laporanRetribusi.deletedAt} IS NULL`))
+
+    const validRows = rows.filter((r) => r.status === 'submitted')
+    const validIds = validRows.map((r) => r.id)
+
+    if (validIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'Tidak ada laporan submitted yang bisa diproses' })
+    }
+
+    // Update semua sekaligus
+    await db
+      .update(laporanRetribusi)
+      .set({
+        status: newStatus,
+        verifiedBy: req.user.userId,
+        verifiedAt: new Date(),
+        updatedAt: new Date(),
+        ...(action === 'reject' ? { rejectionReason: String(rejectionReason) } : {}),
+      })
+      .where(inArray(laporanRetribusi.id, validIds))
+
+    // Buat notifikasi untuk setiap operator
+    const notifValues = validRows.map((r) => ({
+      userId: r.submittedBy,
+      type: action === 'verify' ? 'approved' : 'rejected',
+      title: action === 'verify' ? 'Laporan Disetujui' : 'Laporan Ditolak',
+      message: action === 'verify'
+        ? `Laporan ${r.nomorLaporan} telah diverifikasi dan disetujui.`
+        : `Laporan ${r.nomorLaporan} ditolak. Alasan: ${rejectionReason}`,
+      laporanId: r.id,
+      isRead: false,
+    }))
+    await db.insert(notifications).values(notifValues).catch(() => { })
+
+    res.json({
+      success: true,
+      message: `${validIds.length} laporan berhasil di-${action === 'verify' ? 'verifikasi' : 'tolak'}`,
+      processed: validIds.length,
+      skipped: idList.length - validIds.length,
     })
   } catch (error) {
     next(error)
