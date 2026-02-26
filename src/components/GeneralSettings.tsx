@@ -14,7 +14,7 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { getSettingByKey, updateSetting, uploadLogo } from '../lib/api/settings'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 export default function GeneralSettings() {
   const queryClient = useQueryClient()

@@ -51,7 +51,7 @@ import { getJenisRetribusiList } from '../lib/api/jenis-retribusi'
 import { getOPDList } from '../lib/api/opd'
 import { formatCurrency, formatDate } from '../lib/utils'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 type TabType = 'draft' | 'final' | 'disetujui' | 'ditolak'
 
@@ -783,12 +783,12 @@ export default function LaporanRetribusiListPage() {
                             </div>
                             <span
                               className={`inline-flex rounded-none px-2 py-1 text-[10px] font-black uppercase tracking-wider border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${laporan.status === 'draft'
-                                  ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
-                                  : laporan.status === 'submitted'
-                                    ? 'bg-orange-100 border-orange-600 text-orange-800'
-                                    : laporan.status === 'verified'
-                                      ? 'bg-blue-100 border-blue-700 text-blue-800'
-                                      : 'bg-red-100 border-red-700 text-red-800'
+                                ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
+                                : laporan.status === 'submitted'
+                                  ? 'bg-orange-100 border-orange-600 text-orange-800'
+                                  : laporan.status === 'verified'
+                                    ? 'bg-blue-100 border-blue-700 text-blue-800'
+                                    : 'bg-red-100 border-red-700 text-red-800'
                                 }`}
                             >
                               {laporan.status === 'draft'
@@ -1113,12 +1113,12 @@ export default function LaporanRetribusiListPage() {
                             <td className="whitespace-nowrap px-6 py-4 text-center border-r border-slate-200">
                               <span
                                 className={`inline-flex rounded-md px-2.5 py-1 text-xs font-bold uppercase tracking-wide border shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${laporan.status === 'draft'
-                                    ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
-                                    : laporan.status === 'submitted'
-                                      ? 'bg-orange-100 border-orange-600 text-orange-800'
-                                      : laporan.status === 'verified'
-                                        ? 'bg-blue-100 border-blue-700 text-blue-800'
-                                        : 'bg-red-100 border-red-700 text-red-800'
+                                  ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
+                                  : laporan.status === 'submitted'
+                                    ? 'bg-orange-100 border-orange-600 text-orange-800'
+                                    : laporan.status === 'verified'
+                                      ? 'bg-blue-100 border-blue-700 text-blue-800'
+                                      : 'bg-red-100 border-red-700 text-red-800'
                                   }`}
                               >
                                 {laporan.status === 'draft'

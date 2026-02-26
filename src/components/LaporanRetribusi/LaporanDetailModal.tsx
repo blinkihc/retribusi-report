@@ -3,7 +3,7 @@ import { LaporanRetribusi } from '../../lib/api/laporan-retribusi'
 import { formatDate, formatCurrency } from '../../lib/utils'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 interface LaporanDetailModalProps {
   laporan: LaporanRetribusi | null
@@ -28,17 +28,17 @@ export function LaporanDetailModal({ laporan, open, onOpenChange }: LaporanDetai
         <div className="space-y-6 py-4">
           {/* Status Banner */}
           <div className={`p-4 border-l-4 ${laporan.status === 'verified' ? 'bg-blue-50 border-blue-500' :
-              laporan.status === 'submitted' ? 'bg-orange-50 border-orange-500' :
-                laporan.status === 'rejected' ? 'bg-red-50 border-red-500' :
-                  'bg-yellow-50 border-yellow-500'
+            laporan.status === 'submitted' ? 'bg-orange-50 border-orange-500' :
+              laporan.status === 'rejected' ? 'bg-red-50 border-red-500' :
+                'bg-yellow-50 border-yellow-500'
             }`}>
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider opacity-70">Status Laporan</p>
                 <p className={`text-lg font-black uppercase ${laporan.status === 'verified' ? 'text-blue-700' :
-                    laporan.status === 'submitted' ? 'text-orange-700' :
-                      laporan.status === 'rejected' ? 'text-red-700' :
-                        'text-yellow-700'
+                  laporan.status === 'submitted' ? 'text-orange-700' :
+                    laporan.status === 'rejected' ? 'text-red-700' :
+                      'text-yellow-700'
                   }`}>
                   {laporan.status === 'verified' ? 'Final' :
                     laporan.status === 'submitted' ? 'Verifikasi' :
