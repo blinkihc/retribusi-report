@@ -12,7 +12,7 @@
  */
 
 import { Eye, EyeOff, RefreshCw, ShieldCheck } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Form, useActionData, useNavigation } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 
@@ -45,12 +45,12 @@ export default function LoginPage() {
   const [captcha, setCaptcha] = useState<{ id: string; question: string } | null>(null)
   const [captchaLoading, setCaptchaLoading] = useState(false)
 
-  const loadCaptcha = async () => {
+  const loadCaptcha = useCallback(async () => {
     setCaptchaLoading(true)
     const data = await fetchCaptcha()
     setCaptcha(data)
     setCaptchaLoading(false)
-  }
+  }, [])
 
   useEffect(() => {
     loadCaptcha()
