@@ -40,27 +40,26 @@ import { notificationsRouter } from './routes/notifications'
 const app = express()
 const PORT = process.env.PORT || 5000
 
+// CORS origins — production reads from env, development allows localhost
+const getCorsOrigins = () => {
+  if (process.env.NODE_ENV === 'production') {
+    const frontendUrl = process.env.FRONTEND_URL
+    return frontendUrl ? [frontendUrl] : true // 'true' = allow same-origin
+  }
+  return [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://localhost:3003',
+    'http://localhost:3004',
+    'http://localhost:3005',
+  ]
+}
+
 // Middleware
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests from localhost:300x (3000-3009)
-      const allowedOrigins = [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'http://localhost:3002',
-        'http://localhost:3003',
-        'http://localhost:3004',
-        'http://localhost:3005',
-      ]
-
-      // Allow requests with no origin (like mobile apps, Postman, curl)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true)
-      } else {
-        callback(new Error('Not allowed by CORS'))
-      }
-    },
+    origin: getCorsOrigins(),
     credentials: true,
   })
 )
@@ -101,14 +100,24 @@ app.use('/api/captcha', captchaRouter) // Public - CAPTCHA matematis
 app.use('/api/notifications', authMiddleware, notificationsRouter) // Protected
 app.use('/api/debug', debugRouter) // Debug only - remove in production
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Endpoint tidak ditemukan',
-    path: req.path,
+// Production: serve React build as static files + SPA fallback
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(process.cwd(), 'dist')
+  app.use(express.static(distPath))
+  // SPA fallback — semua route non-API diarahkan ke index.html
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'))
   })
-})
+} else {
+  // 404 handler (dev only — production handled by SPA fallback above)
+  app.use((req, res) => {
+    res.status(404).json({
+      success: false,
+      message: 'Endpoint tidak ditemukan',
+      path: req.path,
+    })
+  })
+}
 
 // Error handler
 app.use(errorHandler)
