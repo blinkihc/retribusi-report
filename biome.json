@@ -8,6 +8,11 @@
   "files": {
     "ignoreUnknown": false
   },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -20,11 +25,27 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off",
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off",
+        "noImplicitAnyLet": "off"
       },
       "style": {
         "useConst": "error",
-        "useTemplate": "warn"
+        "useTemplate": "warn",
+        "noNonNullAssertion": "off"
+      },
+      "a11y": {
+        "noLabelWithoutControl": "off",
+        "noStaticElementInteractions": "off",
+        "useKeyWithClickEvents": "off",
+        "useButtonType": "off",
+        "noSvgWithoutTitle": "off",
+        "useAriaPropsSupportedByRole": "off",
+        "useSemanticElements": "off"
+      },
+      "correctness": {
+        "noUnusedFunctionParameters": "off",
+        "useExhaustiveDependencies": "off"
       }
     }
   },

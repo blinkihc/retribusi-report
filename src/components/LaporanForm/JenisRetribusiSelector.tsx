@@ -71,7 +71,6 @@ export default function JenisRetribusiSelector({
   )
 
   // Populate dropdowns when selectedJenisId is provided (edit mode)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: onJenisChange causes infinite loop
   useEffect(() => {
     if (selectedJenisId && opdJenisRetribusiList?.data) {
       // Find the selected jenis retribusi
@@ -88,7 +87,6 @@ export default function JenisRetribusiSelector({
   }, [selectedJenisId, opdJenisRetribusiList])
 
   // Reset when OPD changes (only in create mode, not when populating from edit)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: onJenisChange causes infinite loop
   useEffect(() => {
     // Don't reset if we have a selectedJenisId (edit mode)
     if (!selectedJenisId) {

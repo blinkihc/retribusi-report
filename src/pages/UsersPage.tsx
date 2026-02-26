@@ -425,8 +425,6 @@ export default function UsersPage() {
         {showModal && (
           <div className="fixed inset-0 z-50 overflow-y-auto">
             <div className="flex min-h-screen items-center justify-center px-4">
-              {/* biome-ignore lint/a11y/useKeyWithClickEvents: Modal backdrop */}
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: Modal backdrop */}
               <div
                 className="fixed inset-0 bg-black opacity-30"
                 onClick={() => setShowModal(false)}
