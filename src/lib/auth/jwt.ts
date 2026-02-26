@@ -27,6 +27,7 @@ export interface JWTPayload {
   username: string
   role: 'admin' | 'operator'
   opdId?: number
+  sessionId?: string
 }
 
 /**

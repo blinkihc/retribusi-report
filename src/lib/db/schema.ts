@@ -66,6 +66,27 @@ export const users = pgTable(
   })
 )
 
+// Login Sessions Table — paper trail setiap login
+export const loginSessions = pgTable(
+  'login_sessions',
+  {
+    id: serial('id').primaryKey(),
+    sessionId: varchar('session_id', { length: 36 }).notNull().unique(),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id),
+    loginAt: timestamp('login_at').notNull().defaultNow(),
+    lastActivityAt: timestamp('last_activity_at').notNull().defaultNow(),
+    ipAddress: varchar('ip_address', { length: 45 }),
+    userAgent: text('user_agent'),
+  },
+  (table) => ({
+    sessionIdx: index('login_sessions_session_idx').on(table.sessionId),
+    userIdx: index('login_sessions_user_idx').on(table.userId),
+    loginAtIdx: index('login_sessions_login_at_idx').on(table.loginAt),
+  })
+)
+
 // OPD (Organisasi Perangkat Daerah) Table
 export const opd = pgTable(
   'opd',
@@ -77,6 +98,7 @@ export const opd = pgTable(
     telepon: varchar('telepon', { length: 20 }),
     email: varchar('email', { length: 100 }),
     kepala: varchar('kepala', { length: 100 }),
+    nipKepala: varchar('nip_kepala', { length: 50 }),
     isActive: boolean('is_active').notNull().default(true),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),

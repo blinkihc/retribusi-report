@@ -20,13 +20,14 @@
  * Last Updated: 2025-11-13
  */
 
+import crypto from 'node:crypto'
 import { eq } from 'drizzle-orm'
 import { Router } from 'express'
 import { z } from 'zod'
 import { comparePassword, hashPassword } from '../../src/lib/auth/bcrypt'
 import { generateToken } from '../../src/lib/auth/jwt'
 import { db } from '../../src/lib/db'
-import { auditLog, users } from '../../src/lib/db/schema'
+import { auditLog, loginSessions, users } from '../../src/lib/db/schema'
 import { loginSchema } from '../../src/lib/validation/user'
 import { authMiddleware } from '../middleware/auth'
 import { validateCaptcha } from '../middleware/captcha'
@@ -91,6 +92,23 @@ authRouter.post('/login', loginRateLimiter, validateCaptcha, async (req, res, ne
     const ip = req.ip || req.socket?.remoteAddress || 'unknown'
     resetAttempts(ip)
 
+    // Generate session ID
+    const sessionId = crypto.randomUUID()
+
+    // Insert login session record
+    await db.insert(loginSessions).values({
+      sessionId,
+      userId: user.id,
+      ipAddress: ip,
+      userAgent: req.get('user-agent') || 'unknown',
+    })
+
+    // Update user lastLogin
+    await db
+      .update(users)
+      .set({ lastLogin: new Date() })
+      .where(eq(users.id, user.id))
+
     // Generate JWT token (7 days if rememberMe, 8 hours default)
     const token = generateToken(
       {
@@ -98,6 +116,7 @@ authRouter.post('/login', loginRateLimiter, validateCaptcha, async (req, res, ne
         username: user.username,
         role: user.role,
         opdId: user.opdId || undefined,
+        sessionId,
       },
       rememberMe
     )
@@ -108,8 +127,8 @@ authRouter.post('/login', loginRateLimiter, validateCaptcha, async (req, res, ne
       action: 'login',
       tableName: 'users',
       recordId: user.id,
-      newValues: JSON.stringify({ username: user.username }),
-      ipAddress: req.ip || 'unknown',
+      newValues: JSON.stringify({ username: user.username, sessionId }),
+      ipAddress: ip,
       userAgent: req.get('user-agent') || 'unknown',
     })
 
@@ -126,6 +145,7 @@ authRouter.post('/login', loginRateLimiter, validateCaptcha, async (req, res, ne
         role: user.role,
         opdId: user.opdId,
         avatar: user.avatar,
+        lastLogin: new Date().toISOString(),
       },
     })
   } catch (error) {
@@ -185,7 +205,9 @@ authRouter.get('/me', authMiddleware, async (req, res, next) => {
         email: users.email,
         role: users.role,
         opdId: users.opdId,
+        avatar: users.avatar,
         isActive: users.isActive,
+        lastLogin: users.lastLogin,
       })
       .from(users)
       .where(eq(users.id, req.user.userId))

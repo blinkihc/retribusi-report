@@ -1,7 +1,7 @@
-import { 
-  ChevronDown, ChevronUp, FileText, HelpCircle, MessageCircle, 
-  Shield, User, Printer, LayoutDashboard, FileBarChart, 
-  Settings, Database, Building2, Receipt, Link as LinkIcon, 
+import {
+  ChevronDown, ChevronUp, FileText, HelpCircle, MessageCircle,
+  Shield, User, Printer, LayoutDashboard, FileBarChart,
+  Settings, Database, Building2, Receipt, Link as LinkIcon,
   Sliders, Plus, Trash2, Edit, Save, Download, Search, Menu,
   Image as ImageIcon, Upload
 } from 'lucide-react'
@@ -11,7 +11,7 @@ import { cn } from '../lib/utils/cn'
 // --- UI MOCKUP COMPONENTS (Untuk Visualisasi di PDF) ---
 // Mockup ini dibuat agar SEMIRIP mungkin dengan tampilan aplikasi asli
 const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' | 'login' | 'settings' }) => {
-  
+
   // 1. SIDEBAR MOCKUP (REVISED: LIGHT THEME, UPPERCASE)
   if (type === 'sidebar') {
     return (
@@ -21,7 +21,7 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
           <div className="w-6 h-6 bg-blue-600 rounded-sm shrink-0"></div>
           <span className="leading-tight tracking-tighter text-[10px]">SISTEM RETRIBUSI DAERAH</span>
         </div>
-        
+
         {/* Menu Items */}
         <div className="space-y-3 flex-1">
           <div className="flex items-center gap-3 px-2 py-1.5 rounded hover:bg-slate-50 font-bold text-slate-500">
@@ -53,102 +53,102 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
       </div>
     )
   }
-  
+
   // 2. DASHBOARD MOCKUP (REVISED: COMPLEX GRID)
   if (type === 'dashboard') {
     return (
       <div className="bg-slate-50 p-2 rounded-lg w-full border border-slate-200 font-sans">
-        
+
         {/* ROW 1: SUMMARY CARDS */}
         <div className="grid grid-cols-5 gap-2 mb-3">
-            {/* Card 1 */}
-            <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
-                <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Hari Ini</div>
-                <div className="font-bold text-[10px] text-slate-900 truncate">Rp 0</div>
-            </div>
-            {/* Card 2 */}
-            <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
-                <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Bulan Ini</div>
-                <div className="font-bold text-[10px] text-slate-900 truncate">Rp 0</div>
-            </div>
-             {/* Card 3 */}
-             <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
-                <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Tahun Ini</div>
-                <div className="font-bold text-[10px] text-slate-900 truncate">Rp 23.7M</div>
-            </div>
-            {/* Card 4 (Dark) */}
-            <div className="bg-slate-900 p-2 rounded border border-slate-900 shadow-sm flex flex-col justify-between h-14 text-white">
-                <div className="text-[7px] font-bold text-slate-300 uppercase truncate">Total Pendapatan</div>
-                <div className="font-bold text-[10px] truncate">Rp 25.7M</div>
-            </div>
-             {/* Card 5 */}
-             <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
-                <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Total Laporan</div>
-                <div className="font-bold text-[10px] text-slate-900 truncate">13</div>
-            </div>
+          {/* Card 1 */}
+          <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
+            <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Hari Ini</div>
+            <div className="font-bold text-[10px] text-slate-900 truncate">Rp 0</div>
+          </div>
+          {/* Card 2 */}
+          <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
+            <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Bulan Ini</div>
+            <div className="font-bold text-[10px] text-slate-900 truncate">Rp 0</div>
+          </div>
+          {/* Card 3 */}
+          <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
+            <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Tahun Ini</div>
+            <div className="font-bold text-[10px] text-slate-900 truncate">Rp 23.7M</div>
+          </div>
+          {/* Card 4 (Dark) */}
+          <div className="bg-slate-900 p-2 rounded border border-slate-900 shadow-sm flex flex-col justify-between h-14 text-white">
+            <div className="text-[7px] font-bold text-slate-300 uppercase truncate">Total Pendapatan</div>
+            <div className="font-bold text-[10px] truncate">Rp 25.7M</div>
+          </div>
+          {/* Card 5 */}
+          <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
+            <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Total Laporan</div>
+            <div className="font-bold text-[10px] text-slate-900 truncate">13</div>
+          </div>
         </div>
 
         {/* ROW 2: CHARTS */}
         <div className="grid grid-cols-3 gap-2 mb-3 h-28">
-            {/* Line Chart (2/3 width) */}
-            <div className="col-span-2 bg-white rounded border border-slate-200 p-2 flex flex-col">
-                <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Trend Pendapatan (30 Hari)</div>
-                <div className="flex-1 relative flex items-end px-2 pb-2">
-                    {/* Fake Line */}
-                    <svg viewBox="0 0 100 30" className="w-full h-full overflow-visible">
-                        <path d="M0,28 L10,28 L20,28 L30,25 L40,27 L50,26 L60,5 L70,25 L80,27 L90,28 L100,28" fill="none" stroke="#6366f1" strokeWidth="1.5" />
-                        <path d="M0,28 L10,28 L20,28 L30,25 L40,27 L50,26 L60,5 L70,25 L80,27 L90,28 L100,28 L100,30 L0,30 Z" fill="#e0e7ff" opacity="0.5" />
-                    </svg>
-                </div>
+          {/* Line Chart (2/3 width) */}
+          <div className="col-span-2 bg-white rounded border border-slate-200 p-2 flex flex-col">
+            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Trend Pendapatan (30 Hari)</div>
+            <div className="flex-1 relative flex items-end px-2 pb-2">
+              {/* Fake Line */}
+              <svg viewBox="0 0 100 30" className="w-full h-full overflow-visible">
+                <path d="M0,28 L10,28 L20,28 L30,25 L40,27 L50,26 L60,5 L70,25 L80,27 L90,28 L100,28" fill="none" stroke="#6366f1" strokeWidth="1.5" />
+                <path d="M0,28 L10,28 L20,28 L30,25 L40,27 L50,26 L60,5 L70,25 L80,27 L90,28 L100,28 L100,30 L0,30 Z" fill="#e0e7ff" opacity="0.5" />
+              </svg>
             </div>
-            {/* Pie Chart (1/3 width) */}
-            <div className="bg-white rounded border border-slate-200 p-2 flex flex-col">
-                <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Komposisi Kategori</div>
-                <div className="flex-1 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full border-4 border-blue-500 border-r-orange-400 border-b-green-400 rotate-45"></div>
-                </div>
+          </div>
+          {/* Pie Chart (1/3 width) */}
+          <div className="bg-white rounded border border-slate-200 p-2 flex flex-col">
+            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Komposisi Kategori</div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full border-4 border-blue-500 border-r-orange-400 border-b-green-400 rotate-45"></div>
             </div>
+          </div>
         </div>
 
         {/* ROW 3: MORE CHARTS */}
         <div className="grid grid-cols-2 gap-2 mb-3 h-24">
-             {/* Horizontal Bar */}
-             <div className="bg-white rounded border border-slate-200 p-2">
-                <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Performa OPD (Top 10)</div>
-                <div className="space-y-1 mt-1">
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[80%] h-full"></div></div>
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[40%] h-full"></div></div>
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[20%] h-full"></div></div>
-                </div>
-             </div>
-             {/* Vertical Bar */}
-             <div className="bg-white rounded border border-slate-200 p-2 flex flex-col">
-                <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Top Jenis Retribusi</div>
-                <div className="flex-1 flex items-end justify-around gap-1 pb-1">
-                    <div className="w-3 bg-blue-500 h-[80%] rounded-t-[2px]"></div>
-                    <div className="w-3 bg-green-500 h-[20%] rounded-t-[2px]"></div>
-                    <div className="w-3 bg-pink-500 h-[10%] rounded-t-[2px]"></div>
-                    <div className="w-3 bg-orange-500 h-[5%] rounded-t-[2px]"></div>
-                </div>
-             </div>
+          {/* Horizontal Bar */}
+          <div className="bg-white rounded border border-slate-200 p-2">
+            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Performa OPD (Top 10)</div>
+            <div className="space-y-1 mt-1">
+              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[80%] h-full"></div></div>
+              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[40%] h-full"></div></div>
+              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[20%] h-full"></div></div>
+            </div>
+          </div>
+          {/* Vertical Bar */}
+          <div className="bg-white rounded border border-slate-200 p-2 flex flex-col">
+            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Top Jenis Retribusi</div>
+            <div className="flex-1 flex items-end justify-around gap-1 pb-1">
+              <div className="w-3 bg-blue-500 h-[80%] rounded-t-[2px]"></div>
+              <div className="w-3 bg-green-500 h-[20%] rounded-t-[2px]"></div>
+              <div className="w-3 bg-pink-500 h-[10%] rounded-t-[2px]"></div>
+              <div className="w-3 bg-orange-500 h-[5%] rounded-t-[2px]"></div>
+            </div>
+          </div>
         </div>
 
         {/* ROW 4: TABLE */}
         <div className="bg-white rounded border border-slate-200 p-2">
-             <div className="text-[8px] font-bold uppercase text-slate-700 mb-1 flex justify-between">
-                <span>Laporan Terbaru</span>
-                <span className="text-blue-600 cursor-pointer">Lihat Semua &rarr;</span>
-             </div>
-             <div className="border-t border-slate-100 pt-1">
-                 <div className="flex justify-between items-center py-1 border-b border-slate-50">
-                    <div className="text-[8px] font-bold text-slate-800">LR/DIN/2025/001 <span className="text-slate-400 font-normal block">Retribusi Pelayanan Kesehatan</span></div>
-                    <div className="text-[8px] font-bold">Rp 500.000</div>
-                 </div>
-                 <div className="flex justify-between items-center py-1">
-                    <div className="text-[8px] font-bold text-slate-800">LR/DIN/2025/002 <span className="text-slate-400 font-normal block">Retribusi Parkir</span></div>
-                    <div className="text-[8px] font-bold">Rp 150.000</div>
-                 </div>
-             </div>
+          <div className="text-[8px] font-bold uppercase text-slate-700 mb-1 flex justify-between">
+            <span>Laporan Terbaru</span>
+            <span className="text-blue-600 cursor-pointer">Lihat Semua &rarr;</span>
+          </div>
+          <div className="border-t border-slate-100 pt-1">
+            <div className="flex justify-between items-center py-1 border-b border-slate-50">
+              <div className="text-[8px] font-bold text-slate-800">LR/DIN/2025/001 <span className="text-slate-400 font-normal block">Retribusi Pelayanan Kesehatan</span></div>
+              <div className="text-[8px] font-bold">Rp 500.000</div>
+            </div>
+            <div className="flex justify-between items-center py-1">
+              <div className="text-[8px] font-bold text-slate-800">LR/DIN/2025/002 <span className="text-slate-400 font-normal block">Retribusi Parkir</span></div>
+              <div className="text-[8px] font-bold">Rp 150.000</div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -160,15 +160,15 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
     return (
       <div className="bg-white border border-slate-200 rounded-lg overflow-hidden text-[10px] w-full font-sans shadow-sm">
         <div className="p-2 border-b border-slate-200 flex justify-between items-center bg-white">
-            <div className="font-bold text-slate-800">Daftar Data</div>
-            <div className="flex gap-1">
-                <div className="bg-white border px-2 py-0.5 rounded text-slate-400 flex items-center gap-1">
-                    <Search className="w-2 h-2" /> Cari...
-                </div>
-                <div className="bg-black text-white px-2 py-0.5 rounded text-[9px] font-medium flex items-center gap-1">
-                    <Plus className="w-2 h-2" /> Add New
-                </div>
+          <div className="font-bold text-slate-800">Daftar Data</div>
+          <div className="flex gap-1">
+            <div className="bg-white border px-2 py-0.5 rounded text-slate-400 flex items-center gap-1">
+              <Search className="w-2 h-2" /> Cari...
             </div>
+            <div className="bg-black text-white px-2 py-0.5 rounded text-[9px] font-medium flex items-center gap-1">
+              <Plus className="w-2 h-2" /> Add New
+            </div>
+          </div>
         </div>
         <table className="w-full">
           <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-100">
@@ -181,30 +181,30 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
           </thead>
           <tbody className="divide-y divide-slate-100">
             {[1, 2].map((_, i) => (
-                <tr key={i} className="hover:bg-slate-50">
+              <tr key={i} className="hover:bg-slate-50">
                 <td className="p-2">
-                    <div className="font-medium text-slate-900">Item Data {i + 1}</div>
-                    <div className="text-[8px] text-slate-500">KODE-00{i + 1}</div>
+                  <div className="font-medium text-slate-900">Item Data {i + 1}</div>
+                  <div className="text-[8px] text-slate-500">KODE-00{i + 1}</div>
                 </td>
                 <td className="p-2 text-slate-600">Umum</td>
                 <td className="p-2 text-center"><span className="bg-green-100 text-green-700 px-1.5 py-0.5 rounded-[3px] text-[8px] font-medium">Aktif</span></td>
                 <td className="p-2 text-right">
-                    <div className="flex justify-end gap-1">
-                        <div className="p-1 bg-slate-100 rounded hover:bg-slate-200"><Edit className="w-2 h-2 text-slate-600" /></div>
-                        <div className="p-1 bg-red-50 rounded hover:bg-red-100"><Trash2 className="w-2 h-2 text-red-500" /></div>
-                    </div>
+                  <div className="flex justify-end gap-1">
+                    <div className="p-1 bg-slate-100 rounded hover:bg-slate-200"><Edit className="w-2 h-2 text-slate-600" /></div>
+                    <div className="p-1 bg-red-50 rounded hover:bg-red-100"><Trash2 className="w-2 h-2 text-red-500" /></div>
+                  </div>
                 </td>
-                </tr>
+              </tr>
             ))}
           </tbody>
         </table>
         <div className="p-1.5 border-t border-slate-100 flex justify-between items-center text-[8px] text-slate-500 bg-slate-50">
-            <span>Showing 1-10 of 50</span>
-            <div className="flex gap-1">
-                <span className="border px-1 rounded bg-white">Prev</span>
-                <span className="border px-1 rounded bg-black text-white">1</span>
-                <span className="border px-1 rounded bg-white">Next</span>
-            </div>
+          <span>Showing 1-10 of 50</span>
+          <div className="flex gap-1">
+            <span className="border px-1 rounded bg-white">Prev</span>
+            <span className="border px-1 rounded bg-black text-white">1</span>
+            <span className="border px-1 rounded bg-white">Next</span>
+          </div>
         </div>
       </div>
     )
@@ -215,8 +215,8 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
     return (
       <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-sm max-w-xs mx-auto font-sans w-full">
         <div className="border-b border-slate-100 pb-2 mb-3">
-            <div className="font-bold text-xs text-slate-900">Form Data</div>
-            <div className="text-[9px] text-slate-500">Silakan lengkapi data di bawah ini</div>
+          <div className="font-bold text-xs text-slate-900">Form Data</div>
+          <div className="text-[9px] text-slate-500">Silakan lengkapi data di bawah ini</div>
         </div>
         <div className="space-y-2.5">
           <div>
@@ -230,7 +230,7 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
           <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-slate-100">
             <div className="px-2 py-1 bg-white border border-slate-200 rounded text-[9px] font-medium text-slate-600">Batal</div>
             <div className="px-2 py-1 bg-black text-white rounded text-[9px] font-medium flex items-center gap-1">
-                <Save className="w-2 h-2" /> Simpan
+              <Save className="w-2 h-2" /> Simpan
             </div>
           </div>
         </div>
@@ -244,77 +244,77 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
       <div className="bg-white border border-slate-200 rounded-lg shadow-sm w-full font-sans overflow-hidden">
         {/* Tabs Header */}
         <div className="flex border-b border-slate-200 bg-white px-4 pt-2">
-            <div className="px-3 py-2 text-[9px] font-medium text-slate-500 flex items-center gap-1 border-b-2 border-transparent">
-                <Building2 className="w-3 h-3" /> Data OPD
-            </div>
-            <div className="px-3 py-2 text-[9px] font-medium text-slate-500 flex items-center gap-1 border-b-2 border-transparent">
-                <Receipt className="w-3 h-3" /> Jenis Retribusi
-            </div>
-            <div className="px-3 py-2 text-[9px] font-medium text-slate-500 flex items-center gap-1 border-b-2 border-transparent">
-                <LinkIcon className="w-3 h-3" /> OPD-Pelayanan
-            </div>
-            <div className="px-3 py-2 text-[9px] font-bold text-blue-600 flex items-center gap-1 border-b-2 border-blue-600">
-                <Settings className="w-3 h-3" /> Konfigurasi Umum
-            </div>
+          <div className="px-3 py-2 text-[9px] font-medium text-slate-500 flex items-center gap-1 border-b-2 border-transparent">
+            <Building2 className="w-3 h-3" /> Data OPD
+          </div>
+          <div className="px-3 py-2 text-[9px] font-medium text-slate-500 flex items-center gap-1 border-b-2 border-transparent">
+            <Receipt className="w-3 h-3" /> Jenis Retribusi
+          </div>
+          <div className="px-3 py-2 text-[9px] font-medium text-slate-500 flex items-center gap-1 border-b-2 border-transparent">
+            <LinkIcon className="w-3 h-3" /> OPD-Pelayanan
+          </div>
+          <div className="px-3 py-2 text-[9px] font-bold text-blue-600 flex items-center gap-1 border-b-2 border-blue-600">
+            <Settings className="w-3 h-3" /> Konfigurasi Umum
+          </div>
         </div>
 
         {/* Settings Content */}
         <div className="p-4 bg-slate-50/50">
-            
-            {/* Header Text */}
-            <div className="mb-4">
-                <div className="text-sm font-bold text-slate-900">Konfigurasi Umum</div>
-                <div className="text-[10px] text-slate-500">Kelola pengaturan umum aplikasi dan format dokumen</div>
+
+          {/* Header Text */}
+          <div className="mb-4">
+            <div className="text-sm font-bold text-slate-900">Konfigurasi Umum</div>
+            <div className="text-[10px] text-slate-500">Kelola pengaturan umum aplikasi dan format dokumen</div>
+          </div>
+
+          {/* Card 1: Format Nomor */}
+          <div className="bg-white border border-slate-200 rounded-lg p-3 mb-3 flex items-center justify-between shadow-sm">
+            <div className="flex-1 mr-4">
+              <div className="text-[10px] font-bold text-slate-700 mb-1">Format Nomor Laporan</div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="bg-slate-100 text-slate-600 px-2 py-1 rounded text-[9px] font-mono border border-slate-200">
+                LR/&#123;KODE_OPD&#125;/&#123;BULAN&#125;/&#123;TAHUN&#125;/&#123;NOMOR&#125;
+              </div>
+              <div className="bg-blue-600 text-white px-3 py-1 rounded text-[9px] font-bold shadow-sm shadow-blue-200">
+                Edit
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Logo Kabupaten */}
+          <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-sm">
+            <div className="flex justify-between items-start mb-2">
+              <div>
+                <div className="text-[10px] font-bold text-slate-700 mb-0.5">Logo Kabupaten</div>
+                <div className="text-[9px] text-slate-500">Upload logo kabupaten yang akan ditampilkan di PDF laporan retribusi</div>
+              </div>
+              <div className="p-1.5 bg-blue-50 text-blue-600 rounded border border-blue-100">
+                <ImageIcon className="w-3 h-3" />
+              </div>
             </div>
 
-            {/* Card 1: Format Nomor */}
-            <div className="bg-white border border-slate-200 rounded-lg p-3 mb-3 flex items-center justify-between shadow-sm">
-                <div className="flex-1 mr-4">
-                    <div className="text-[10px] font-bold text-slate-700 mb-1">Format Nomor Laporan</div>
+            <div className="text-[9px] text-slate-600 font-medium mb-1.5">Logo Saat Ini:</div>
+            <div className="w-16 h-16 border border-slate-200 rounded bg-slate-50 flex items-center justify-center mb-3">
+              {/* Logo Placeholder using pure CSS shapes */}
+              <div className="relative w-10 h-12">
+                <div className="absolute inset-0 bg-blue-500 rounded-b-full rounded-t-sm opacity-20"></div>
+                <div className="absolute inset-2 bg-yellow-400 rounded-full opacity-80 flex items-center justify-center">
+                  <div className="w-2 h-2 bg-green-600 rotate-45"></div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div className="bg-slate-100 text-slate-600 px-2 py-1 rounded text-[9px] font-mono border border-slate-200">
-                        LR/&#123;KODE_OPD&#125;/&#123;BULAN&#125;/&#123;TAHUN&#125;/&#123;NOMOR&#125;
-                    </div>
-                    <div className="bg-blue-600 text-white px-3 py-1 rounded text-[9px] font-bold shadow-sm shadow-blue-200">
-                        Edit
-                    </div>
-                </div>
+              </div>
             </div>
 
-            {/* Card 2: Logo Kabupaten */}
-            <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-sm">
-                <div className="flex justify-between items-start mb-2">
-                    <div>
-                        <div className="text-[10px] font-bold text-slate-700 mb-0.5">Logo Kabupaten</div>
-                        <div className="text-[9px] text-slate-500">Upload logo kabupaten yang akan ditampilkan di PDF laporan retribusi</div>
-                    </div>
-                    <div className="p-1.5 bg-blue-50 text-blue-600 rounded border border-blue-100">
-                        <ImageIcon className="w-3 h-3" />
-                    </div>
-                </div>
-
-                <div className="text-[9px] text-slate-600 font-medium mb-1.5">Logo Saat Ini:</div>
-                <div className="w-16 h-16 border border-slate-200 rounded bg-slate-50 flex items-center justify-center mb-3">
-                    {/* Logo Placeholder using pure CSS shapes */}
-                    <div className="relative w-10 h-12">
-                        <div className="absolute inset-0 bg-blue-500 rounded-b-full rounded-t-sm opacity-20"></div>
-                        <div className="absolute inset-2 bg-yellow-400 rounded-full opacity-80 flex items-center justify-center">
-                            <div className="w-2 h-2 bg-green-600 rotate-45"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="inline-flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded text-[9px] font-bold shadow-sm shadow-blue-200 mb-2">
-                    <Upload className="w-2 h-2" /> Ganti Logo
-                </div>
-                
-                <div className="text-[8px] text-slate-400 leading-tight">
-                    • Format: JPG, PNG<br/>
-                    • Ukuran maksimal: 2MB<br/>
-                    • Rekomendasi: 200x200px atau lebih besar
-                </div>
+            <div className="inline-flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded text-[9px] font-bold shadow-sm shadow-blue-200 mb-2">
+              <Upload className="w-2 h-2" /> Ganti Logo
             </div>
+
+            <div className="text-[8px] text-slate-400 leading-tight">
+              • Format: JPG, PNG<br />
+              • Ukuran maksimal: 2MB<br />
+              • Rekomendasi: 200x200px atau lebih besar
+            </div>
+          </div>
 
         </div>
       </div>
@@ -327,96 +327,96 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
       <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 w-full font-sans">
         {/* Header */}
         <div className="mb-3">
-           <div className="text-sm font-bold text-slate-900">Laporan Rekap</div>
-           <div className="text-[9px] text-slate-500">Rekap pendapatan retribusi daerah per periode</div>
+          <div className="text-sm font-bold text-slate-900">Laporan Rekap</div>
+          <div className="text-[9px] text-slate-500">Rekap pendapatan retribusi daerah per periode</div>
         </div>
 
         {/* Filter Box */}
         <div className="bg-white p-3 rounded-lg border border-slate-200 mb-3 shadow-sm">
-            <div className="flex gap-2 items-end">
-                <div className="flex-1">
-                    <div className="text-[9px] font-medium text-slate-700 mb-1">Bulan</div>
-                    <div className="border border-slate-200 rounded px-2 py-1 text-[10px] bg-white flex justify-between items-center">
-                        <span>November</span> <ChevronDown className="w-3 h-3 text-slate-400" />
-                    </div>
-                </div>
-                <div className="flex-1">
-                    <div className="text-[9px] font-medium text-slate-700 mb-1">Tahun</div>
-                    <div className="border border-slate-200 rounded px-2 py-1 text-[10px] bg-white flex justify-between items-center">
-                        <span>2025</span> <ChevronDown className="w-3 h-3 text-slate-400" />
-                    </div>
-                </div>
-                <div className="bg-green-600 text-white px-3 py-1 rounded text-[10px] font-bold flex items-center gap-1 shadow-sm shadow-green-200 h-[26px]">
-                    <Download className="w-3 h-3" /> Export <ChevronDown className="w-3 h-3 ml-1" />
-                </div>
+          <div className="flex gap-2 items-end">
+            <div className="flex-1">
+              <div className="text-[9px] font-medium text-slate-700 mb-1">Bulan</div>
+              <div className="border border-slate-200 rounded px-2 py-1 text-[10px] bg-white flex justify-between items-center">
+                <span>November</span> <ChevronDown className="w-3 h-3 text-slate-400" />
+              </div>
             </div>
+            <div className="flex-1">
+              <div className="text-[9px] font-medium text-slate-700 mb-1">Tahun</div>
+              <div className="border border-slate-200 rounded px-2 py-1 text-[10px] bg-white flex justify-between items-center">
+                <span>2025</span> <ChevronDown className="w-3 h-3 text-slate-400" />
+              </div>
+            </div>
+            <div className="bg-green-600 text-white px-3 py-1 rounded text-[10px] font-bold flex items-center gap-1 shadow-sm shadow-green-200 h-[26px]">
+              <Download className="w-3 h-3" /> Export <ChevronDown className="w-3 h-3 ml-1" />
+            </div>
+          </div>
         </div>
 
         {/* Summary Cards Row */}
         <div className="grid grid-cols-3 gap-2 mb-3">
-            <div className="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex justify-between items-center">
-                <div>
-                    <div className="text-[8px] text-slate-500">Total Pendapatan</div>
-                    <div className="text-[11px] font-bold text-slate-900">Rp 23.7M</div>
-                </div>
-                <div className="w-6 h-6 bg-green-50 text-green-600 rounded-full flex items-center justify-center">
-                     <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full"></div>
-                </div>
+          <div className="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex justify-between items-center">
+            <div>
+              <div className="text-[8px] text-slate-500">Total Pendapatan</div>
+              <div className="text-[11px] font-bold text-slate-900">Rp 23.7M</div>
             </div>
-            <div className="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex justify-between items-center">
-                <div>
-                    <div className="text-[8px] text-slate-500">Total Laporan</div>
-                    <div className="text-[11px] font-bold text-slate-900">13</div>
-                </div>
-                <div className="w-6 h-6 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
-                    <FileText className="w-3 h-3" />
-                </div>
+            <div className="w-6 h-6 bg-green-50 text-green-600 rounded-full flex items-center justify-center">
+              <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full"></div>
             </div>
-            <div className="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex justify-between items-center">
-                <div>
-                    <div className="text-[8px] text-slate-500">Jumlah OPD</div>
-                    <div className="text-[11px] font-bold text-slate-900">4</div>
-                </div>
-                <div className="w-6 h-6 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center">
-                    <Building2 className="w-3 h-3" />
-                </div>
+          </div>
+          <div className="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex justify-between items-center">
+            <div>
+              <div className="text-[8px] text-slate-500">Total Laporan</div>
+              <div className="text-[11px] font-bold text-slate-900">13</div>
             </div>
+            <div className="w-6 h-6 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+              <FileText className="w-3 h-3" />
+            </div>
+          </div>
+          <div className="bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex justify-between items-center">
+            <div>
+              <div className="text-[8px] text-slate-500">Jumlah OPD</div>
+              <div className="text-[11px] font-bold text-slate-900">4</div>
+            </div>
+            <div className="w-6 h-6 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center">
+              <Building2 className="w-3 h-3" />
+            </div>
+          </div>
         </div>
 
         {/* Tabs */}
         <div className="flex gap-1 mb-2">
-            <div className="bg-blue-600 text-white px-2 py-1 rounded text-[9px] font-medium">Per OPD</div>
-            <div className="bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded text-[9px] font-medium">Per Kategori</div>
-            <div className="bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded text-[9px] font-medium">Per Jenis Pelayanan</div>
+          <div className="bg-blue-600 text-white px-2 py-1 rounded text-[9px] font-medium">Per OPD</div>
+          <div className="bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded text-[9px] font-medium">Per Kategori</div>
+          <div className="bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded text-[9px] font-medium">Per Jenis Pelayanan</div>
         </div>
 
         {/* Table */}
         <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
-             <div className="p-2 border-b border-slate-100 text-[9px] font-bold text-slate-800 bg-slate-50">Rekap per OPD</div>
-             <table className="w-full text-[9px]">
-                <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-100">
-                    <tr>
-                        <th className="p-2 text-left w-8">NO</th>
-                        <th className="p-2 text-left">KODE</th>
-                        <th className="p-2 text-left">NAMA OPD</th>
-                        <th className="p-2 text-right">TOTAL</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-50">
-                    <tr>
-                        <td className="p-2 text-slate-500">1</td>
-                        <td className="p-2 font-medium">DLH</td>
-                        <td className="p-2">DINAS LINGKUNGAN HIDUP</td>
-                        <td className="p-2 text-right font-bold">Rp 18.0M</td>
-                    </tr>
-                    <tr>
-                        <td className="p-2 text-slate-500">2</td>
-                        <td className="p-2 font-medium">DINKES</td>
-                        <td className="p-2">DINAS KESEHATAN</td>
-                        <td className="p-2 text-right font-bold">Rp 3.1M</td>
-                    </tr>
-                </tbody>
-             </table>
+          <div className="p-2 border-b border-slate-100 text-[9px] font-bold text-slate-800 bg-slate-50">Rekap per OPD</div>
+          <table className="w-full text-[9px]">
+            <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-100">
+              <tr>
+                <th className="p-2 text-left w-8">NO</th>
+                <th className="p-2 text-left">KODE</th>
+                <th className="p-2 text-left">NAMA OPD</th>
+                <th className="p-2 text-right">TOTAL</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              <tr>
+                <td className="p-2 text-slate-500">1</td>
+                <td className="p-2 font-medium">DLH</td>
+                <td className="p-2">DINAS LINGKUNGAN HIDUP</td>
+                <td className="p-2 text-right font-bold">Rp 18.0M</td>
+              </tr>
+              <tr>
+                <td className="p-2 text-slate-500">2</td>
+                <td className="p-2 font-medium">DINKES</td>
+                <td className="p-2">DINAS KESEHATAN</td>
+                <td className="p-2 text-right font-bold">Rp 3.1M</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
       </div>
@@ -585,11 +585,12 @@ export default function HelpPage() {
         },
         {
           title: "Konfigurasi Umum Sistem",
-          content: "Menu ini digunakan untuk mengatur preferensi global aplikasi, termasuk format penomoran dokumen dan identitas instansi.",
+          content: "Menu ini digunakan untuk mengatur preferensi global aplikasi, termasuk format penomoran dokumen, identitas instansi, dan identitas pemerintahan.",
           mockup: 'settings',
           points: [
             "Format Nomor Laporan: Anda dapat menyesuaikan format nomor otomatis (misal: LR/{TAHUN}/{NOMOR}) dengan mengklik tombol Edit.",
-            "Logo Kabupaten: Upload logo resmi daerah (format PNG/JPG) yang akan otomatis muncul pada Kop Surat saat mencetak Bukti Tanda Terima PDF."
+            "Logo Kabupaten: Upload logo resmi daerah (format PNG/JPG) yang akan otomatis muncul pada Kop Surat saat mencetak Bukti Tanda Terima PDF.",
+            "Identitas Pemerintahan: Isi 'Jenis Pemerintahan' (misal: PEMERINTAH KABUPATEN) dan 'Nama Pemerintahan' (misal: KABUPATEN BANYUMAS). Informasi ini akan ditampilkan di header PDF laporan retribusi, tepat di atas nama OPD."
           ]
         }
       ]
@@ -641,7 +642,7 @@ export default function HelpPage() {
   return (
     <div id="help-page-content" className="min-h-screen bg-slate-50 pb-12 print:bg-white print:pb-0">
       <style>{printStyles}</style>
-      
+
       {/* --- E-BOOK COVER PAGE (Print Only) --- */}
       <div className="hidden print:flex flex-col justify-center items-center h-screen w-full text-center break-after-page">
         <div className="mb-12">
@@ -701,7 +702,7 @@ export default function HelpPage() {
               Panduan penggunaan dan dokumentasi sistem
             </p>
           </div>
-          <button 
+          <button
             onClick={handlePrint}
             className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-slate-800 transition-colors shadow-lg"
           >
@@ -709,15 +710,15 @@ export default function HelpPage() {
             Download E-Book (PDF)
           </button>
         </div>
-        
+
         {/* Tabs */}
         <div className="px-4 lg:px-8 max-w-7xl mx-auto flex gap-6 border-t border-slate-100">
           <button
             onClick={() => setActiveTab('general')}
             className={cn(
               "py-4 px-2 font-bold text-sm uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2",
-              activeTab === 'general' 
-                ? "border-black text-black" 
+              activeTab === 'general'
+                ? "border-black text-black"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             )}
           >
@@ -728,8 +729,8 @@ export default function HelpPage() {
             onClick={() => setActiveTab('admin')}
             className={cn(
               "py-4 px-2 font-bold text-sm uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2",
-              activeTab === 'admin' 
-                ? "border-black text-black" 
+              activeTab === 'admin'
+                ? "border-black text-black"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             )}
           >
@@ -740,7 +741,7 @@ export default function HelpPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 lg:px-8 py-8 space-y-12 print:max-w-none print:px-8 print:py-0">
-        
+
         {/* General User Content (Simple FAQ & Quick Guide) */}
         <div className={cn("space-y-12", activeTab === 'general' ? 'block' : 'hidden print:hidden')}>
           <section>
@@ -818,10 +819,10 @@ export default function HelpPage() {
 
                     {/* Right/Bottom: UI Mockup (Visualisasi) */}
                     <div className="w-full md:w-1/2 print:w-1/2 flex flex-col items-center">
-                       <div className="w-full p-1 border border-slate-200 rounded bg-slate-50 mb-2 text-center text-[10px] text-slate-400 uppercase tracking-wide">
-                          Visualisasi Antarmuka
-                       </div>
-                       <UIMockup type={section.mockup as any} />
+                      <div className="w-full p-1 border border-slate-200 rounded bg-slate-50 mb-2 text-center text-[10px] text-slate-400 uppercase tracking-wide">
+                        Visualisasi Antarmuka
+                      </div>
+                      <UIMockup type={section.mockup as any} />
                     </div>
                   </div>
                 ))}

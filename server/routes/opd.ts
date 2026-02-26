@@ -33,6 +33,7 @@ const opdCreateSchema = z.object({
   telepon: z.string().max(20, 'Telepon maksimal 20 karakter').optional().or(z.literal('')),
   email: z.string().email('Format email tidak valid').optional().or(z.literal('')),
   kepala: z.string().max(100, 'Nama kepala maksimal 100 karakter').optional().or(z.literal('')),
+  nipKepala: z.string().max(50, 'NIP maksimal 50 karakter').optional().or(z.literal('')),
   isActive: z.boolean().optional().default(true),
 })
 

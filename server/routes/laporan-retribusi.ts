@@ -1280,6 +1280,7 @@ laporanRetribusiRouter.get('/:id/pdf', authMiddleware, async (req, res, next) =>
         opdTelepon: opd.telepon,
         opdEmail: opd.email,
         opdKepala: opd.kepala,
+        opdNipKepala: opd.nipKepala,
         jenisRetribusiNama: jenisRetribusi.nama,
         jenisRetribusiKode: jenisRetribusi.kode,
         kategori: jenisRetribusi.kategori,

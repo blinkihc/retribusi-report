@@ -26,6 +26,7 @@ export interface LaporanData {
   opdTelepon?: string | null
   opdEmail?: string | null
   opdKepala?: string | null
+  opdNipKepala?: string | null
   jenisRetribusiNama: string
   jenisRetribusiKode?: string | null
   kategori?: string | null
@@ -112,8 +113,13 @@ function formatTerbilang(nominal: string): string {
  * Generate PDF for Laporan Retribusi
  */
 export async function generateLaporanPDF(laporan: LaporanData, res: Response): Promise<void> {
-  // Fetch logo setting
+  // Fetch settings
   const [logoSetting] = await db.select().from(settings).where(eq(settings.key, 'logo_kabupaten'))
+  const [jenisPemerintahanSetting] = await db.select().from(settings).where(eq(settings.key, 'jenis_pemerintahan'))
+  const [namaPemerintahanSetting] = await db.select().from(settings).where(eq(settings.key, 'nama_pemerintahan'))
+
+  const jenisPemerintahan = jenisPemerintahanSetting?.value || ''
+  const namaPemerintahan = namaPemerintahanSetting?.value || ''
 
   // Create PDF document
   const doc = new PDFDocument({
@@ -193,20 +199,37 @@ export async function generateLaporanPDF(laporan: LaporanData, res: Response): P
     doc.text('Kabupaten', logoX + 10, currentY + 45)
   }
 
-  // OPD Info section (right side of logo, vertically centered)
-  const opdInfoX = logoX + logoSize + 10 // Reduced gap from 20 to 10
+  // Pemerintahan Info + OPD Info section (right side of logo, vertically centered)
+  const opdInfoX = logoX + logoSize + 10
   const opdInfoWidth = innerWidth - logoSize - 10
 
-  // Start OPD info vertically centered with logo (logo is 80px, so center is at 40px)
-  // Offset down to center the text block
-  let opdInfoY = currentY + 15 // Offset to center vertically with logo
+  // Start info vertically centered with logo
+  let opdInfoY = currentY + 5
 
-  // OPD Nama - increased size to 20pt
-  doc.fontSize(20).font('Helvetica-Bold').text(laporan.opdNama, opdInfoX, opdInfoY, {
+  // Jenis Pemerintahan (e.g. "PEMERINTAH KABUPATEN")
+  if (jenisPemerintahan) {
+    doc.fontSize(18).font('Helvetica-Bold').text(jenisPemerintahan.toUpperCase(), opdInfoX, opdInfoY, {
+      width: opdInfoWidth,
+      align: 'center',
+    })
+    opdInfoY += 16
+  }
+
+  // Nama Pemerintahan (e.g. "KABUPATEN BANYUMAS")
+  if (namaPemerintahan) {
+    doc.fontSize(18).font('Helvetica-Bold').text(namaPemerintahan.toUpperCase(), opdInfoX, opdInfoY, {
+      width: opdInfoWidth,
+      align: 'center',
+    })
+    opdInfoY += 18
+  }
+
+  // OPD Nama
+  doc.fontSize(14).font('Helvetica-Bold').text(laporan.opdNama, opdInfoX, opdInfoY, {
     width: opdInfoWidth,
     align: 'center',
   })
-  opdInfoY += 24
+  opdInfoY += 22
 
   // OPD Alamat
   if (laporan.opdAlamat) {
@@ -384,6 +407,17 @@ export async function generateLaporanPDF(laporan: LaporanData, res: Response): P
       width: signatureWidth - 20,
       align: 'center',
     })
+
+  // NIP Kepala OPD
+  if (laporan.opdNipKepala) {
+    doc
+      .fontSize(8)
+      .font('Helvetica')
+      .text(`NIP. ${laporan.opdNipKepala}`, signatureX + 10, currentY + 93, {
+        width: signatureWidth - 20,
+        align: 'center',
+      })
+  }
 
   // === FOOTER ===
   const footerY = pageHeight - margin - 30

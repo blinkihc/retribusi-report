@@ -9,12 +9,11 @@
  */
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { AlertCircle, Check, Image, Loader2, Save, Upload } from 'lucide-react'
+import { AlertCircle, Building, Check, Image, Loader2, Pencil, Save, Upload } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { getSettingByKey, updateSetting, uploadLogo } from '../lib/api/settings'
 
-// @ts-expect-error - Vite env variable
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export default function GeneralSettings() {
@@ -37,6 +36,52 @@ export default function GeneralSettings() {
   const { data: logoSetting } = useQuery({
     queryKey: ['setting', 'logo_kabupaten'],
     queryFn: () => getSettingByKey('logo_kabupaten'),
+  })
+
+  // Fetch jenis pemerintahan setting
+  const { data: jenisPemerintahanSetting } = useQuery({
+    queryKey: ['setting', 'jenis_pemerintahan'],
+    queryFn: () => getSettingByKey('jenis_pemerintahan'),
+  })
+
+  // Fetch nama pemerintahan setting
+  const { data: namaPemerintahanSetting } = useQuery({
+    queryKey: ['setting', 'nama_pemerintahan'],
+    queryFn: () => getSettingByKey('nama_pemerintahan'),
+  })
+
+  // Pemerintahan inline edit states
+  const [editingJenisPemerintahan, setEditingJenisPemerintahan] = useState(false)
+  const [editingNamaPemerintahan, setEditingNamaPemerintahan] = useState(false)
+  const [jenisPemerintahanValue, setJenisPemerintahanValue] = useState('')
+  const [namaPemerintahanValue, setNamaPemerintahanValue] = useState('')
+
+  // Jenis Pemerintahan mutation
+  const jenisPemerintahanMutation = useMutation({
+    mutationFn: (data: { value: string; description?: string }) =>
+      updateSetting('jenis_pemerintahan', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['setting', 'jenis_pemerintahan'] })
+      setEditingJenisPemerintahan(false)
+      toast.success('Jenis Pemerintahan berhasil disimpan')
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || 'Gagal menyimpan')
+    },
+  })
+
+  // Nama Pemerintahan mutation
+  const namaPemerintahanMutation = useMutation({
+    mutationFn: (data: { value: string; description?: string }) =>
+      updateSetting('nama_pemerintahan', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['setting', 'nama_pemerintahan'] })
+      setEditingNamaPemerintahan(false)
+      toast.success('Nama Pemerintahan berhasil disimpan')
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || 'Gagal menyimpan')
+    },
   })
 
   // Logo upload mutation
@@ -387,6 +432,138 @@ export default function GeneralSettings() {
               <div className="flex-shrink-0">
                 <div className="rounded-lg bg-blue-50 p-3">
                   <Image className="h-8 w-8 text-blue-600" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Identitas Pemerintahan Card */}
+        <div className="mt-6 rounded-lg border border-gray-200 bg-white shadow-sm">
+          <div className="p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="rounded-lg bg-emerald-50 p-3">
+                  <Building className="h-8 w-8 text-emerald-600" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Identitas Pemerintahan</h3>
+                <p className="text-sm text-gray-600 mb-6">
+                  Informasi ini akan ditampilkan di bagian header PDF laporan retribusi, di atas nama OPD.
+                </p>
+
+                <div className="space-y-4">
+                  {/* Jenis Pemerintahan */}
+                  <div className="rounded-lg border border-gray-200 p-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Pemerintahan</label>
+                        {editingJenisPemerintahan ? (
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={jenisPemerintahanValue}
+                              onChange={(e) => setJenisPemerintahanValue(e.target.value)}
+                              className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                              placeholder="Contoh: PEMERINTAH KABUPATEN"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => jenisPemerintahanMutation.mutate({ value: jenisPemerintahanValue, description: 'Jenis pemerintahan untuk header PDF' })}
+                              disabled={jenisPemerintahanMutation.isPending}
+                              className="flex items-center gap-1 rounded-lg bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700 disabled:opacity-50 transition-colors"
+                            >
+                              {jenisPemerintahanMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                              Simpan
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setEditingJenisPemerintahan(false)}
+                              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                            >
+                              Batal
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-3">
+                            <span className="text-sm text-gray-900 font-medium">
+                              {jenisPemerintahanSetting?.data?.value || <span className="text-gray-400 italic">Belum diatur</span>}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setJenisPemerintahanValue(jenisPemerintahanSetting?.data?.value || '')
+                                setEditingJenisPemerintahan(true)
+                              }}
+                              className="flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                            >
+                              <Pencil className="h-3 w-3" /> Edit
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Nama Pemerintahan */}
+                  <div className="rounded-lg border border-gray-200 p-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Nama Pemerintahan</label>
+                        {editingNamaPemerintahan ? (
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={namaPemerintahanValue}
+                              onChange={(e) => setNamaPemerintahanValue(e.target.value)}
+                              className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                              placeholder="Contoh: KABUPATEN BANYUMAS"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => namaPemerintahanMutation.mutate({ value: namaPemerintahanValue, description: 'Nama pemerintahan untuk header PDF' })}
+                              disabled={namaPemerintahanMutation.isPending}
+                              className="flex items-center gap-1 rounded-lg bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700 disabled:opacity-50 transition-colors"
+                            >
+                              {namaPemerintahanMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                              Simpan
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setEditingNamaPemerintahan(false)}
+                              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                            >
+                              Batal
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-3">
+                            <span className="text-sm text-gray-900 font-medium">
+                              {namaPemerintahanSetting?.data?.value || <span className="text-gray-400 italic">Belum diatur</span>}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setNamaPemerintahanValue(namaPemerintahanSetting?.data?.value || '')
+                                setEditingNamaPemerintahan(true)
+                              }}
+                              className="flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                            >
+                              <Pencil className="h-3 w-3" /> Edit
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info */}
+                <div className="mt-4 rounded-lg bg-blue-50 p-3">
+                  <p className="text-xs text-blue-700">
+                    <strong>Contoh hasil di header PDF:</strong> PEMERINTAH KABUPATEN / KABUPATEN BANYUMAS → ditampilkan di atas nama OPD.
+                  </p>
                 </div>
               </div>
             </div>

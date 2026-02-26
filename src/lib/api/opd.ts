@@ -16,6 +16,7 @@ export interface OPD {
   telepon: string | null
   email: string | null
   kepala: string | null
+  nipKepala: string | null
   isActive: boolean
   createdAt: string
   updatedAt: string
@@ -54,10 +55,11 @@ export interface OPDCreateData {
   telepon?: string
   email?: string
   kepala?: string
+  nipKepala?: string
   isActive?: boolean
 }
 
-export interface OPDUpdateData extends Partial<OPDCreateData> {}
+export interface OPDUpdateData extends Partial<OPDCreateData> { }
 
 export interface OPDResponse {
   success: boolean

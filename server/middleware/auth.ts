@@ -4,7 +4,10 @@
  * JWT verification and role-based authorization
  */
 
+import { eq } from 'drizzle-orm'
 import type { NextFunction, Request, Response } from 'express'
+import { db } from '../../src/lib/db'
+import { loginSessions } from '../../src/lib/db/schema'
 import { verifyToken } from '../../src/lib/auth/jwt'
 
 // Extend Express Request type to include user
@@ -16,6 +19,7 @@ declare global {
         username: string
         role: 'admin' | 'operator'
         opdId?: number
+        sessionId?: string
       }
     }
   }
@@ -50,6 +54,14 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
 
     // Attach user to request
     req.user = decoded
+
+    // Update last activity (non-blocking, fire-and-forget)
+    if (decoded.sessionId) {
+      db.update(loginSessions)
+        .set({ lastActivityAt: new Date() })
+        .where(eq(loginSessions.sessionId, decoded.sessionId))
+        .catch(() => { }) // silent fail
+    }
 
     next()
   } catch (error) {

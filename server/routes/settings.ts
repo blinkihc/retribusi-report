@@ -95,13 +95,24 @@ settingsRouter.put('/:key', authMiddleware, async (req, res, next) => {
     const [existing] = await db.select().from(settings).where(eq(settings.key, key))
 
     if (!existing) {
-      return res.status(404).json({
-        success: false,
-        message: 'Setting tidak ditemukan',
+      // Create new setting (upsert)
+      const [created] = await db
+        .insert(settings)
+        .values({
+          key,
+          value: validatedData.value,
+          description: validatedData.description || null,
+        })
+        .returning()
+
+      return res.json({
+        success: true,
+        message: 'Pengaturan berhasil dibuat',
+        data: created,
       })
     }
 
-    // Update setting
+    // Update existing setting
     const [updated] = await db
       .update(settings)
       .set({
