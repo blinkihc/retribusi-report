@@ -34,6 +34,7 @@ COPY --from=builder /app/dist ./dist
 # Copy server source code
 COPY server ./server
 COPY src/lib ./src/lib
+COPY scripts ./scripts
 COPY drizzle.config.ts ./
 COPY tsconfig.json ./
 
