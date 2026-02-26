@@ -17,7 +17,7 @@
     "db:push": "drizzle-kit push",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx scripts/seed.ts",
+    "db:seed": "bun scripts/seed.ts",
     "check": "biome check --write .",
     "test": "vitest",
     "test:ui": "vitest --ui",
