@@ -100,16 +100,6 @@ bun install
 
 Copy `.env.example` to `.env` and configure:
 
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your database credentials:
-
-```env
-DATABASE_URL=postgres://user:password@host:5432/database
-JWT_SECRET=your-secret-key
-```
 
 ### 4. Setup database
 
@@ -145,18 +135,6 @@ Application will be available at `http://localhost:3000`
 - `npm run check` - Run Biome linter and formatter
 - `npm run test` - Run unit tests
 - `npm run test:e2e` - Run E2E tests
-
-## 👤 Default Login Credentials
-
-After running `npm run db:seed`:
-
-**Admin:**
-- Username: `admin`
-- Password: `Admin123`
-
-**Operators:**
-- Username: `operator.disdik` / `operator.dinkes` / `operator.dispar`
-- Password: `Operator123`
 
 ## 📁 Project Structure
 
@@ -340,15 +318,6 @@ npm run start
 Required environment variables for production:
 
 ```env
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/retribusi_db
-
-# JWT
-JWT_SECRET=your-super-secret-jwt-key-change-this
-
-# Server
-PORT=5000
-NODE_ENV=production
 
 # File Upload
 UPLOAD_DIR=./public/uploads
@@ -470,17 +439,6 @@ echo $DATABASE_URL
 psql $DATABASE_URL
 ```
 
-#### Port Already in Use
-```bash
-# Find process using port 5000
-lsof -i :5000
-
-# Kill process
-kill -9 <PID>
-
-# Or change PORT in .env
-```
-
 #### File Upload Not Working
 ```bash
 # Check upload directory exists and has permissions
@@ -549,7 +507,7 @@ ISC
 
 ## 👥 Contributors
 
-- Solo Developer + AI Assistant (Windsurf Cascade)
+- Solo Developer + AI Assistant 
 
 ## 📞 Support
 
@@ -570,20 +528,6 @@ For issues and questions:
 - [x] Table sorting & filtering
 - [x] Responsive design
 - [x] Checkpoint system
-
-### In Progress 🚧
-- [ ] UI/UX improvements
-- [ ] Advanced filtering
-- [ ] Bulk operations
-- [ ] Performance optimization
-
-### Planned 📋
-- [ ] Real-time notifications
-- [ ] Advanced analytics
-- [ ] Mobile app
-- [ ] API documentation with Swagger
-- [ ] Automated testing
-- [ ] CI/CD pipeline
 
 ---
 
