@@ -107,7 +107,7 @@ const COLORS = ['#2563eb', '#16a34a', '#db2777', '#ca8a04', '#9333ea', '#0891b2'
 // Growth Indicator Component
 const GrowthIndicator = ({ value }: { value: number }) => {
   const isPositive = value > 0
-  const isNegative = value < 0
+  const _isNegative = value < 0
 
   if (value === 0)
     return (
@@ -381,7 +381,7 @@ export default function DashboardHomePage() {
                   dataKey="total"
                   nameKey="kategori"
                 >
-                  {data.categoryRevenue.map((entry, index) => (
+                  {data.categoryRevenue.map((_entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
@@ -477,7 +477,7 @@ export default function DashboardHomePage() {
                   radius={[4, 4, 0, 0]}
                   barSize={40}
                 >
-                  {data.topRetribusi.map((entry, index) => (
+                  {data.topRetribusi.map((_entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Bar>
@@ -543,12 +543,13 @@ export default function DashboardHomePage() {
                     </div>
                     <div className="mt-1">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-bold uppercase tracking-wide border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${report.status === 'verified'
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-bold uppercase tracking-wide border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${
+                          report.status === 'verified'
                             ? 'bg-green-100 border-green-700 text-green-800'
                             : report.status === 'draft'
                               ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
                               : 'bg-slate-100 border-slate-600 text-slate-700'
-                          }`}
+                        }`}
                       >
                         {report.status}
                       </span>

@@ -50,7 +50,9 @@ export default function JenisRetribusiSelector({
 
   // Get unique kategori for Tier 1 (only kategori assigned to this OPD)
   const uniqueKategori = Array.from(
-    new Set(opdJenisRetribusiList?.data.map((item) => item.kategori).filter(Boolean) || [])
+    new Set(
+      opdJenisRetribusiList?.data.map((item) => item.kategori).filter((k): k is string => !!k) || []
+    )
   )
 
   // Filter by selected kategori for Tier 2
@@ -111,7 +113,10 @@ export default function JenisRetribusiSelector({
     <div className="space-y-6">
       {/* Kategori */}
       <div>
-        <label htmlFor="kategori" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+        <label
+          htmlFor="kategori"
+          className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2"
+        >
           Kategori Retribusi <span className="text-red-600">*</span>
         </label>
         <select
@@ -120,7 +125,9 @@ export default function JenisRetribusiSelector({
           onChange={(e) => handleKategoriChange(e.target.value)}
           disabled={!opdKode}
           className={`w-full rounded-none border-2 px-4 py-3 text-sm font-medium focus:outline-none focus:bg-yellow-50 transition-colors disabled:bg-slate-100 disabled:text-slate-400 ${
-            errors?.kategori ? 'border-red-600 focus:border-red-600 bg-red-50' : 'border-black focus:border-black bg-white'
+            errors?.kategori
+              ? 'border-red-600 focus:border-red-600 bg-red-50'
+              : 'border-black focus:border-black bg-white'
           }`}
         >
           <option value="">{opdKode ? 'PILIH KATEGORI' : 'PILIH OPD TERLEBIH DAHULU'}</option>
@@ -140,7 +147,10 @@ export default function JenisRetribusiSelector({
 
       {/* Pelayanan */}
       <div>
-        <label htmlFor="pelayanan" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+        <label
+          htmlFor="pelayanan"
+          className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2"
+        >
           Jenis Pelayanan <span className="text-red-600">*</span>
         </label>
         <select
@@ -149,7 +159,9 @@ export default function JenisRetribusiSelector({
           onChange={(e) => handlePelayananChange(e.target.value)}
           disabled={!selectedKategori}
           className={`w-full rounded-none border-2 px-4 py-3 text-sm font-medium focus:outline-none focus:bg-yellow-50 transition-colors disabled:bg-slate-100 disabled:text-slate-400 ${
-            errors?.pelayanan ? 'border-red-600 focus:border-red-600 bg-red-50' : 'border-black focus:border-black bg-white'
+            errors?.pelayanan
+              ? 'border-red-600 focus:border-red-600 bg-red-50'
+              : 'border-black focus:border-black bg-white'
           }`}
         >
           <option value="">
@@ -171,7 +183,10 @@ export default function JenisRetribusiSelector({
 
       {/* Jenis Retribusi */}
       <div>
-        <label htmlFor="jenis" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+        <label
+          htmlFor="jenis"
+          className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2"
+        >
           Jenis Retribusi <span className="text-red-600">*</span>
         </label>
         <select
@@ -180,7 +195,9 @@ export default function JenisRetribusiSelector({
           onChange={(e) => onJenisChange(Number(e.target.value))}
           disabled={!selectedPelayanan}
           className={`w-full rounded-none border-2 px-4 py-3 text-sm font-medium focus:outline-none focus:bg-yellow-50 transition-colors disabled:bg-slate-100 disabled:text-slate-400 ${
-            errors?.jenisRetribusiId ? 'border-red-600 focus:border-red-600 bg-red-50' : 'border-black focus:border-black bg-white'
+            errors?.jenisRetribusiId
+              ? 'border-red-600 focus:border-red-600 bg-red-50'
+              : 'border-black focus:border-black bg-white'
           }`}
         >
           <option value={0}>

@@ -141,10 +141,10 @@ export default function DashboardLayout() {
               { path: '/dashboard/target-realisasi', icon: Target, label: 'Target & Realisasi' },
               ...(isAdmin
                 ? [
-                  { path: '/dashboard/reports', icon: BarChart3, label: 'Laporan Rekap' },
-                  { path: '/dashboard/users', icon: Users, label: 'Manajemen User' },
-                  { path: '/dashboard/settings', icon: Settings, label: 'Settings' },
-                ]
+                    { path: '/dashboard/reports', icon: BarChart3, label: 'Laporan Rekap' },
+                    { path: '/dashboard/users', icon: Users, label: 'Manajemen User' },
+                    { path: '/dashboard/settings', icon: Settings, label: 'Settings' },
+                  ]
                 : []),
               { path: '/dashboard/profile', icon: User, label: 'Profil Saya' },
               { path: '/dashboard/help', icon: HelpCircle, label: 'Pusat Bantuan' },
@@ -154,10 +154,11 @@ export default function DashboardLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-all duration-150 ${active
-                    ? 'bg-yellow-50 border-black text-black font-bold shadow-hard-sm translate-x-[2px] translate-y-[2px]'
-                    : 'bg-transparent border-transparent text-slate-600 hover:bg-slate-100 hover:text-black hover:border-slate-200 font-medium'
-                    }`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-all duration-150 ${
+                    active
+                      ? 'bg-yellow-50 border-black text-black font-bold shadow-hard-sm translate-x-[2px] translate-y-[2px]'
+                      : 'bg-transparent border-transparent text-slate-600 hover:bg-slate-100 hover:text-black hover:border-slate-200 font-medium'
+                  }`}
                 >
                   <item.icon className={`h-5 w-5 ${active ? 'stroke-[2.5]' : 'stroke-2'}`} />
                   <span className="uppercase tracking-wide text-sm">{item.label}</span>
@@ -206,10 +207,11 @@ export default function DashboardLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex flex-col items-center justify-center gap-1 transition-all border-r-2 last:border-r-0 border-black relative overflow-hidden ${active
-                    ? 'bg-black text-white'
-                    : 'bg-white text-slate-500 hover:bg-yellow-50 hover:text-black'
-                    }`}
+                  className={`flex flex-col items-center justify-center gap-1 transition-all border-r-2 last:border-r-0 border-black relative overflow-hidden ${
+                    active
+                      ? 'bg-black text-white'
+                      : 'bg-white text-slate-500 hover:bg-yellow-50 hover:text-black'
+                  }`}
                 >
                   {active && (
                     <motion.div

@@ -1,7 +1,7 @@
-import * as React from 'react'
-import { X } from 'lucide-react'
-import { cn } from '../../lib/utils/cn'
 import { AnimatePresence, motion } from 'framer-motion'
+import { X } from 'lucide-react'
+import * as React from 'react'
+import { cn } from '../../lib/utils/cn'
 
 interface SheetProps {
   open?: boolean
@@ -15,9 +15,7 @@ const SheetContext = React.createContext<{
 }>({})
 
 const Sheet = ({ open, onOpenChange, children }: SheetProps) => (
-  <SheetContext.Provider value={{ open, onOpenChange }}>
-    {children}
-  </SheetContext.Provider>
+  <SheetContext.Provider value={{ open, onOpenChange }}>{children}</SheetContext.Provider>
 )
 
 interface SheetContentProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -75,12 +73,13 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
               className={cn(
                 'fixed z-50 bg-white p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out',
                 side === 'top' && 'inset-x-0 top-0 border-b',
-                side === 'bottom' && 'inset-x-0 bottom-0 border-t rounded-t-xl max-h-[90vh] overflow-y-auto',
+                side === 'bottom' &&
+                  'inset-x-0 bottom-0 border-t rounded-t-xl max-h-[90vh] overflow-y-auto',
                 side === 'left' && 'inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm',
                 side === 'right' && 'inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm',
                 className
               )}
-              {...props}
+              {...(props as any)}
             >
               <button
                 type="button"
@@ -100,63 +99,32 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
 )
 SheetContent.displayName = 'SheetContent'
 
-const SheetHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      'flex flex-col space-y-2 text-center sm:text-left',
-      className
-    )}
-    {...props}
-  />
+const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)} {...props} />
 )
 SheetHeader.displayName = 'SheetHeader'
 
-const SheetFooter = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+const SheetFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
-      'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
-      className
-    )}
+    className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
     {...props}
   />
 )
 SheetFooter.displayName = 'SheetFooter'
 
-const SheetTitle = React.forwardRef<
-  HTMLHeadingElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h2
-    ref={ref}
-    className={cn('text-lg font-semibold text-slate-950', className)}
-    {...props}
-  />
-))
+const SheetTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className, ...props }, ref) => (
+    <h2 ref={ref} className={cn('text-lg font-semibold text-slate-950', className)} {...props} />
+  )
+)
 SheetTitle.displayName = 'SheetTitle'
 
 const SheetDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn('text-sm text-slate-500', className)}
-    {...props}
-  />
+  <p ref={ref} className={cn('text-sm text-slate-500', className)} {...props} />
 ))
 SheetDescription.displayName = 'SheetDescription'
 
-export {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetFooter,
-  SheetTitle,
-  SheetDescription,
-}
+export { Sheet, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription }

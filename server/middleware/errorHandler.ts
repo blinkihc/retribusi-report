@@ -6,7 +6,7 @@
 
 import type { NextFunction, Request, Response } from 'express'
 
-export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction) {
   console.error('Error:', err)
 
   // Default error response

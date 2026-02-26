@@ -4,10 +4,10 @@
  * Script to add avatar column to users table
  */
 
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { config } from 'dotenv'
-import { dirname, join } from 'path'
 import postgres from 'postgres'
-import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)

@@ -9,14 +9,27 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
-import { AlertCircle, AlertTriangle, ArrowLeft, Building, ChevronLeft, ChevronRight, FileText, Layers, Loader2, Save, Send, Upload } from 'lucide-react'
+import {
+  AlertCircle,
+  AlertTriangle,
+  ArrowLeft,
+  Building,
+  ChevronLeft,
+  ChevronRight,
+  FileText,
+  Layers,
+  Loader2,
+  Save,
+  Send,
+  Upload,
+} from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
-import { DatePicker } from '../components/ui/date-picker'
-import { HelpTooltip } from '../components/ui/help-tooltip'
 import FileUpload from '../components/LaporanForm/FileUpload'
 import JenisRetribusiSelector from '../components/LaporanForm/JenisRetribusiSelector'
+import { DatePicker } from '../components/ui/date-picker'
+import { HelpTooltip } from '../components/ui/help-tooltip'
 import { useMediaQuery } from '../hooks/use-media-query'
 import {
   checkDuplicateLaporan,
@@ -51,7 +64,7 @@ export default function LaporanRetribusiFormPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const isFormPopulatedRef = useRef(false)
-  const [lastAutoSave, setLastAutoSave] = useState<Date | null>(null)
+  const [_lastAutoSave, setLastAutoSave] = useState<Date | null>(null)
   const [duplicateWarning, setDuplicateWarning] = useState<any>(null)
   const [uploadProgress, setUploadProgress] = useState(0)
 
@@ -71,10 +84,10 @@ export default function LaporanRetribusiFormPage() {
 
     const autoSaveInterval = setInterval(() => {
       // Only save if there is some data
-      const hasData = 
-        formData.opdId !== 0 || 
-        formData.jenisRetribusiId !== 0 || 
-        formData.nominal !== '' || 
+      const hasData =
+        formData.opdId !== 0 ||
+        formData.jenisRetribusiId !== 0 ||
+        formData.nominal !== '' ||
         formData.tanggalSetor !== ''
 
       if (hasData) {
@@ -121,7 +134,14 @@ export default function LaporanRetribusiFormPage() {
 
     const timer = setTimeout(checkDuplicate, 800) // Debounce 800ms
     return () => clearTimeout(timer)
-  }, [formData.opdId, formData.jenisRetribusiId, formData.tanggalSetor, formData.nominal, isEditMode, id])
+  }, [
+    formData.opdId,
+    formData.jenisRetribusiId,
+    formData.tanggalSetor,
+    formData.nominal,
+    isEditMode,
+    id,
+  ])
 
   // Check for existing draft on mount
   useEffect(() => {
@@ -198,7 +218,7 @@ export default function LaporanRetribusiFormPage() {
 
   // Mutations
   const createMutation = useMutation({
-    mutationFn: (data: LaporanRetribusiCreateData | FormData) => 
+    mutationFn: (data: LaporanRetribusiCreateData | FormData) =>
       createLaporanRetribusi(data, (progress) => setUploadProgress(progress)),
     onSuccess: () => {
       toast.success('Laporan berhasil disimpan sebagai draft')
@@ -420,7 +440,9 @@ export default function LaporanRetribusiFormPage() {
                 {isEditMode ? 'Edit Laporan' : 'Input Laporan Baru'}
               </h1>
               <p className="mt-1 text-sm font-medium text-slate-600 uppercase tracking-wide">
-                {isEditMode ? 'Perbarui data laporan retribusi' : 'Isi formulir di bawah untuk membuat laporan'}
+                {isEditMode
+                  ? 'Perbarui data laporan retribusi'
+                  : 'Isi formulir di bawah untuk membuat laporan'}
               </p>
             </div>
           </div>
@@ -430,7 +452,7 @@ export default function LaporanRetribusiFormPage() {
         <div className="bg-white border-2 border-black shadow-hard-lg">
           {/* Form Header Accent */}
           <div className="bg-slate-900 h-2 w-full" />
-          
+
           <div className="p-4 lg:p-8">
             {/* Mobile Stepper */}
             {!isDesktop && (
@@ -438,10 +460,10 @@ export default function LaporanRetribusiFormPage() {
                 <div className="flex justify-between items-center relative">
                   {/* Progress Bar Background */}
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10" />
-                  
+
                   {/* Progress Bar Active */}
-                  <div 
-                    className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-black transition-all duration-300 -z-10" 
+                  <div
+                    className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-black transition-all duration-300 -z-10"
                     style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
                   />
 
@@ -461,9 +483,11 @@ export default function LaporanRetribusiFormPage() {
                         >
                           <Icon className="h-5 w-5" />
                         </div>
-                        <span className={`text-[10px] font-bold uppercase tracking-wider ${
-                          isCurrent ? 'text-black' : 'text-slate-400'
-                        }`}>
+                        <span
+                          className={`text-[10px] font-bold uppercase tracking-wider ${
+                            isCurrent ? 'text-black' : 'text-slate-400'
+                          }`}
+                        >
                           {step.title}
                         </span>
                       </div>
@@ -485,7 +509,8 @@ export default function LaporanRetribusiFormPage() {
                       Peringatan: Kemungkinan Duplikasi Data
                     </p>
                     <p className="text-sm text-yellow-700 mt-1 font-medium">
-                      Laporan serupa ditemukan dengan Nomor: <strong>{duplicateWarning.nomorLaporan}</strong>
+                      Laporan serupa ditemukan dengan Nomor:{' '}
+                      <strong>{duplicateWarning.nomorLaporan}</strong>
                       <br />
                       <span className="text-xs uppercase opacity-80">
                         Status: {duplicateWarning.status} • Oleh: {duplicateWarning.submittedByName}
@@ -501,7 +526,10 @@ export default function LaporanRetribusiFormPage() {
               <div className={`space-y-6 ${!isDesktop && currentStep === 3 ? 'hidden' : ''}`}>
                 {/* OPD */}
                 <div className={!isDesktop && currentStep !== 1 ? 'hidden' : ''}>
-                  <label htmlFor="opd" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center">
+                  <label
+                    htmlFor="opd"
+                    className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center"
+                  >
                     OPD <span className="text-red-600 mx-1">*</span>
                     <HelpTooltip content="Organisasi Perangkat Daerah tempat Anda bertugas. Otomatis terisi untuk akun Operator." />
                   </label>
@@ -569,7 +597,10 @@ export default function LaporanRetribusiFormPage() {
 
                 {/* Tanggal Setor */}
                 <div className={!isDesktop && currentStep !== 2 ? 'hidden' : ''}>
-                  <label htmlFor="tanggal" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center">
+                  <label
+                    htmlFor="tanggal"
+                    className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center"
+                  >
                     Tanggal Setor <span className="text-red-600 mx-1">*</span>
                     <HelpTooltip content="Tanggal uang disetorkan ke Kas Daerah, harus sesuai dengan tanggal pada Bukti Setor." />
                   </label>
@@ -581,7 +612,9 @@ export default function LaporanRetribusiFormPage() {
                         tanggalSetor: date ? format(date, 'yyyy-MM-dd') : '',
                       })
                     }
-                    className={errors.tanggalSetor ? 'border-red-600 bg-red-50' : 'border-black bg-white'}
+                    className={
+                      errors.tanggalSetor ? 'border-red-600 bg-red-50' : 'border-black bg-white'
+                    }
                   />
                   {errors.tanggalSetor && (
                     <p className="mt-2 text-xs font-bold text-red-600 flex items-center gap-1 uppercase">
@@ -596,7 +629,10 @@ export default function LaporanRetribusiFormPage() {
               <div className={`space-y-6 ${!isDesktop && currentStep === 1 ? 'hidden' : ''}`}>
                 {/* Nominal */}
                 <div className={!isDesktop && currentStep !== 2 ? 'hidden' : ''}>
-                  <label htmlFor="nominal" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center">
+                  <label
+                    htmlFor="nominal"
+                    className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center"
+                  >
                     Nominal (Rp) <span className="text-red-600 mx-1">*</span>
                     <HelpTooltip content="Masukkan angka tanpa titik atau koma. Format mata uang akan otomatis disesuaikan." />
                   </label>
@@ -696,7 +732,11 @@ export default function LaporanRetribusiFormPage() {
                     <button
                       type="button"
                       onClick={handleKirim}
-                      disabled={createMutation.isPending || updateMutation.isPending || submitMutation.isPending}
+                      disabled={
+                        createMutation.isPending ||
+                        updateMutation.isPending ||
+                        submitMutation.isPending
+                      }
                       className="inline-flex items-center gap-1 rounded-none bg-black border-2 border-black px-4 py-3 text-xs font-bold uppercase tracking-wide text-white shadow-hard-sm disabled:opacity-50"
                     >
                       {submitMutation.isPending ? (

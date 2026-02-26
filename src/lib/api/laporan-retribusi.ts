@@ -8,7 +8,7 @@
 
 import { apiClient } from './client'
 
-export type LaporanStatus = 'draft' | 'submitted' | 'rejected'
+export type LaporanStatus = 'draft' | 'submitted' | 'verified' | 'rejected'
 
 export interface LaporanRetribusi {
   id: number
@@ -43,7 +43,14 @@ export interface LaporanRetribusiListParams {
   status?: LaporanStatus | 'all'
   startDate?: string
   endDate?: string
-  sortBy?: 'nomorLaporan' | 'tanggalSetor' | 'nominal' | 'status' | 'createdAt' | 'opdNama' | 'jenisRetribusiNama'
+  sortBy?:
+    | 'nomorLaporan'
+    | 'tanggalSetor'
+    | 'nominal'
+    | 'status'
+    | 'createdAt'
+    | 'opdNama'
+    | 'jenisRetribusiNama'
   sortOrder?: 'asc' | 'desc'
 }
 

@@ -40,7 +40,7 @@ export const registerUserSchema = z.object({
     .min(3, { message: 'Nama lengkap minimal 3 karakter' })
     .max(100, { message: 'Nama lengkap maksimal 100 karakter' }),
   role: z.enum(['admin', 'operator'], {
-    errorMap: () => ({ message: 'Role harus admin atau operator' }),
+    message: 'Role harus admin atau operator',
   }),
   opdId: z.number().int().positive().optional(),
 })

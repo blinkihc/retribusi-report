@@ -14,17 +14,18 @@ export function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
   const threshold = 80
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (window.scrollY <= 10) { // Allow some tolerance
+    if (window.scrollY <= 10) {
+      // Allow some tolerance
       setStartY(e.touches[0].clientY)
     }
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (startY === 0 || window.scrollY > 10 || isRefreshing) return
-    
+
     const currentY = e.touches[0].clientY
     const diff = currentY - startY
-    
+
     if (diff > 0) {
       // Add resistance
       setPullDistance(Math.min(diff * 0.5, 150))
@@ -33,7 +34,7 @@ export function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
 
   const handleTouchEnd = async () => {
     if (startY === 0) return
-    
+
     if (pullDistance > threshold) {
       setIsRefreshing(true)
       setPullDistance(threshold)
@@ -46,12 +47,12 @@ export function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
     } else {
       setPullDistance(0)
     }
-    
+
     setStartY(0)
   }
 
   return (
-    <div 
+    <div
       ref={containerRef}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -59,26 +60,26 @@ export function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
       className="min-h-screen"
     >
       {/* Refresh Indicator */}
-      <div 
+      <div
         className="fixed top-16 left-0 w-full flex justify-center items-center pointer-events-none z-50 transition-all duration-200"
-        style={{ 
+        style={{
           transform: `translateY(${pullDistance > 0 ? pullDistance - 40 : -100}px)`,
           opacity: pullDistance > 0 ? Math.min(pullDistance / threshold, 1) : 0,
         }}
       >
         <div className="bg-white rounded-full p-3 shadow-hard border-2 border-black">
-          <Loader2 
-            className={`h-6 w-6 text-black ${isRefreshing ? 'animate-spin' : ''}`} 
-            style={{ transform: isRefreshing ? undefined : `rotate(${pullDistance * 3}deg)` }} 
+          <Loader2
+            className={`h-6 w-6 text-black ${isRefreshing ? 'animate-spin' : ''}`}
+            style={{ transform: isRefreshing ? undefined : `rotate(${pullDistance * 3}deg)` }}
           />
         </div>
       </div>
 
       {/* Content Container - We don't translate content to avoid layout issues, just show the spinner overlay */}
-      <div 
-        style={{ 
+      <div
+        style={{
           transform: `translateY(${pullDistance * 0.3}px)`, // Slight parallax/feedback
-          transition: isRefreshing ? 'transform 0.2s' : 'transform 0.1s'
+          transition: isRefreshing ? 'transform 0.2s' : 'transform 0.1s',
         }}
       >
         {children}

@@ -54,14 +54,14 @@ export default function LoginPage() {
 
   useEffect(() => {
     loadCaptcha()
-  }, [])
+  }, [loadCaptcha])
 
   // Refresh CAPTCHA otomatis jika ada captchaError
   useEffect(() => {
     if (actionData?.captchaError) {
       loadCaptcha()
     }
-  }, [actionData])
+  }, [actionData, loadCaptcha])
 
   return (
     <div className="min-h-screen bg-slate-50 relative flex items-center justify-center p-4 overflow-hidden">
@@ -94,11 +94,12 @@ export default function LoginPage() {
               <p className="text-sm mt-1 font-medium">
                 {actionData.message || 'Periksa kembali username dan password.'}
               </p>
-              {typeof actionData.remainingAttempts === 'number' && actionData.remainingAttempts > 0 && (
-                <p className="text-xs mt-1 text-red-700">
-                  Sisa percobaan: <strong>{actionData.remainingAttempts}</strong>
-                </p>
-              )}
+              {typeof actionData.remainingAttempts === 'number' &&
+                actionData.remainingAttempts > 0 && (
+                  <p className="text-xs mt-1 text-red-700">
+                    Sisa percobaan: <strong>{actionData.remainingAttempts}</strong>
+                  </p>
+                )}
             </div>
           )}
 
@@ -161,8 +162,13 @@ export default function LoginPage() {
             <label className="block text-sm font-bold text-slate-800 mb-2 uppercase tracking-wide">
               Verifikasi Anti-Bot
             </label>
-            <div className={`flex items-center gap-3 p-4 rounded-lg border-2 mb-3 ${actionData?.captchaError ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-slate-50'
-              }`}>
+            <div
+              className={`flex items-center gap-3 p-4 rounded-lg border-2 mb-3 ${
+                actionData?.captchaError
+                  ? 'border-red-400 bg-red-50'
+                  : 'border-slate-300 bg-slate-50'
+              }`}
+            >
               {captchaLoading ? (
                 <span className="text-slate-400 text-sm italic">Memuat soal…</span>
               ) : captcha ? (
@@ -182,7 +188,11 @@ export default function LoginPage() {
                   <input type="hidden" name="captchaId" value={captcha.id} />
                 </>
               ) : (
-                <button type="button" onClick={loadCaptcha} className="text-sm text-blue-600 underline">
+                <button
+                  type="button"
+                  onClick={loadCaptcha}
+                  className="text-sm text-blue-600 underline"
+                >
                   Gagal memuat CAPTCHA — klik untuk coba lagi
                 </button>
               )}
@@ -194,9 +204,10 @@ export default function LoginPage() {
               inputMode="numeric"
               className={`w-full px-4 py-3 bg-white border-2 rounded-lg 
                 focus:ring-0 outline-none transition-colors duration-150 font-mono text-lg
-                ${actionData?.captchaError
-                  ? 'border-red-400 focus:border-red-600 bg-red-50'
-                  : 'border-slate-300 focus:border-black focus:bg-yellow-50'
+                ${
+                  actionData?.captchaError
+                    ? 'border-red-400 focus:border-red-600 bg-red-50'
+                    : 'border-slate-300 focus:border-black focus:bg-yellow-50'
                 }`}
               placeholder="Masukkan jawaban…"
               required

@@ -122,7 +122,7 @@ export async function generateRekapOPDExcel(
   })
 
   // Add signature section
-  const lastDataRow = worksheet.lastRow?.number || 5
+  const _lastDataRow = worksheet.lastRow?.number || 5
   worksheet.addRow([]) // Empty row
   worksheet.addRow([]) // Empty row
 

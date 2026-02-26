@@ -1,0 +1,49 @@
+src/components/LaporanForm/JenisRetribusiSelector.tsx(129,16): error TS18048: 'kategori' is possibly 'undefined'.
+src/components/LaporanRetribusi/LaporanDetailModal.tsx(30,45): error TS2367: This comparison appears to be unintentional because the types 'LaporanStatus' and '"verified"' have no overlap.
+src/components/LaporanRetribusi/LaporanDetailModal.tsx(38,63): error TS2367: This comparison appears to be unintentional because the types 'LaporanStatus' and '"verified"' have no overlap.
+src/components/LaporanRetribusi/LaporanDetailModal.tsx(43,20): error TS2367: This comparison appears to be unintentional because the types 'LaporanStatus' and '"verified"' have no overlap.
+src/components/ui/calendar.tsx(53,9): error TS2353: Object literal may only specify known properties, and 'IconLeft' does not exist in type 'Partial<CustomComponents>'.
+src/components/ui/sheet.tsx(68,14): error TS2322: Type '{ children: (Element | ReactNode)[]; defaultChecked?: boolean | undefined; defaultValue?: string | number | readonly string[] | undefined; suppressContentEditableWarning?: boolean | undefined; ... 265 more ...; className: string; }' is not assignable to type 'Omit<HTMLMotionProps<"div">, "ref">'.
+  Types of property 'onDrag' are incompatible.
+    Type 'DragEventHandler<HTMLDivElement> | undefined' is not assignable to type '((event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => void) | undefined'.
+      Type 'DragEventHandler<HTMLDivElement>' is not assignable to type '(event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => void'.
+        Types of parameters 'event' and 'event' are incompatible.
+          Type 'PointerEvent | MouseEvent | TouchEvent' is not assignable to type 'DragEvent<HTMLDivElement>'.
+            Type 'PointerEvent' is missing the following properties from type 'DragEvent<HTMLDivElement>': dataTransfer, nativeEvent, isDefaultPrevented, isPropagationStopped, persist
+src/lib/auth/jwt.ts(38,14): error TS2769: No overload matches this call.
+  Overload 1 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: null, options?: (SignOptions & { algorithm: "none"; }) | undefined): string', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'null'.
+  Overload 2 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, options?: SignOptions | undefined): string', gave the following error.
+    Type 'string' is not assignable to type 'number | StringValue | undefined'.
+  Overload 3 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, callback: SignCallback): void', gave the following error.
+    Object literal may only specify known properties, and 'expiresIn' does not exist in type 'SignCallback'.
+src/lib/validation/common.ts(48,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["application/pdf", "image/jpeg", "image/png"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.
+src/lib/validation/report.ts(79,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["excel", "pdf"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.
+src/lib/validation/user.ts(42,11): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["admin", "operator"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.
+src/pages/HelpPage.tsx(325,7): error TS2367: This comparison appears to be unintentional because the types '"login"' and '"rekap"' have no overlap.
+src/pages/LaporanRetribusiListPage.tsx(114,5): error TS2322: Type '"rejected" | "verified" | "draft" | "submitted"' is not assignable to type '"all" | LaporanStatus | undefined'.
+  Type '"verified"' is not assignable to type '"all" | LaporanStatus | undefined'.
+src/pages/LaporanRetribusiListPage.tsx(156,57): error TS2322: Type '"rejected" | "verified" | "draft" | "submitted"' is not assignable to type '"all" | LaporanStatus | undefined'.
+  Type '"verified"' is not assignable to type '"all" | LaporanStatus | undefined'.
+src/pages/LaporanRetribusiListPage.tsx(237,39): error TS2322: Type '"rejected" | "verified" | "draft" | "submitted"' is not assignable to type '"all" | LaporanStatus | undefined'.
+  Type '"verified"' is not assignable to type '"all" | LaporanStatus | undefined'.
+src/pages/LaporanRetribusiListPage.tsx(789,37): error TS2367: This comparison appears to be unintentional because the types '"rejected"' and '"verified"' have no overlap.
+src/pages/LaporanRetribusiListPage.tsx(798,37): error TS2367: This comparison appears to be unintentional because the types '"rejected"' and '"verified"' have no overlap.
+src/pages/LaporanRetribusiListPage.tsx(1119,39): error TS2367: This comparison appears to be unintentional because the types '"rejected"' and '"verified"' have no overlap.
+src/pages/LaporanRetribusiListPage.tsx(1128,39): error TS2367: This comparison appears to be unintentional because the types '"rejected"' and '"verified"' have no overlap.
+src/pages/LaporanRetribusiListPage.tsx(1146,34): error TS2367: This comparison appears to be unintentional because the types 'LaporanStatus' and '"verified"' have no overlap.

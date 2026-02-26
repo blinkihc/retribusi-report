@@ -6,9 +6,9 @@
 
 import { eq } from 'drizzle-orm'
 import type { NextFunction, Request, Response } from 'express'
+import { verifyToken } from '../../src/lib/auth/jwt'
 import { db } from '../../src/lib/db'
 import { loginSessions } from '../../src/lib/db/schema'
-import { verifyToken } from '../../src/lib/auth/jwt'
 
 // Extend Express Request type to include user
 declare global {
@@ -60,11 +60,11 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
       db.update(loginSessions)
         .set({ lastActivityAt: new Date() })
         .where(eq(loginSessions.sessionId, decoded.sessionId))
-        .catch(() => { }) // silent fail
+        .catch(() => {}) // silent fail
     }
 
     next()
-  } catch (error) {
+  } catch (_error) {
     return res.status(401).json({
       success: false,
       message: 'Autentikasi gagal.',

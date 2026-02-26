@@ -1,17 +1,36 @@
 import {
-  ChevronDown, ChevronUp, FileText, HelpCircle, MessageCircle,
-  Shield, User, Printer, LayoutDashboard, FileBarChart,
-  Settings, Database, Building2, Receipt, Link as LinkIcon,
-  Sliders, Plus, Trash2, Edit, Save, Download, Search, Menu,
-  Image as ImageIcon, Upload
+  Building2,
+  ChevronDown,
+  ChevronUp,
+  Download,
+  Edit,
+  FileBarChart,
+  FileText,
+  HelpCircle,
+  Image as ImageIcon,
+  LayoutDashboard,
+  Link as LinkIcon,
+  MessageCircle,
+  Plus,
+  Printer,
+  Receipt,
+  Save,
+  Search,
+  Settings,
+  Shield,
+  Trash2,
+  Upload,
+  User,
 } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '../lib/utils/cn'
 
 // --- UI MOCKUP COMPONENTS (Untuk Visualisasi di PDF) ---
-// Mockup ini dibuat agar SEMIRIP mungkin dengan tampilan aplikasi asli
-const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' | 'login' | 'settings' }) => {
-
+const UIMockup = ({
+  type,
+}: {
+  type: 'sidebar' | 'dashboard' | 'table' | 'form' | 'login' | 'settings' | 'rekap'
+}) => {
   // 1. SIDEBAR MOCKUP (REVISED: LIGHT THEME, UPPERCASE)
   if (type === 'sidebar') {
     return (
@@ -19,7 +38,9 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
         {/* Header */}
         <div className="flex items-center gap-2 text-slate-900 font-black mb-6 pb-4 border-b-2 border-slate-100">
           <div className="w-6 h-6 bg-blue-600 rounded-sm shrink-0"></div>
-          <span className="leading-tight tracking-tighter text-[10px]">SISTEM RETRIBUSI DAERAH</span>
+          <span className="leading-tight tracking-tighter text-[10px]">
+            SISTEM RETRIBUSI DAERAH
+          </span>
         </div>
 
         {/* Menu Items */}
@@ -58,7 +79,6 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
   if (type === 'dashboard') {
     return (
       <div className="bg-slate-50 p-2 rounded-lg w-full border border-slate-200 font-sans">
-
         {/* ROW 1: SUMMARY CARDS */}
         <div className="grid grid-cols-5 gap-2 mb-3">
           {/* Card 1 */}
@@ -78,12 +98,16 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
           </div>
           {/* Card 4 (Dark) */}
           <div className="bg-slate-900 p-2 rounded border border-slate-900 shadow-sm flex flex-col justify-between h-14 text-white">
-            <div className="text-[7px] font-bold text-slate-300 uppercase truncate">Total Pendapatan</div>
+            <div className="text-[7px] font-bold text-slate-300 uppercase truncate">
+              Total Pendapatan
+            </div>
             <div className="font-bold text-[10px] truncate">Rp 25.7M</div>
           </div>
           {/* Card 5 */}
           <div className="bg-white p-2 rounded border border-slate-200 shadow-sm flex flex-col justify-between h-14">
-            <div className="text-[7px] font-bold text-slate-500 uppercase truncate">Total Laporan</div>
+            <div className="text-[7px] font-bold text-slate-500 uppercase truncate">
+              Total Laporan
+            </div>
             <div className="font-bold text-[10px] text-slate-900 truncate">13</div>
           </div>
         </div>
@@ -92,18 +116,31 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
         <div className="grid grid-cols-3 gap-2 mb-3 h-28">
           {/* Line Chart (2/3 width) */}
           <div className="col-span-2 bg-white rounded border border-slate-200 p-2 flex flex-col">
-            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Trend Pendapatan (30 Hari)</div>
+            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">
+              Trend Pendapatan (30 Hari)
+            </div>
             <div className="flex-1 relative flex items-end px-2 pb-2">
               {/* Fake Line */}
               <svg viewBox="0 0 100 30" className="w-full h-full overflow-visible">
-                <path d="M0,28 L10,28 L20,28 L30,25 L40,27 L50,26 L60,5 L70,25 L80,27 L90,28 L100,28" fill="none" stroke="#6366f1" strokeWidth="1.5" />
-                <path d="M0,28 L10,28 L20,28 L30,25 L40,27 L50,26 L60,5 L70,25 L80,27 L90,28 L100,28 L100,30 L0,30 Z" fill="#e0e7ff" opacity="0.5" />
+                <path
+                  d="M0,28 L10,28 L20,28 L30,25 L40,27 L50,26 L60,5 L70,25 L80,27 L90,28 L100,28"
+                  fill="none"
+                  stroke="#6366f1"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M0,28 L10,28 L20,28 L30,25 L40,27 L50,26 L60,5 L70,25 L80,27 L90,28 L100,28 L100,30 L0,30 Z"
+                  fill="#e0e7ff"
+                  opacity="0.5"
+                />
               </svg>
             </div>
           </div>
           {/* Pie Chart (1/3 width) */}
           <div className="bg-white rounded border border-slate-200 p-2 flex flex-col">
-            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Komposisi Kategori</div>
+            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">
+              Komposisi Kategori
+            </div>
             <div className="flex-1 flex items-center justify-center">
               <div className="w-12 h-12 rounded-full border-4 border-blue-500 border-r-orange-400 border-b-green-400 rotate-45"></div>
             </div>
@@ -114,16 +151,26 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
         <div className="grid grid-cols-2 gap-2 mb-3 h-24">
           {/* Horizontal Bar */}
           <div className="bg-white rounded border border-slate-200 p-2">
-            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Performa OPD (Top 10)</div>
+            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">
+              Performa OPD (Top 10)
+            </div>
             <div className="space-y-1 mt-1">
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[80%] h-full"></div></div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[40%] h-full"></div></div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div className="bg-black w-[20%] h-full"></div></div>
+              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-black w-[80%] h-full"></div>
+              </div>
+              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-black w-[40%] h-full"></div>
+              </div>
+              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-black w-[20%] h-full"></div>
+              </div>
             </div>
           </div>
           {/* Vertical Bar */}
           <div className="bg-white rounded border border-slate-200 p-2 flex flex-col">
-            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">Top Jenis Retribusi</div>
+            <div className="text-[8px] font-bold uppercase text-slate-700 mb-2 border-b pb-1">
+              Top Jenis Retribusi
+            </div>
             <div className="flex-1 flex items-end justify-around gap-1 pb-1">
               <div className="w-3 bg-blue-500 h-[80%] rounded-t-[2px]"></div>
               <div className="w-3 bg-green-500 h-[20%] rounded-t-[2px]"></div>
@@ -141,16 +188,23 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
           </div>
           <div className="border-t border-slate-100 pt-1">
             <div className="flex justify-between items-center py-1 border-b border-slate-50">
-              <div className="text-[8px] font-bold text-slate-800">LR/DIN/2025/001 <span className="text-slate-400 font-normal block">Retribusi Pelayanan Kesehatan</span></div>
+              <div className="text-[8px] font-bold text-slate-800">
+                LR/DIN/2025/001{' '}
+                <span className="text-slate-400 font-normal block">
+                  Retribusi Pelayanan Kesehatan
+                </span>
+              </div>
               <div className="text-[8px] font-bold">Rp 500.000</div>
             </div>
             <div className="flex justify-between items-center py-1">
-              <div className="text-[8px] font-bold text-slate-800">LR/DIN/2025/002 <span className="text-slate-400 font-normal block">Retribusi Parkir</span></div>
+              <div className="text-[8px] font-bold text-slate-800">
+                LR/DIN/2025/002{' '}
+                <span className="text-slate-400 font-normal block">Retribusi Parkir</span>
+              </div>
               <div className="text-[8px] font-bold">Rp 150.000</div>
             </div>
           </div>
         </div>
-
       </div>
     )
   }
@@ -187,11 +241,19 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
                   <div className="text-[8px] text-slate-500">KODE-00{i + 1}</div>
                 </td>
                 <td className="p-2 text-slate-600">Umum</td>
-                <td className="p-2 text-center"><span className="bg-green-100 text-green-700 px-1.5 py-0.5 rounded-[3px] text-[8px] font-medium">Aktif</span></td>
+                <td className="p-2 text-center">
+                  <span className="bg-green-100 text-green-700 px-1.5 py-0.5 rounded-[3px] text-[8px] font-medium">
+                    Aktif
+                  </span>
+                </td>
                 <td className="p-2 text-right">
                   <div className="flex justify-end gap-1">
-                    <div className="p-1 bg-slate-100 rounded hover:bg-slate-200"><Edit className="w-2 h-2 text-slate-600" /></div>
-                    <div className="p-1 bg-red-50 rounded hover:bg-red-100"><Trash2 className="w-2 h-2 text-red-500" /></div>
+                    <div className="p-1 bg-slate-100 rounded hover:bg-slate-200">
+                      <Edit className="w-2 h-2 text-slate-600" />
+                    </div>
+                    <div className="p-1 bg-red-50 rounded hover:bg-red-100">
+                      <Trash2 className="w-2 h-2 text-red-500" />
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -220,15 +282,23 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
         </div>
         <div className="space-y-2.5">
           <div>
-            <div className="text-[9px] font-medium mb-1 text-slate-700">Nama OPD <span className="text-red-500">*</span></div>
-            <div className="h-7 border border-slate-200 rounded bg-white w-full px-2 flex items-center text-[10px]">Dinas Pendidikan</div>
+            <div className="text-[9px] font-medium mb-1 text-slate-700">
+              Nama OPD <span className="text-red-500">*</span>
+            </div>
+            <div className="h-7 border border-slate-200 rounded bg-white w-full px-2 flex items-center text-[10px]">
+              Dinas Pendidikan
+            </div>
           </div>
           <div>
             <div className="text-[9px] font-medium mb-1 text-slate-700">Kode Rekening</div>
-            <div className="h-7 border border-slate-200 rounded bg-white w-full px-2 flex items-center text-[10px] text-slate-400">Masukkan kode...</div>
+            <div className="h-7 border border-slate-200 rounded bg-white w-full px-2 flex items-center text-[10px] text-slate-400">
+              Masukkan kode...
+            </div>
           </div>
           <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-slate-100">
-            <div className="px-2 py-1 bg-white border border-slate-200 rounded text-[9px] font-medium text-slate-600">Batal</div>
+            <div className="px-2 py-1 bg-white border border-slate-200 rounded text-[9px] font-medium text-slate-600">
+              Batal
+            </div>
             <div className="px-2 py-1 bg-black text-white rounded text-[9px] font-medium flex items-center gap-1">
               <Save className="w-2 h-2" /> Simpan
             </div>
@@ -260,11 +330,12 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
 
         {/* Settings Content */}
         <div className="p-4 bg-slate-50/50">
-
           {/* Header Text */}
           <div className="mb-4">
             <div className="text-sm font-bold text-slate-900">Konfigurasi Umum</div>
-            <div className="text-[10px] text-slate-500">Kelola pengaturan umum aplikasi dan format dokumen</div>
+            <div className="text-[10px] text-slate-500">
+              Kelola pengaturan umum aplikasi dan format dokumen
+            </div>
           </div>
 
           {/* Card 1: Format Nomor */}
@@ -287,7 +358,9 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
             <div className="flex justify-between items-start mb-2">
               <div>
                 <div className="text-[10px] font-bold text-slate-700 mb-0.5">Logo Kabupaten</div>
-                <div className="text-[9px] text-slate-500">Upload logo kabupaten yang akan ditampilkan di PDF laporan retribusi</div>
+                <div className="text-[9px] text-slate-500">
+                  Upload logo kabupaten yang akan ditampilkan di PDF laporan retribusi
+                </div>
               </div>
               <div className="p-1.5 bg-blue-50 text-blue-600 rounded border border-blue-100">
                 <ImageIcon className="w-3 h-3" />
@@ -310,12 +383,11 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
             </div>
 
             <div className="text-[8px] text-slate-400 leading-tight">
-              • Format: JPG, PNG<br />
-              • Ukuran maksimal: 2MB<br />
-              • Rekomendasi: 200x200px atau lebih besar
+              • Format: JPG, PNG
+              <br />• Ukuran maksimal: 2MB
+              <br />• Rekomendasi: 200x200px atau lebih besar
             </div>
           </div>
-
         </div>
       </div>
     )
@@ -328,7 +400,9 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
         {/* Header */}
         <div className="mb-3">
           <div className="text-sm font-bold text-slate-900">Laporan Rekap</div>
-          <div className="text-[9px] text-slate-500">Rekap pendapatan retribusi daerah per periode</div>
+          <div className="text-[9px] text-slate-500">
+            Rekap pendapatan retribusi daerah per periode
+          </div>
         </div>
 
         {/* Filter Box */}
@@ -385,14 +459,22 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
 
         {/* Tabs */}
         <div className="flex gap-1 mb-2">
-          <div className="bg-blue-600 text-white px-2 py-1 rounded text-[9px] font-medium">Per OPD</div>
-          <div className="bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded text-[9px] font-medium">Per Kategori</div>
-          <div className="bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded text-[9px] font-medium">Per Jenis Pelayanan</div>
+          <div className="bg-blue-600 text-white px-2 py-1 rounded text-[9px] font-medium">
+            Per OPD
+          </div>
+          <div className="bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded text-[9px] font-medium">
+            Per Kategori
+          </div>
+          <div className="bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded text-[9px] font-medium">
+            Per Jenis Pelayanan
+          </div>
         </div>
 
         {/* Table */}
         <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
-          <div className="p-2 border-b border-slate-100 text-[9px] font-bold text-slate-800 bg-slate-50">Rekap per OPD</div>
+          <div className="p-2 border-b border-slate-100 text-[9px] font-bold text-slate-800 bg-slate-50">
+            Rekap per OPD
+          </div>
           <table className="w-full text-[9px]">
             <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-100">
               <tr>
@@ -418,7 +500,6 @@ const UIMockup = ({ type }: { type: 'sidebar' | 'dashboard' | 'table' | 'form' |
             </tbody>
           </table>
         </div>
-
       </div>
     )
   }
@@ -444,157 +525,170 @@ export default function HelpPage() {
     {
       id: 'item-1',
       question: 'Apakah saya bisa mengubah laporan yang sudah dikirim?',
-      answer: 'Tidak. Laporan yang berstatus Final / Terkirim tidak dapat diubah oleh operator. Jika ada kesalahan, hubungi Admin Bapenda untuk melakukan penolakan laporan agar statusnya kembali menjadi draft dan bisa diedit.'
+      answer:
+        'Tidak. Laporan yang berstatus Final / Terkirim tidak dapat diubah oleh operator. Jika ada kesalahan, hubungi Admin Bapenda untuk melakukan penolakan laporan agar statusnya kembali menjadi draft dan bisa diedit.',
     },
     {
       id: 'item-2',
       question: 'Format file apa saja yang didukung untuk bukti setor?',
-      answer: 'Sistem mendukung file gambar (JPG, PNG, WEBP) dan dokumen PDF. Ukuran maksimal file adalah 5MB. Pastikan foto bukti setor terlihat jelas dan tulisan terbaca.'
+      answer:
+        'Sistem mendukung file gambar (JPG, PNG, WEBP) dan dokumen PDF. Ukuran maksimal file adalah 5MB. Pastikan foto bukti setor terlihat jelas dan tulisan terbaca.',
     },
     {
       id: 'item-3',
       question: 'Bagaimana jika OPD saya tidak muncul di daftar?',
-      answer: 'Jika Anda adalah Operator OPD, Anda hanya akan melihat OPD yang ditugaskan kepada Anda. Jika OPD Anda salah atau tidak muncul, hubungi Admin untuk memperbarui penugasan akun Anda.'
+      answer:
+        'Jika Anda adalah Operator OPD, Anda hanya akan melihat OPD yang ditugaskan kepada Anda. Jika OPD Anda salah atau tidak muncul, hubungi Admin untuk memperbarui penugasan akun Anda.',
     },
     {
       id: 'item-4',
       question: 'Apa arti status "Ditolak"?',
-      answer: 'Status "Ditolak" berarti laporan Anda telah diperiksa oleh Verifikator/Admin namun ditemukan ketidaksesuaian (misal: nominal tidak cocok dengan bukti). Anda perlu mengedit laporan tersebut sesuai catatan penolakan dan mengirimkannya kembali.'
+      answer:
+        'Status "Ditolak" berarti laporan Anda telah diperiksa oleh Verifikator/Admin namun ditemukan ketidaksesuaian (misal: nominal tidak cocok dengan bukti). Anda perlu mengedit laporan tersebut sesuai catatan penolakan dan mengirimkannya kembali.',
     },
     {
       id: 'item-5',
       question: 'Apakah saya bisa mencetak laporan?',
-      answer: 'Ya. Anda dapat mengunduh bukti tanda terima laporan dalam format PDF dengan mengklik tombol Download PDF (ikon panah bawah) pada daftar laporan.'
-    }
+      answer:
+        'Ya. Anda dapat mengunduh bukti tanda terima laporan dalam format PDF dengan mengklik tombol Download PDF (ikon panah bawah) pada daftar laporan.',
+    },
   ]
 
   // Admin Guide Data Lengkap
   const adminChapters = [
     {
-      title: "BAB 1: Pengenalan Antarmuka",
+      title: 'BAB 1: Pengenalan Antarmuka',
       sections: [
         {
-          title: "Menu Navigasi (Sidebar)",
-          content: "Menu navigasi utama terletak di sebelah kiri dengan tampilan terang (Light Mode). Menu ini menyesuaikan dengan hak akses pengguna.",
+          title: 'Menu Navigasi (Sidebar)',
+          content:
+            'Menu navigasi utama terletak di sebelah kiri dengan tampilan terang (Light Mode). Menu ini menyesuaikan dengan hak akses pengguna.',
           mockup: 'sidebar',
           points: [
-            "DASHBOARD: Pusat informasi dan statistik real-time.",
-            "LAPORAN RETRIBUSI: Daftar laporan masuk untuk diverifikasi.",
-            "LAPORAN REKAP: Menu khusus untuk mencetak laporan gabungan/periodik.",
-            "MANAJEMEN USER: Pengelolaan akun pengguna (Operator & Admin).",
-            "SETTINGS: Konfigurasi master data (OPD, Retribusi) dan sistem.",
-            "PROFIL SAYA: Pengaturan akun pribadi pengguna.",
-            "PUSAT BANTUAN: Tombol cepat untuk mengakses panduan ini."
-          ]
-        }
-      ]
+            'DASHBOARD: Pusat informasi dan statistik real-time.',
+            'LAPORAN RETRIBUSI: Daftar laporan masuk untuk diverifikasi.',
+            'LAPORAN REKAP: Menu khusus untuk mencetak laporan gabungan/periodik.',
+            'MANAJEMEN USER: Pengelolaan akun pengguna (Operator & Admin).',
+            'SETTINGS: Konfigurasi master data (OPD, Retribusi) dan sistem.',
+            'PROFIL SAYA: Pengaturan akun pribadi pengguna.',
+            'PUSAT BANTUAN: Tombol cepat untuk mengakses panduan ini.',
+          ],
+        },
+      ],
     },
     {
-      title: "BAB 2: Dashboard & Monitoring",
+      title: 'BAB 2: Dashboard & Monitoring',
       sections: [
         {
-          title: "Membaca Dashboard",
-          content: "Dashboard menyajikan informasi komprehensif mengenai penerimaan retribusi dengan berbagai metrik periode.",
+          title: 'Membaca Dashboard',
+          content:
+            'Dashboard menyajikan informasi komprehensif mengenai penerimaan retribusi dengan berbagai metrik periode.',
           mockup: 'dashboard',
           points: [
-            "Kartu Ringkasan: Memantau pendapatan Hari Ini, Bulan Ini, Tahun Ini, serta Total Akumulasi (Kartu Biru Gelap) dan Jumlah Laporan.",
-            "Grafik Tren & Komposisi: Melihat kenaikan/penurunan pendapatan 30 hari terakhir dan proporsi kategori retribusi.",
-            "Grafik Performa: Membandingkan capaian antar OPD (Top 10) dan jenis retribusi unggulan.",
-            "Laporan Terbaru: Daftar cepat laporan yang baru saja masuk ke sistem."
-          ]
-        }
-      ]
+            'Kartu Ringkasan: Memantau pendapatan Hari Ini, Bulan Ini, Tahun Ini, serta Total Akumulasi (Kartu Biru Gelap) dan Jumlah Laporan.',
+            'Grafik Tren & Komposisi: Melihat kenaikan/penurunan pendapatan 30 hari terakhir dan proporsi kategori retribusi.',
+            'Grafik Performa: Membandingkan capaian antar OPD (Top 10) dan jenis retribusi unggulan.',
+            'Laporan Terbaru: Daftar cepat laporan yang baru saja masuk ke sistem.',
+          ],
+        },
+      ],
     },
     {
-      title: "BAB 3: Manajemen Laporan & Rekapitulasi",
+      title: 'BAB 3: Manajemen Laporan & Rekapitulasi',
       sections: [
         {
-          title: "Verifikasi Laporan Masuk",
-          content: "Tugas utama Admin adalah memvalidasi laporan dari Operator OPD. Pastikan bukti bayar sesuai dengan nominal yang diinput.",
+          title: 'Verifikasi Laporan Masuk',
+          content:
+            'Tugas utama Admin adalah memvalidasi laporan dari Operator OPD. Pastikan bukti bayar sesuai dengan nominal yang diinput.',
           mockup: 'table',
           points: [
             "Buka menu 'Laporan Retribusi'.",
             "Filter status menjadi 'Menunggu Verifikasi'.",
             "Klik tombol 'Mata' (View) untuk melihat detail & bukti foto.",
-            "Klik 'Approve' jika sesuai, atau 'Tolak' jika ada kesalahan."
-          ]
+            "Klik 'Approve' jika sesuai, atau 'Tolak' jika ada kesalahan.",
+          ],
         },
         {
-          title: "Laporan Rekapitulasi",
-          content: "Menu Laporan Rekap menyediakan ringkasan pendapatan daerah yang dapat difilter berdasarkan periode waktu tertentu.",
+          title: 'Laporan Rekapitulasi',
+          content:
+            'Menu Laporan Rekap menyediakan ringkasan pendapatan daerah yang dapat difilter berdasarkan periode waktu tertentu.',
           mockup: 'rekap',
           points: [
-            "Filter Periode: Pilih Bulan dan Tahun untuk melihat data spesifik.",
+            'Filter Periode: Pilih Bulan dan Tahun untuk melihat data spesifik.',
             "Export Data: Gunakan tombol hijau 'Export' untuk mengunduh laporan dalam format Excel atau PDF.",
             "Tab Rekapitulasi: Klik tab 'Per OPD', 'Per Kategori', atau 'Per Jenis Pelayanan' untuk melihat detail breakdown pendapatan.",
-            "Summary Cards: Pantau total pendapatan dan jumlah laporan secara cepat lewat kartu ringkasan di atas."
-          ]
-        }
-      ]
+            'Summary Cards: Pantau total pendapatan dan jumlah laporan secara cepat lewat kartu ringkasan di atas.',
+          ],
+        },
+      ],
     },
     {
-      title: "BAB 4: Pengaturan Master Data",
+      title: 'BAB 4: Pengaturan Master Data',
       sections: [
         {
-          title: "Manajemen OPD (Organisasi Perangkat Daerah)",
-          content: "Menu ini digunakan untuk menambah, mengubah, atau menonaktifkan OPD yang terdaftar dalam sistem.",
+          title: 'Manajemen OPD (Organisasi Perangkat Daerah)',
+          content:
+            'Menu ini digunakan untuk menambah, mengubah, atau menonaktifkan OPD yang terdaftar dalam sistem.',
           mockup: 'table',
           points: [
-            "Masuk ke Menu Settings > Master OPD.",
+            'Masuk ke Menu Settings > Master OPD.',
             "Klik '+ Add New' untuk menambah OPD baru.",
-            "Isi Kode OPD dan Nama OPD dengan lengkap.",
-            "Gunakan tombol Edit (Pensil) untuk mengubah nama OPD jika ada perubahan nomenklatur."
-          ]
+            'Isi Kode OPD dan Nama OPD dengan lengkap.',
+            'Gunakan tombol Edit (Pensil) untuk mengubah nama OPD jika ada perubahan nomenklatur.',
+          ],
         },
         {
-          title: "Manajemen Jenis Retribusi",
-          content: "Mengatur daftar jenis retribusi yang bisa dipilih saat input laporan. Setiap retribusi harus memiliki Kode Rekening.",
+          title: 'Manajemen Jenis Retribusi',
+          content:
+            'Mengatur daftar jenis retribusi yang bisa dipilih saat input laporan. Setiap retribusi harus memiliki Kode Rekening.',
           mockup: 'table',
           points: [
-            "Masuk ke Menu Settings > Master Retribusi.",
+            'Masuk ke Menu Settings > Master Retribusi.',
             "Klik '+ Add New' untuk menambah jenis retribusi.",
-            "Isi Kode Rekening (misal: 4.1.02.01) dan Nama Retribusi.",
-            "Pastikan nama retribusi jelas agar tidak membingungkan operator."
-          ]
+            'Isi Kode Rekening (misal: 4.1.02.01) dan Nama Retribusi.',
+            'Pastikan nama retribusi jelas agar tidak membingungkan operator.',
+          ],
         },
         {
-          title: "Menghubungkan OPD dengan Retribusi",
-          content: "Sangat Penting: Setelah membuat Retribusi, Anda harus menugaskannya ke OPD terkait agar muncul di form input mereka.",
+          title: 'Menghubungkan OPD dengan Retribusi',
+          content:
+            'Sangat Penting: Setelah membuat Retribusi, Anda harus menugaskannya ke OPD terkait agar muncul di form input mereka.',
           mockup: 'form',
           points: [
             "Pada tabel Master Retribusi, klik tombol 'Assign' atau ikon Link.",
-            "Pilih OPD yang berwenang memungut retribusi tersebut.",
-            "Satu jenis retribusi bisa dimiliki oleh lebih dari satu OPD jika diperlukan."
-          ]
-        }
-      ]
+            'Pilih OPD yang berwenang memungut retribusi tersebut.',
+            'Satu jenis retribusi bisa dimiliki oleh lebih dari satu OPD jika diperlukan.',
+          ],
+        },
+      ],
     },
     {
-      title: "BAB 5: Manajemen Pengguna & Konfigurasi",
+      title: 'BAB 5: Manajemen Pengguna & Konfigurasi',
       sections: [
         {
-          title: "Mengelola Akun Pengguna",
-          content: "Admin berwenang membuat akun untuk Operator OPD baru atau Admin lainnya.",
+          title: 'Mengelola Akun Pengguna',
+          content: 'Admin berwenang membuat akun untuk Operator OPD baru atau Admin lainnya.',
           mockup: 'table',
           points: [
-            "Masuk ke menu Users.",
-            "Klik Add New. Isi Nama, Email, dan pilih Role (Operator/Admin).",
-            "Penting: Pilih OPD yang sesuai untuk Operator. Operator hanya bisa melihat data OPD-nya sendiri.",
-            "Password default akan digenerate otomatis oleh sistem. Berikan password tersebut ke user."
-          ]
+            'Masuk ke menu Users.',
+            'Klik Add New. Isi Nama, Email, dan pilih Role (Operator/Admin).',
+            'Penting: Pilih OPD yang sesuai untuk Operator. Operator hanya bisa melihat data OPD-nya sendiri.',
+            'Password default akan digenerate otomatis oleh sistem. Berikan password tersebut ke user.',
+          ],
         },
         {
-          title: "Konfigurasi Umum Sistem",
-          content: "Menu ini digunakan untuk mengatur preferensi global aplikasi, termasuk format penomoran dokumen, identitas instansi, dan identitas pemerintahan.",
+          title: 'Konfigurasi Umum Sistem',
+          content:
+            'Menu ini digunakan untuk mengatur preferensi global aplikasi, termasuk format penomoran dokumen, identitas instansi, dan identitas pemerintahan.',
           mockup: 'settings',
           points: [
-            "Format Nomor Laporan: Anda dapat menyesuaikan format nomor otomatis (misal: LR/{TAHUN}/{NOMOR}) dengan mengklik tombol Edit.",
-            "Logo Kabupaten: Upload logo resmi daerah (format PNG/JPG) yang akan otomatis muncul pada Kop Surat saat mencetak Bukti Tanda Terima PDF.",
-            "Identitas Pemerintahan: Isi 'Jenis Pemerintahan' (misal: PEMERINTAH KABUPATEN) dan 'Nama Pemerintahan' (misal: KABUPATEN BANYUMAS). Informasi ini akan ditampilkan di header PDF laporan retribusi, tepat di atas nama OPD."
-          ]
-        }
-      ]
-    }
+            'Format Nomor Laporan: Anda dapat menyesuaikan format nomor otomatis (misal: LR/{TAHUN}/{NOMOR}) dengan mengklik tombol Edit.',
+            'Logo Kabupaten: Upload logo resmi daerah (format PNG/JPG) yang akan otomatis muncul pada Kop Surat saat mencetak Bukti Tanda Terima PDF.',
+            "Identitas Pemerintahan: Isi 'Jenis Pemerintahan' (misal: PEMERINTAH KABUPATEN) dan 'Nama Pemerintahan' (misal: KABUPATEN BANYUMAS). Informasi ini akan ditampilkan di header PDF laporan retribusi, tepat di atas nama OPD.",
+          ],
+        },
+      ],
+    },
   ]
 
   // Style Injection untuk Hide Layout Elements saat Print
@@ -640,7 +734,10 @@ export default function HelpPage() {
   `
 
   return (
-    <div id="help-page-content" className="min-h-screen bg-slate-50 pb-12 print:bg-white print:pb-0">
+    <div
+      id="help-page-content"
+      className="min-h-screen bg-slate-50 pb-12 print:bg-white print:pb-0"
+    >
       <style>{printStyles}</style>
 
       {/* --- E-BOOK COVER PAGE (Print Only) --- */}
@@ -648,7 +745,9 @@ export default function HelpPage() {
         <div className="mb-12">
           <Shield className="w-32 h-32 mx-auto mb-4 text-black" />
           <h1 className="text-5xl font-black uppercase tracking-tight mb-4">BUKU PANDUAN</h1>
-          <h2 className="text-3xl font-light uppercase tracking-widest text-slate-600">Sistem Laporan Retribusi</h2>
+          <h2 className="text-3xl font-light uppercase tracking-widest text-slate-600">
+            Sistem Laporan Retribusi
+          </h2>
         </div>
         <div className="mt-auto mb-24">
           <p className="text-xl font-bold mb-2">UNTUK ADMINISTRATOR</p>
@@ -663,17 +762,22 @@ export default function HelpPage() {
         <h2 className="text-3xl font-bold mb-8 border-b-2 border-black pb-4">KATA PENGANTAR</h2>
         <div className="text-justify space-y-6 text-lg leading-relaxed text-slate-800 font-serif">
           <p>
-            Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, karena atas rahmat dan karunia-Nya, pengembangan Sistem Laporan Retribusi Daerah ini dapat diselesaikan dan siap digunakan.
+            Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, karena atas rahmat dan
+            karunia-Nya, pengembangan Sistem Laporan Retribusi Daerah ini dapat diselesaikan dan
+            siap digunakan.
           </p>
           <p>
-            Buku panduan ini disusun khusus untuk Administrator sistem, dengan tujuan memberikan pemahaman mendalam mengenai pengelolaan data, manajemen pengguna, serta konfigurasi sistem secara keseluruhan. Peran Administrator sangat krusial dalam menjaga validitas data dan kelancaran operasional pelaporan retribusi dari seluruh OPD.
+            Buku panduan ini disusun khusus untuk Administrator sistem, dengan tujuan memberikan
+            pemahaman mendalam mengenai pengelolaan data, manajemen pengguna, serta konfigurasi
+            sistem secara keseluruhan. Peran Administrator sangat krusial dalam menjaga validitas
+            data dan kelancaran operasional pelaporan retribusi dari seluruh OPD.
           </p>
           <p>
-            Kami berharap panduan ini dapat mempermudah Bapak/Ibu Administrator dalam menjalankan tugasnya. Kritik dan saran yang membangun sangat kami harapkan demi penyempurnaan sistem ini di masa mendatang.
+            Kami berharap panduan ini dapat mempermudah Bapak/Ibu Administrator dalam menjalankan
+            tugasnya. Kritik dan saran yang membangun sangat kami harapkan demi penyempurnaan sistem
+            ini di masa mendatang.
           </p>
-          <p className="mt-12 pt-12">
-            Tim Pengembang Aplikasi
-          </p>
+          <p className="mt-12 pt-12">Tim Pengembang Aplikasi</p>
         </div>
       </div>
 
@@ -682,7 +786,10 @@ export default function HelpPage() {
         <h2 className="text-3xl font-bold mb-8 border-b-2 border-black pb-4">DAFTAR ISI</h2>
         <ul className="space-y-4 text-lg">
           {adminChapters.map((chapter, idx) => (
-            <li key={idx} className="flex justify-between border-b border-dotted border-slate-400 pb-1">
+            <li
+              key={idx}
+              className="flex justify-between border-b border-dotted border-slate-400 pb-1"
+            >
               <span>{chapter.title}</span>
               <span className="font-bold">Bab {idx + 1}</span>
             </li>
@@ -716,10 +823,10 @@ export default function HelpPage() {
           <button
             onClick={() => setActiveTab('general')}
             className={cn(
-              "py-4 px-2 font-bold text-sm uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2",
+              'py-4 px-2 font-bold text-sm uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2',
               activeTab === 'general'
-                ? "border-black text-black"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? 'border-black text-black'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
             )}
           >
             <User className="h-4 w-4" />
@@ -728,10 +835,10 @@ export default function HelpPage() {
           <button
             onClick={() => setActiveTab('admin')}
             className={cn(
-              "py-4 px-2 font-bold text-sm uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2",
+              'py-4 px-2 font-bold text-sm uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2',
               activeTab === 'admin'
-                ? "border-black text-black"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? 'border-black text-black'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
             )}
           >
             <Shield className="h-4 w-4" />
@@ -741,9 +848,10 @@ export default function HelpPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 lg:px-8 py-8 space-y-12 print:max-w-none print:px-8 print:py-0">
-
         {/* General User Content (Simple FAQ & Quick Guide) */}
-        <div className={cn("space-y-12", activeTab === 'general' ? 'block' : 'hidden print:hidden')}>
+        <div
+          className={cn('space-y-12', activeTab === 'general' ? 'block' : 'hidden print:hidden')}
+        >
           <section>
             <h2 className="text-xl font-bold uppercase tracking-wide mb-6 flex items-center gap-2">
               <FileText className="h-5 w-5" /> Panduan Cepat Operator
@@ -752,9 +860,13 @@ export default function HelpPage() {
               {/* Simple cards for web view */}
               <div className="bg-white p-6 rounded-lg border-2 border-black shadow-hard">
                 <h3 className="font-bold text-lg mb-2">Input Laporan Baru</h3>
-                <p className="text-slate-600 text-sm mb-4">Langkah-langkah melaporkan setoran retribusi:</p>
+                <p className="text-slate-600 text-sm mb-4">
+                  Langkah-langkah melaporkan setoran retribusi:
+                </p>
                 <ol className="list-decimal list-inside space-y-2 text-sm text-slate-700">
-                  <li>Klik menu <strong>Input Laporan</strong></li>
+                  <li>
+                    Klik menu <strong>Input Laporan</strong>
+                  </li>
                   <li>Pilih jenis retribusi</li>
                   <li>Isi tanggal dan nominal</li>
                   <li>Upload bukti</li>
@@ -769,12 +881,20 @@ export default function HelpPage() {
             </h2>
             <div className="space-y-4">
               {faqs.map((faq) => (
-                <div key={faq.id} className="bg-white border-2 border-black rounded-lg overflow-hidden shadow-sm">
-                  <button onClick={() => toggleItem(faq.id)} className="w-full flex justify-between p-4 font-bold text-left">
+                <div
+                  key={faq.id}
+                  className="bg-white border-2 border-black rounded-lg overflow-hidden shadow-sm"
+                >
+                  <button
+                    onClick={() => toggleItem(faq.id)}
+                    className="w-full flex justify-between p-4 font-bold text-left"
+                  >
                     {faq.question}
                     {openItem === faq.id ? <ChevronUp /> : <ChevronDown />}
                   </button>
-                  {openItem === faq.id && <div className="p-4 pt-0 border-t text-slate-600">{faq.answer}</div>}
+                  {openItem === faq.id && (
+                    <div className="p-4 pt-0 border-t text-slate-600">{faq.answer}</div>
+                  )}
                 </div>
               ))}
             </div>
@@ -782,7 +902,7 @@ export default function HelpPage() {
         </div>
 
         {/* ADMIN CONTENT (E-BOOK STYLE) */}
-        <div className={cn("space-y-12", activeTab === 'admin' ? 'block' : 'hidden print:block')}>
+        <div className={cn('space-y-12', activeTab === 'admin' ? 'block' : 'hidden print:block')}>
           {adminChapters.map((chapter, idx) => (
             <section key={idx} className="print:break-before-page mb-16 print:mb-0">
               {/* Chapter Header */}
@@ -795,7 +915,10 @@ export default function HelpPage() {
               {/* Sections */}
               <div className="space-y-12 print:space-y-10">
                 {chapter.sections.map((section, sIdx) => (
-                  <div key={sIdx} className="flex flex-col md:flex-row gap-8 print:break-inside-avoid">
+                  <div
+                    key={sIdx}
+                    className="flex flex-col md:flex-row gap-8 print:break-inside-avoid"
+                  >
                     {/* Left/Top: Content */}
                     <div className="flex-1">
                       <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
@@ -804,9 +927,7 @@ export default function HelpPage() {
                         </span>
                         {section.title}
                       </h3>
-                      <p className="text-slate-700 mb-4 leading-relaxed">
-                        {section.content}
-                      </p>
+                      <p className="text-slate-700 mb-4 leading-relaxed">{section.content}</p>
                       <ul className="space-y-2">
                         {section.points.map((point, pIdx) => (
                           <li key={pIdx} className="flex items-start gap-2 text-sm text-slate-600">

@@ -18,7 +18,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:seed": "bun scripts/seed.ts",
-    "check": "biome check --write .",
+    "check": "biome check --write src server scripts",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test"

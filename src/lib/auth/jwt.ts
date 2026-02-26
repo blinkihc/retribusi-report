@@ -35,8 +35,8 @@ export interface JWTPayload {
  */
 export function generateToken(payload: JWTPayload, rememberMe = false): string {
   const expiresIn = rememberMe ? '7d' : JWT_EXPIRES_IN
-  return jwt.sign(payload, JWT_SECRET, {
-    expiresIn,
+  return jwt.sign({ ...payload }, JWT_SECRET, {
+    expiresIn: expiresIn as any,
   })
 }
 

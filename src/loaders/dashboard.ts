@@ -28,13 +28,13 @@ export async function dashboardStatsLoader({ request }: LoaderFunctionArgs) {
 export async function dashboardHomeLoader({ request }: LoaderFunctionArgs) {
   try {
     const [
-      stats, 
-      recentReports, 
+      stats,
+      recentReports,
       revenueTrend,
       revenueTrendDaily,
       opdRevenue,
       categoryRevenue,
-      topRetribusi
+      topRetribusi,
     ] = await Promise.all([
       api.getDashboardStats(),
       api.getRecentReports(5),

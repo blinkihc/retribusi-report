@@ -3,8 +3,8 @@
  * Run this script to add default settings to database
  */
 
+import fs from 'node:fs'
 import { sql } from 'drizzle-orm'
-import fs from 'fs'
 import { db } from '../src/lib/db/index.js'
 
 async function insertDefaultSettings() {

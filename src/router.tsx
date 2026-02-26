@@ -7,17 +7,17 @@
  * - Error boundaries per route
  */
 
-import { Suspense, lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 // Import loaders and actions
 import { loginAction } from './actions/auth'
 import DashboardLayout from './components/layout/DashboardLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 import { DashboardSkeleton } from './components/skeletons/DashboardSkeleton'
-// Eager load critical pages
-import LoginPage from './pages/LoginPage'
 import ErrorPage from './pages/ErrorPage'
 import HomePage from './pages/HomePage'
+// Eager load critical pages
+import LoginPage from './pages/LoginPage'
 
 // Lazy load other pages
 const DashboardHomePage = lazy(() => import('./pages/DashboardHomePage'))

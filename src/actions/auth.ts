@@ -6,7 +6,6 @@
 
 import type { ActionFunctionArgs } from 'react-router-dom'
 import { redirect } from 'react-router-dom'
-import { api } from '@/lib/api/client'
 import { storeToken, storeUser } from '@/lib/auth/storage'
 import { loginSchema } from '@/lib/validation/user'
 

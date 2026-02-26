@@ -46,7 +46,7 @@ export const emailSchema = z.string().email({ message: 'Format email tidak valid
 export const fileUploadSchema = z.object({
   filename: z.string(),
   mimetype: z.enum(['application/pdf', 'image/jpeg', 'image/png'], {
-    errorMap: () => ({ message: 'Hanya file PDF, JPG, atau PNG yang diperbolehkan' }),
+    message: 'Hanya file PDF, JPG, atau PNG yang diperbolehkan',
   }),
   size: z.number().max(5 * 1024 * 1024, {
     message: 'Ukuran file maksimal 5MB',

@@ -48,7 +48,7 @@ export default function UserDropdown({ user }: UserDropdownProps) {
       })
       toast.success(`User ${user.username} berhasil keluar pada jam ${time}`)
       navigate('/login')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Gagal logout')
     }
   }

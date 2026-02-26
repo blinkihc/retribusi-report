@@ -4,7 +4,7 @@
  * Public landing page dengan modern design
  */
 
-import { ArrowRight, BarChart3, FileText, Shield, TrendingUp, Users, Zap } from 'lucide-react'
+import { ArrowRight, BarChart3, FileText, Shield, TrendingUp, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function HomePage() {

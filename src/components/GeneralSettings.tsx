@@ -450,7 +450,8 @@ export default function GeneralSettings() {
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Identitas Pemerintahan</h3>
                 <p className="text-sm text-gray-600 mb-6">
-                  Informasi ini akan ditampilkan di bagian header PDF laporan retribusi, di atas nama OPD.
+                  Informasi ini akan ditampilkan di bagian header PDF laporan retribusi, di atas
+                  nama OPD.
                 </p>
 
                 <div className="space-y-4">
@@ -458,7 +459,9 @@ export default function GeneralSettings() {
                   <div className="rounded-lg border border-gray-200 p-4">
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex-1">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Pemerintahan</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Jenis Pemerintahan
+                        </label>
                         {editingJenisPemerintahan ? (
                           <div className="flex items-center gap-2">
                             <input
@@ -470,11 +473,20 @@ export default function GeneralSettings() {
                             />
                             <button
                               type="button"
-                              onClick={() => jenisPemerintahanMutation.mutate({ value: jenisPemerintahanValue, description: 'Jenis pemerintahan untuk header PDF' })}
+                              onClick={() =>
+                                jenisPemerintahanMutation.mutate({
+                                  value: jenisPemerintahanValue,
+                                  description: 'Jenis pemerintahan untuk header PDF',
+                                })
+                              }
                               disabled={jenisPemerintahanMutation.isPending}
                               className="flex items-center gap-1 rounded-lg bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700 disabled:opacity-50 transition-colors"
                             >
-                              {jenisPemerintahanMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                              {jenisPemerintahanMutation.isPending ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <Save className="h-4 w-4" />
+                              )}
                               Simpan
                             </button>
                             <button
@@ -488,12 +500,16 @@ export default function GeneralSettings() {
                         ) : (
                           <div className="flex items-center gap-3">
                             <span className="text-sm text-gray-900 font-medium">
-                              {jenisPemerintahanSetting?.data?.value || <span className="text-gray-400 italic">Belum diatur</span>}
+                              {jenisPemerintahanSetting?.data?.value || (
+                                <span className="text-gray-400 italic">Belum diatur</span>
+                              )}
                             </span>
                             <button
                               type="button"
                               onClick={() => {
-                                setJenisPemerintahanValue(jenisPemerintahanSetting?.data?.value || '')
+                                setJenisPemerintahanValue(
+                                  jenisPemerintahanSetting?.data?.value || ''
+                                )
                                 setEditingJenisPemerintahan(true)
                               }}
                               className="flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
@@ -510,7 +526,9 @@ export default function GeneralSettings() {
                   <div className="rounded-lg border border-gray-200 p-4">
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex-1">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Nama Pemerintahan</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Nama Pemerintahan
+                        </label>
                         {editingNamaPemerintahan ? (
                           <div className="flex items-center gap-2">
                             <input
@@ -522,11 +540,20 @@ export default function GeneralSettings() {
                             />
                             <button
                               type="button"
-                              onClick={() => namaPemerintahanMutation.mutate({ value: namaPemerintahanValue, description: 'Nama pemerintahan untuk header PDF' })}
+                              onClick={() =>
+                                namaPemerintahanMutation.mutate({
+                                  value: namaPemerintahanValue,
+                                  description: 'Nama pemerintahan untuk header PDF',
+                                })
+                              }
                               disabled={namaPemerintahanMutation.isPending}
                               className="flex items-center gap-1 rounded-lg bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700 disabled:opacity-50 transition-colors"
                             >
-                              {namaPemerintahanMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                              {namaPemerintahanMutation.isPending ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <Save className="h-4 w-4" />
+                              )}
                               Simpan
                             </button>
                             <button
@@ -540,7 +567,9 @@ export default function GeneralSettings() {
                         ) : (
                           <div className="flex items-center gap-3">
                             <span className="text-sm text-gray-900 font-medium">
-                              {namaPemerintahanSetting?.data?.value || <span className="text-gray-400 italic">Belum diatur</span>}
+                              {namaPemerintahanSetting?.data?.value || (
+                                <span className="text-gray-400 italic">Belum diatur</span>
+                              )}
                             </span>
                             <button
                               type="button"
@@ -562,7 +591,8 @@ export default function GeneralSettings() {
                 {/* Info */}
                 <div className="mt-4 rounded-lg bg-blue-50 p-3">
                   <p className="text-xs text-blue-700">
-                    <strong>Contoh hasil di header PDF:</strong> PEMERINTAH KABUPATEN / KABUPATEN BANYUMAS → ditampilkan di atas nama OPD.
+                    <strong>Contoh hasil di header PDF:</strong> PEMERINTAH KABUPATEN / KABUPATEN
+                    BANYUMAS → ditampilkan di atas nama OPD.
                   </p>
                 </div>
               </div>

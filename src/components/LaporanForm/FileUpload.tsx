@@ -60,7 +60,10 @@ export default function FileUpload({ file, onFileChange, error, progress }: File
 
   return (
     <div>
-      <label htmlFor="file-upload" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+      <label
+        htmlFor="file-upload"
+        className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2"
+      >
         Bukti Pembayaran <span className="text-red-600">*</span>
       </label>
 
@@ -68,8 +71,8 @@ export default function FileUpload({ file, onFileChange, error, progress }: File
         <label
           htmlFor="file-upload"
           className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed cursor-pointer transition-all group relative overflow-hidden ${
-            error 
-              ? 'border-red-500 bg-red-50 hover:bg-red-100' 
+            error
+              ? 'border-red-500 bg-red-50 hover:bg-red-100'
               : 'border-slate-400 bg-slate-50 hover:border-black hover:bg-yellow-50'
           }`}
         >
@@ -98,7 +101,11 @@ export default function FileUpload({ file, onFileChange, error, progress }: File
             <div className="flex-1">
               {preview ? (
                 <div className="relative border-2 border-slate-200 inline-block">
-                  <img src={preview} alt="Preview" className="h-32 w-auto object-contain bg-slate-50" />
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="h-32 w-auto object-contain bg-slate-50"
+                  />
                 </div>
               ) : (
                 <div className="flex items-center gap-4">
@@ -106,23 +113,27 @@ export default function FileUpload({ file, onFileChange, error, progress }: File
                     <span className="text-sm font-black text-red-600">PDF</span>
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-slate-900 uppercase tracking-wide">{file.name}</p>
+                    <p className="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                      {file.name}
+                    </p>
                     <p className="text-xs font-mono text-slate-500 mt-1">
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                   </div>
                 </div>
               )}
-              
+
               {/* Progress Bar */}
               {progress !== undefined && progress > 0 && progress < 100 && (
                 <div className="mt-3">
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="font-bold text-slate-500 uppercase tracking-wider">Mengupload...</span>
+                    <span className="font-bold text-slate-500 uppercase tracking-wider">
+                      Mengupload...
+                    </span>
                     <span className="font-mono font-bold text-slate-900">{progress}%</span>
                   </div>
                   <div className="w-full bg-slate-100 h-2 border border-slate-200">
-                    <div 
+                    <div
                       className="bg-black h-full transition-all duration-300 ease-out"
                       style={{ width: `${progress}%` }}
                     />

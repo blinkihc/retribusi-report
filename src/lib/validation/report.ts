@@ -77,7 +77,7 @@ export const bulkUploadSchema = z.object({
 // Export schema
 export const exportLaporanSchema = z.object({
   format: z.enum(['excel', 'pdf'], {
-    errorMap: () => ({ message: 'Format harus excel atau pdf' }),
+    message: 'Format harus excel atau pdf',
   }),
   opdId: z.coerce.number().int().positive().optional(),
   jenisRetribusiId: z.coerce.number().int().positive().optional(),

@@ -492,7 +492,11 @@ export default function UsersPage() {
                         className="relative -ml-px inline-flex items-center border border-gray-300 bg-gray-50 px-3 py-2 text-gray-500 hover:bg-gray-100 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
                         title={showPassword ? 'Sembunyikan Password' : 'Lihat Password'}
                       >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </button>
                       <button
                         type="button"
@@ -503,25 +507,33 @@ export default function UsersPage() {
                         <RefreshCw className="h-4 w-4" />
                       </button>
                     </div>
-                    
+
                     {/* Strength Indicator */}
                     {formData.password && (
                       <div className="mt-2">
                         <div className="flex gap-1 h-1">
                           {[1, 2, 3, 4, 5].map((level) => (
-                            <div 
-                              key={level} 
+                            <div
+                              key={level}
                               className={`flex-1 rounded-full transition-all ${
-                                getPasswordStrength(formData.password) >= level 
-                                  ? getStrengthColor(getPasswordStrength(formData.password)) 
+                                getPasswordStrength(formData.password) >= level
+                                  ? getStrengthColor(getPasswordStrength(formData.password))
                                   : 'bg-gray-200'
-                              }`} 
+                              }`}
                             />
                           ))}
                         </div>
                         <p className="text-xs text-gray-500 mt-1">
-                          Kekuatan: {
-                            ['Sangat Lemah', 'Lemah', 'Sedang', 'Kuat', 'Sangat Kuat', 'Sangat Kuat'][getPasswordStrength(formData.password)]
+                          Kekuatan:{' '}
+                          {
+                            [
+                              'Sangat Lemah',
+                              'Lemah',
+                              'Sedang',
+                              'Kuat',
+                              'Sangat Kuat',
+                              'Sangat Kuat',
+                            ][getPasswordStrength(formData.password)]
                           }
                         </p>
                       </div>

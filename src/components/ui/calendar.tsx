@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import * as React from 'react'
+import type * as React from 'react'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/style.css'
 
@@ -7,12 +7,7 @@ import { cn } from '../../lib/utils/cn'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
-function Calendar({
-  className,
-  classNames,
-  showOutsideDays = true,
-  ...props
-}: CalendarProps) {
+function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -30,8 +25,7 @@ function Calendar({
         nav_button_next: 'absolute right-1',
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex',
-        head_cell:
-          'text-slate-500 rounded-none w-9 font-bold text-[0.8rem] uppercase',
+        head_cell: 'text-slate-500 rounded-none w-9 font-bold text-[0.8rem] uppercase',
         row: 'flex w-full mt-2',
         cell: 'h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:bg-slate-100 [&:has([aria-selected].day-outside)]:bg-slate-100/50 [&:has([aria-selected])]:bg-slate-100 first:[&:has([aria-selected])]:rounded-l-none last:[&:has([aria-selected])]:rounded-r-none focus-within:relative focus-within:z-20',
         day: cn(
@@ -44,15 +38,16 @@ function Calendar({
         day_outside:
           'day-outside text-slate-500 opacity-50 aria-selected:bg-slate-100/50 aria-selected:text-slate-500 aria-selected:opacity-30',
         day_disabled: 'text-slate-500 opacity-50',
-        day_range_middle:
-          'aria-selected:bg-slate-100 aria-selected:text-slate-900',
+        day_range_middle: 'aria-selected:bg-slate-100 aria-selected:text-slate-900',
         day_hidden: 'invisible',
         ...classNames,
       }}
-      components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
-      }}
+      components={
+        {
+          IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
+          IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        } as any
+      }
       modifiers={{
         weekend: { dayOfWeek: [0, 6] },
       }}

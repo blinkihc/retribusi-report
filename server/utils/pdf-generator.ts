@@ -115,8 +115,14 @@ function formatTerbilang(nominal: string): string {
 export async function generateLaporanPDF(laporan: LaporanData, res: Response): Promise<void> {
   // Fetch settings
   const [logoSetting] = await db.select().from(settings).where(eq(settings.key, 'logo_kabupaten'))
-  const [jenisPemerintahanSetting] = await db.select().from(settings).where(eq(settings.key, 'jenis_pemerintahan'))
-  const [namaPemerintahanSetting] = await db.select().from(settings).where(eq(settings.key, 'nama_pemerintahan'))
+  const [jenisPemerintahanSetting] = await db
+    .select()
+    .from(settings)
+    .where(eq(settings.key, 'jenis_pemerintahan'))
+  const [namaPemerintahanSetting] = await db
+    .select()
+    .from(settings)
+    .where(eq(settings.key, 'nama_pemerintahan'))
 
   const jenisPemerintahan = jenisPemerintahanSetting?.value || ''
   const namaPemerintahan = namaPemerintahanSetting?.value || ''
@@ -208,19 +214,25 @@ export async function generateLaporanPDF(laporan: LaporanData, res: Response): P
 
   // Jenis Pemerintahan (e.g. "PEMERINTAH KABUPATEN")
   if (jenisPemerintahan) {
-    doc.fontSize(18).font('Helvetica-Bold').text(jenisPemerintahan.toUpperCase(), opdInfoX, opdInfoY, {
-      width: opdInfoWidth,
-      align: 'center',
-    })
+    doc
+      .fontSize(18)
+      .font('Helvetica-Bold')
+      .text(jenisPemerintahan.toUpperCase(), opdInfoX, opdInfoY, {
+        width: opdInfoWidth,
+        align: 'center',
+      })
     opdInfoY += 16
   }
 
   // Nama Pemerintahan (e.g. "KABUPATEN BANYUMAS")
   if (namaPemerintahan) {
-    doc.fontSize(18).font('Helvetica-Bold').text(namaPemerintahan.toUpperCase(), opdInfoX, opdInfoY, {
-      width: opdInfoWidth,
-      align: 'center',
-    })
+    doc
+      .fontSize(18)
+      .font('Helvetica-Bold')
+      .text(namaPemerintahan.toUpperCase(), opdInfoX, opdInfoY, {
+        width: opdInfoWidth,
+        align: 'center',
+      })
     opdInfoY += 18
   }
 

@@ -21,21 +21,21 @@ import path from 'node:path'
 import cors from 'cors'
 import express from 'express'
 import { authMiddleware } from './middleware/auth'
+import { captchaRouter } from './middleware/captcha'
 import { errorHandler } from './middleware/errorHandler'
 import { authRouter } from './routes/auth'
 import { dashboardRouter } from './routes/dashboard'
 import { debugRouter } from './routes/debug'
 import { jenisRetribusiRouter } from './routes/jenis-retribusi'
 import { laporanRetribusiRouter } from './routes/laporan-retribusi'
+import { laporanTargetRealisasiRouter } from './routes/laporan-target-realisasi'
+import { notificationsRouter } from './routes/notifications'
 import { opdRouter } from './routes/opd'
 import { opdPelayananRouter } from './routes/opd-pelayanan'
 import { reportsRouter } from './routes/reports'
 import { settingsRouter } from './routes/settings'
-import { usersRouter } from './routes/users'
 import { targetRetribusiRouter } from './routes/target-retribusi'
-import { laporanTargetRealisasiRouter } from './routes/laporan-target-realisasi'
-import { captchaRouter } from './middleware/captcha'
-import { notificationsRouter } from './routes/notifications'
+import { usersRouter } from './routes/users'
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -70,13 +70,13 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static(path.join(process.cwd(), 'server', 'public', 'uploads')))
 
 // Request logging
-app.use((req, res, next) => {
+app.use((req, _res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`)
   next()
 })
 
 // Health check
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),

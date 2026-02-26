@@ -18,7 +18,7 @@
  * Last Updated: 2025-11-13
  */
 
-import { and, eq, gte, lte, lt, sql } from 'drizzle-orm'
+import { and, eq, gte, lt, sql } from 'drizzle-orm'
 import { Router } from 'express'
 import { db } from '../../src/lib/db'
 import { jenisRetribusi, laporanRetribusi, opd } from '../../src/lib/db/schema'
@@ -339,13 +339,13 @@ dashboardRouter.get('/revenue-trend-daily', async (req, res, next) => {
       if (map.has(dateStr)) {
         result.push({
           ...map.get(dateStr),
-          total: Number(map.get(dateStr)?.total || 0)
+          total: Number(map.get(dateStr)?.total || 0),
         })
       } else {
         result.push({
           date: dateStr,
           total: 0,
-          count: 0
+          count: 0,
         })
       }
     }

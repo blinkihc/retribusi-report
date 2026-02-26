@@ -35,11 +35,12 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { LaporanDetailModal } from '../components/LaporanRetribusi/LaporanDetailModal'
 import { LaporanFilterForm } from '../components/LaporanRetribusi/LaporanFilterForm'
+import { TableSkeleton } from '../components/skeletons/TableSkeleton'
 import { PullToRefresh } from '../components/ui/pull-to-refresh'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../components/ui/sheet'
 import { SwipeableItem } from '../components/ui/swipeable-item'
-import { TableSkeleton } from '../components/skeletons/TableSkeleton'
 import { useMediaQuery } from '../hooks/use-media-query'
+import { getJenisRetribusiList } from '../lib/api/jenis-retribusi'
 import {
   deleteLaporanRetribusi,
   getLaporanRetribusiList,
@@ -47,7 +48,6 @@ import {
   type LaporanRetribusiListParams,
   submitLaporanRetribusi,
 } from '../lib/api/laporan-retribusi'
-import { getJenisRetribusiList } from '../lib/api/jenis-retribusi'
 import { getOPDList } from '../lib/api/opd'
 import { formatCurrency, formatDate } from '../lib/utils'
 
@@ -500,10 +500,11 @@ export default function LaporanRetribusiListPage() {
                     key={tab.id}
                     type="button"
                     onClick={() => handleTabChange(tab.id)}
-                    className={`whitespace-nowrap border-x-2 border-t-2 px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all relative top-0.5 rounded-t-lg ${isActive
-                      ? 'bg-white border-black text-black z-10 shadow-[0_-4px_0_0_rgba(0,0,0,0.1)]'
-                      : 'bg-slate-200 border-transparent text-slate-500 hover:bg-slate-300 hover:text-slate-700'
-                      }`}
+                    className={`whitespace-nowrap border-x-2 border-t-2 px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all relative top-0.5 rounded-t-lg ${
+                      isActive
+                        ? 'bg-white border-black text-black z-10 shadow-[0_-4px_0_0_rgba(0,0,0,0.1)]'
+                        : 'bg-slate-200 border-transparent text-slate-500 hover:bg-slate-300 hover:text-slate-700'
+                    }`}
                   >
                     {tab.label}
                   </button>
@@ -519,7 +520,10 @@ export default function LaporanRetribusiListPage() {
             {/* Search */}
             <div className="flex-1 relative w-full">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+                <Search
+                  className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
+                  aria-hidden="true"
+                />
                 <input
                   type="text"
                   placeholder="CARI NOMOR LAPORAN, OPD, ATAU JENIS RETRIBUSI..."
@@ -535,10 +539,15 @@ export default function LaporanRetribusiListPage() {
             <button
               type="button"
               onClick={() => setShowFilters(!showFilters)}
-              className={`inline-flex items-center justify-center gap-2 rounded-lg border-2 border-black px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all ${showFilters || params.opdId || params.jenisRetribusiId || params.startDate || params.endDate
-                ? 'bg-black text-white'
-                : 'bg-white text-black hover:bg-slate-100'
-                }`}
+              className={`inline-flex items-center justify-center gap-2 rounded-lg border-2 border-black px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all ${
+                showFilters ||
+                params.opdId ||
+                params.jenisRetribusiId ||
+                params.startDate ||
+                params.endDate
+                  ? 'bg-black text-white'
+                  : 'bg-white text-black hover:bg-slate-100'
+              }`}
               aria-expanded={showFilters}
               aria-controls={isDesktop ? 'desktop-filter-panel' : 'mobile-filter-sheet'}
               aria-label="Filter laporan"
@@ -557,7 +566,9 @@ export default function LaporanRetribusiListPage() {
           {showBulkSelect && selectedIds.length > 0 && (
             <div className="mt-4 flex items-center gap-3 px-4 py-3 bg-blue-50 border-2 border-blue-600 rounded-lg animate-in slide-in-from-top-1 duration-150">
               <CheckSquare className="h-5 w-5 text-blue-600 shrink-0" />
-              <span className="font-bold text-blue-800 text-sm">{selectedIds.length} laporan dipilih</span>
+              <span className="font-bold text-blue-800 text-sm">
+                {selectedIds.length} laporan dipilih
+              </span>
               <div className="ml-auto flex items-center gap-2">
                 <button
                   type="button"
@@ -590,15 +601,18 @@ export default function LaporanRetribusiListPage() {
           {showRejectDialog && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
               <div className="bg-white border-2 border-black rounded-xl shadow-[6px_6px_0_0_rgba(0,0,0,1)] p-6 w-full max-w-md mx-4">
-                <h3 className="text-lg font-extrabold uppercase tracking-tight mb-2">Alasan Penolakan</h3>
-                <p className="text-sm text-slate-600 mb-4">{selectedIds.length} laporan akan ditolak dengan alasan:</p>
+                <h3 className="text-lg font-extrabold uppercase tracking-tight mb-2">
+                  Alasan Penolakan
+                </h3>
+                <p className="text-sm text-slate-600 mb-4">
+                  {selectedIds.length} laporan akan ditolak dengan alasan:
+                </p>
                 <textarea
                   className="w-full border-2 border-slate-300 rounded-lg px-3 py-2 text-sm font-medium focus:border-black focus:ring-0 outline-none resize-none"
                   rows={3}
                   placeholder="Tulis alasan penolakan…"
                   value={rejectReason}
                   onChange={(e) => setRejectReason(e.target.value)}
-                  autoFocus
                 />
                 <div className="flex gap-3 mt-4">
                   <button
@@ -611,7 +625,10 @@ export default function LaporanRetribusiListPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => { setShowRejectDialog(false); setRejectReason('') }}
+                    onClick={() => {
+                      setShowRejectDialog(false)
+                      setRejectReason('')
+                    }}
                     className="px-4 py-2 bg-white text-slate-700 font-bold rounded-lg border-2 border-slate-300 hover:bg-slate-100 uppercase"
                   >
                     Batal
@@ -626,7 +643,8 @@ export default function LaporanRetribusiListPage() {
             <div className="mt-4 flex flex-wrap gap-2">
               {params.opdId && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-700">
-                  OPD: {opdData?.data.find(o => o.id === Number(params.opdId))?.nama || params.opdId}
+                  OPD:{' '}
+                  {opdData?.data.find((o) => o.id === Number(params.opdId))?.nama || params.opdId}
                   <button
                     type="button"
                     onClick={() => {
@@ -643,7 +661,9 @@ export default function LaporanRetribusiListPage() {
               )}
               {params.jenisRetribusiId && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-700">
-                  Jenis: {jenisRetribusiData?.data.find(j => j.id === Number(params.jenisRetribusiId))?.nama || params.jenisRetribusiId}
+                  Jenis:{' '}
+                  {jenisRetribusiData?.data.find((j) => j.id === Number(params.jenisRetribusiId))
+                    ?.nama || params.jenisRetribusiId}
                   <button
                     type="button"
                     onClick={() => {
@@ -660,7 +680,8 @@ export default function LaporanRetribusiListPage() {
               )}
               {(params.startDate || params.endDate) && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-bold uppercase text-slate-700">
-                  Tanggal: {params.startDate ? formatDate(params.startDate) : '...'} - {params.endDate ? formatDate(params.endDate) : '...'}
+                  Tanggal: {params.startDate ? formatDate(params.startDate) : '...'} -{' '}
+                  {params.endDate ? formatDate(params.endDate) : '...'}
                   <button
                     type="button"
                     onClick={() => {
@@ -698,7 +719,9 @@ export default function LaporanRetribusiListPage() {
           <Sheet open={showFilters} onOpenChange={setShowFilters}>
             <SheetContent side="bottom" className="max-h-[90vh] overflow-y-auto">
               <SheetHeader className="mb-6 text-left">
-                <SheetTitle className="text-xl font-extrabold uppercase tracking-tight">Filter Laporan</SheetTitle>
+                <SheetTitle className="text-xl font-extrabold uppercase tracking-tight">
+                  Filter Laporan
+                </SheetTitle>
               </SheetHeader>
               <LaporanFilterForm
                 filters={filters}
@@ -735,39 +758,41 @@ export default function LaporanRetribusiListPage() {
                         key={laporan.id}
                         className="border-b-2 border-slate-100 last:border-0"
                         actions={{
-                          right: laporan.status === 'draft'
-                            ? [
-                              {
-                                icon: <Edit2 />,
-                                label: 'Edit',
-                                color: 'bg-blue-600',
-                                onClick: () => handleEdit(laporan.id)
-                              },
-                              {
-                                icon: <Trash2 />,
-                                label: 'Hapus',
-                                color: 'bg-red-600',
-                                onClick: () => handleDelete(laporan.id, laporan.nomorLaporan)
-                              }
-                            ]
-                            : [
-                              {
-                                icon: <Eye />,
-                                label: 'Detail',
-                                color: 'bg-slate-600',
-                                onClick: () => handleViewDetail(laporan)
-                              }
-                            ],
-                          left: laporan.status === 'draft'
-                            ? [
-                              {
-                                icon: <Send />,
-                                label: 'Kirim',
-                                color: 'bg-green-600',
-                                onClick: () => handleSubmit(laporan.id, laporan.nomorLaporan)
-                              }
-                            ]
-                            : undefined
+                          right:
+                            laporan.status === 'draft'
+                              ? [
+                                  {
+                                    icon: <Edit2 />,
+                                    label: 'Edit',
+                                    color: 'bg-blue-600',
+                                    onClick: () => handleEdit(laporan.id),
+                                  },
+                                  {
+                                    icon: <Trash2 />,
+                                    label: 'Hapus',
+                                    color: 'bg-red-600',
+                                    onClick: () => handleDelete(laporan.id, laporan.nomorLaporan),
+                                  },
+                                ]
+                              : [
+                                  {
+                                    icon: <Eye />,
+                                    label: 'Detail',
+                                    color: 'bg-slate-600',
+                                    onClick: () => handleViewDetail(laporan),
+                                  },
+                                ],
+                          left:
+                            laporan.status === 'draft'
+                              ? [
+                                  {
+                                    icon: <Send />,
+                                    label: 'Kirim',
+                                    color: 'bg-green-600',
+                                    onClick: () => handleSubmit(laporan.id, laporan.nomorLaporan),
+                                  },
+                                ]
+                              : undefined,
                         }}
                       >
                         <div className="p-4 bg-white hover:bg-yellow-50 transition-colors group">
@@ -782,14 +807,15 @@ export default function LaporanRetribusiListPage() {
                               </div>
                             </div>
                             <span
-                              className={`inline-flex rounded-none px-2 py-1 text-[10px] font-black uppercase tracking-wider border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${laporan.status === 'draft'
-                                ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
-                                : laporan.status === 'submitted'
-                                  ? 'bg-orange-100 border-orange-600 text-orange-800'
-                                  : laporan.status === 'verified'
-                                    ? 'bg-blue-100 border-blue-700 text-blue-800'
-                                    : 'bg-red-100 border-red-700 text-red-800'
-                                }`}
+                              className={`inline-flex rounded-none px-2 py-1 text-[10px] font-black uppercase tracking-wider border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${
+                                laporan.status === 'draft'
+                                  ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
+                                  : laporan.status === 'submitted'
+                                    ? 'bg-orange-100 border-orange-600 text-orange-800'
+                                    : laporan.status === 'verified'
+                                      ? 'bg-blue-100 border-blue-700 text-blue-800'
+                                      : 'bg-red-100 border-red-700 text-red-800'
+                              }`}
                             >
                               {laporan.status === 'draft'
                                 ? 'Draft'
@@ -883,8 +909,15 @@ export default function LaporanRetribusiListPage() {
                             <input
                               type="checkbox"
                               className="w-4 h-4 rounded cursor-pointer"
-                              checked={selectedIds.length > 0 && selectedIds.length === data?.data.length}
-                              ref={(el) => { if (el) el.indeterminate = selectedIds.length > 0 && selectedIds.length < (data?.data.length ?? 0) }}
+                              checked={
+                                selectedIds.length > 0 && selectedIds.length === data?.data.length
+                              }
+                              ref={(el) => {
+                                if (el)
+                                  el.indeterminate =
+                                    selectedIds.length > 0 &&
+                                    selectedIds.length < (data?.data.length ?? 0)
+                              }}
                               onChange={(e) => {
                                 if (e.target.checked) {
                                   setSelectedIds(data?.data.map((l) => l.id) ?? [])
@@ -904,11 +937,17 @@ export default function LaporanRetribusiListPage() {
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              handleSort('createdAt');
+                              e.preventDefault()
+                              handleSort('createdAt')
                             }
                           }}
-                          aria-sort={params.sortBy === 'createdAt' ? (params.sortOrder === 'asc' ? 'ascending' : 'descending') : 'none'}
+                          aria-sort={
+                            params.sortBy === 'createdAt'
+                              ? params.sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                              : 'none'
+                          }
                         >
                           <div className="flex items-center gap-2">
                             Tanggal Lapor
@@ -923,11 +962,17 @@ export default function LaporanRetribusiListPage() {
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              handleSort('nomorLaporan');
+                              e.preventDefault()
+                              handleSort('nomorLaporan')
                             }
                           }}
-                          aria-sort={params.sortBy === 'nomorLaporan' ? (params.sortOrder === 'asc' ? 'ascending' : 'descending') : 'none'}
+                          aria-sort={
+                            params.sortBy === 'nomorLaporan'
+                              ? params.sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                              : 'none'
+                          }
                         >
                           <div className="flex items-center gap-2">
                             No. Laporan
@@ -942,11 +987,17 @@ export default function LaporanRetribusiListPage() {
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              handleSort('opdNama');
+                              e.preventDefault()
+                              handleSort('opdNama')
                             }
                           }}
-                          aria-sort={params.sortBy === 'opdNama' ? (params.sortOrder === 'asc' ? 'ascending' : 'descending') : 'none'}
+                          aria-sort={
+                            params.sortBy === 'opdNama'
+                              ? params.sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                              : 'none'
+                          }
                         >
                           <div className="flex items-center gap-2">
                             OPD
@@ -961,11 +1012,17 @@ export default function LaporanRetribusiListPage() {
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              handleSort('jenisRetribusiNama');
+                              e.preventDefault()
+                              handleSort('jenisRetribusiNama')
                             }
                           }}
-                          aria-sort={params.sortBy === 'jenisRetribusiNama' ? (params.sortOrder === 'asc' ? 'ascending' : 'descending') : 'none'}
+                          aria-sort={
+                            params.sortBy === 'jenisRetribusiNama'
+                              ? params.sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                              : 'none'
+                          }
                         >
                           <div className="flex items-center gap-2">
                             Jenis Retribusi
@@ -980,11 +1037,17 @@ export default function LaporanRetribusiListPage() {
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              handleSort('tanggalSetor');
+                              e.preventDefault()
+                              handleSort('tanggalSetor')
                             }
                           }}
-                          aria-sort={params.sortBy === 'tanggalSetor' ? (params.sortOrder === 'asc' ? 'ascending' : 'descending') : 'none'}
+                          aria-sort={
+                            params.sortBy === 'tanggalSetor'
+                              ? params.sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                              : 'none'
+                          }
                         >
                           <div className="flex items-center gap-2">
                             Tanggal Setor
@@ -999,18 +1062,27 @@ export default function LaporanRetribusiListPage() {
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              handleSort('nominal');
+                              e.preventDefault()
+                              handleSort('nominal')
                             }
                           }}
-                          aria-sort={params.sortBy === 'nominal' ? (params.sortOrder === 'asc' ? 'ascending' : 'descending') : 'none'}
+                          aria-sort={
+                            params.sortBy === 'nominal'
+                              ? params.sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                              : 'none'
+                          }
                         >
                           <div className="flex items-center justify-end gap-2">
                             Nominal (Rp)
                             {getSortIcon('nominal')}
                           </div>
                         </th>
-                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider border-r border-slate-700 text-center" scope="col">
+                        <th
+                          className="px-6 py-4 text-xs font-bold uppercase tracking-wider border-r border-slate-700 text-center"
+                          scope="col"
+                        >
                           Bukti
                         </th>
                         <th
@@ -1021,18 +1093,27 @@ export default function LaporanRetribusiListPage() {
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              handleSort('status');
+                              e.preventDefault()
+                              handleSort('status')
                             }
                           }}
-                          aria-sort={params.sortBy === 'status' ? (params.sortOrder === 'asc' ? 'ascending' : 'descending') : 'none'}
+                          aria-sort={
+                            params.sortBy === 'status'
+                              ? params.sortOrder === 'asc'
+                                ? 'ascending'
+                                : 'descending'
+                              : 'none'
+                          }
                         >
                           <div className="flex items-center justify-center gap-2">
                             Status
                             {getSortIcon('status')}
                           </div>
                         </th>
-                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-center" scope="col">
+                        <th
+                          className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-center"
+                          scope="col"
+                        >
                           Aksi
                         </th>
                       </tr>
@@ -1056,8 +1137,9 @@ export default function LaporanRetribusiListPage() {
                         data?.data.map((laporan, index) => (
                           <tr
                             key={laporan.id}
-                            className={`hover:bg-yellow-50 transition-colors group ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
-                              } ${selectedIds.includes(laporan.id) ? 'bg-blue-50' : ''}`}
+                            className={`hover:bg-yellow-50 transition-colors group ${
+                              index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
+                            } ${selectedIds.includes(laporan.id) ? 'bg-blue-50' : ''}`}
                           >
                             {/* Checkbox */}
                             {showBulkSelect && (
@@ -1070,7 +1152,9 @@ export default function LaporanRetribusiListPage() {
                                     if (e.target.checked) {
                                       setSelectedIds((prev) => [...prev, laporan.id])
                                     } else {
-                                      setSelectedIds((prev) => prev.filter((id) => id !== laporan.id))
+                                      setSelectedIds((prev) =>
+                                        prev.filter((id) => id !== laporan.id)
+                                      )
                                     }
                                   }}
                                   aria-label={`Pilih ${laporan.nomorLaporan}`}
@@ -1112,14 +1196,15 @@ export default function LaporanRetribusiListPage() {
                             </td>
                             <td className="whitespace-nowrap px-6 py-4 text-center border-r border-slate-200">
                               <span
-                                className={`inline-flex rounded-md px-2.5 py-1 text-xs font-bold uppercase tracking-wide border shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${laporan.status === 'draft'
-                                  ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
-                                  : laporan.status === 'submitted'
-                                    ? 'bg-orange-100 border-orange-600 text-orange-800'
-                                    : laporan.status === 'verified'
-                                      ? 'bg-blue-100 border-blue-700 text-blue-800'
-                                      : 'bg-red-100 border-red-700 text-red-800'
-                                  }`}
+                                className={`inline-flex rounded-md px-2.5 py-1 text-xs font-bold uppercase tracking-wide border shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] ${
+                                  laporan.status === 'draft'
+                                    ? 'bg-yellow-100 border-yellow-700 text-yellow-800'
+                                    : laporan.status === 'submitted'
+                                      ? 'bg-orange-100 border-orange-600 text-orange-800'
+                                      : laporan.status === 'verified'
+                                        ? 'bg-blue-100 border-blue-700 text-blue-800'
+                                        : 'bg-red-100 border-red-700 text-red-800'
+                                }`}
                               >
                                 {laporan.status === 'draft'
                                   ? 'Draft'

@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { X } from 'lucide-react'
+import * as React from 'react'
 import { cn } from '../../lib/utils/cn'
 
 interface DialogProps {
@@ -40,13 +40,13 @@ const DialogContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { hideCloseButton?: boolean }
 >(({ className, children, hideCloseButton, ...props }, ref) => {
-  // Find the onOpenChange from the parent Dialog if possible? 
+  // Find the onOpenChange from the parent Dialog if possible?
   // In this simple implementation, we can't easily access parent state without context.
   // But usually DialogContent contains the close button which needs to trigger close.
-  // For simplicity in this custom implementation, we'll assume the parent handles outside click, 
-  // and for the X button we might need context. 
-  // OR, we just don't render the X button here if we don't have the context, 
-  // or we accept an onClose prop. 
+  // For simplicity in this custom implementation, we'll assume the parent handles outside click,
+  // and for the X button we might need context.
+  // OR, we just don't render the X button here if we don't have the context,
+  // or we accept an onClose prop.
   // BUT shadcn API is <Dialog onOpenChange={...}><DialogContent>...</DialogContent></Dialog>
   // To support that we need Context.
 
@@ -56,7 +56,7 @@ const DialogContent = React.forwardRef<
         <div
           ref={ref}
           className={cn(
-            "bg-white p-6 shadow-lg animate-in fade-in-0 zoom-in-95 sm:rounded-lg md:w-full",
+            'bg-white p-6 shadow-lg animate-in fade-in-0 zoom-in-95 sm:rounded-lg md:w-full',
             className
           )}
           {...props}
@@ -77,35 +77,20 @@ const DialogContent = React.forwardRef<
     </DialogContextConsumer>
   )
 })
-DialogContent.displayName = "DialogContent"
+DialogContent.displayName = 'DialogContent'
 
-const DialogHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
+)
+DialogHeader.displayName = 'DialogHeader'
+
+const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
-      className
-    )}
+    className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
     {...props}
   />
 )
-DialogHeader.displayName = "DialogHeader"
-
-const DialogFooter = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
-    )}
-    {...props}
-  />
-)
-DialogFooter.displayName = "DialogFooter"
+DialogFooter.displayName = 'DialogFooter'
 
 const DialogTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -113,26 +98,19 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h2
     ref={ref}
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
-      className
-    )}
+    className={cn('text-lg font-semibold leading-none tracking-tight', className)}
     {...props}
   />
 ))
-DialogTitle.displayName = "DialogTitle"
+DialogTitle.displayName = 'DialogTitle'
 
 const DialogDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn("text-sm text-slate-500", className)}
-    {...props}
-  />
+  <p ref={ref} className={cn('text-sm text-slate-500', className)} {...props} />
 ))
-DialogDescription.displayName = "DialogDescription"
+DialogDescription.displayName = 'DialogDescription'
 
 // Context for close button
 interface DialogContextType {
@@ -140,12 +118,12 @@ interface DialogContextType {
 }
 const DialogContext = React.createContext<DialogContextType>({})
 
-const DialogContextConsumer = ({ children }: { children: (context: DialogContextType) => React.ReactNode }) => {
-  return (
-    <DialogContext.Consumer>
-      {context => children(context)}
-    </DialogContext.Consumer>
-  )
+const DialogContextConsumer = ({
+  children,
+}: {
+  children: (context: DialogContextType) => React.ReactNode
+}) => {
+  return <DialogContext.Consumer>{(context) => children(context)}</DialogContext.Consumer>
 }
 
 // Wrapper to provide context

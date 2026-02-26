@@ -127,7 +127,7 @@ jenisRetribusiRouter.get('/', authMiddleware, async (req, res, next) => {
  * GET /api/jenis-retribusi/kategori
  * Get unique categories
  */
-jenisRetribusiRouter.get('/kategori', authMiddleware, async (req, res, next) => {
+jenisRetribusiRouter.get('/kategori', authMiddleware, async (_req, res, next) => {
   try {
     const categories = await db
       .selectDistinct({ kategori: jenisRetribusi.kategori })

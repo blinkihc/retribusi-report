@@ -419,7 +419,6 @@ usersRouter.put('/:id', async (req, res, next) => {
   }
 })
 
-
 /**
  * DELETE /api/users/:id
  * Delete user (soft delete - set isActive to false)
@@ -523,4 +522,3 @@ usersRouter.post('/:id/reset-password', async (req, res, next) => {
     next(error)
   }
 })
-

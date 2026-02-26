@@ -104,10 +104,7 @@ authRouter.post('/login', loginRateLimiter, validateCaptcha, async (req, res, ne
     })
 
     // Update user lastLogin
-    await db
-      .update(users)
-      .set({ lastLogin: new Date() })
-      .where(eq(users.id, user.id))
+    await db.update(users).set({ lastLogin: new Date() }).where(eq(users.id, user.id))
 
     // Generate JWT token (7 days if rememberMe, 8 hours default)
     const token = generateToken(
@@ -258,7 +255,7 @@ authRouter.put('/profile', authMiddleware, async (req, res, next) => {
     const validatedData = validationResult.data
 
     // Get current user
-    const [user] = await db.select().from(users).where(eq(users.id, req.user!.userId))
+    const [user] = await db.select().from(users).where(eq(users.id, req.user?.userId))
 
     if (!user) {
       return res.status(404).json({
@@ -354,7 +351,7 @@ authRouter.post('/change-password', authMiddleware, async (req, res, next) => {
     const { currentPassword, newPassword } = validationResult.data
 
     // Get user
-    const [user] = await db.select().from(users).where(eq(users.id, req.user!.userId))
+    const [user] = await db.select().from(users).where(eq(users.id, req.user?.userId))
 
     if (!user) {
       return res.status(404).json({

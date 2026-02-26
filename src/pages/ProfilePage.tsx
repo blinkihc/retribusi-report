@@ -15,7 +15,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Edit3, Lock, Mail, Save, User as UserIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 import AvatarSelector from '../components/AvatarSelector'
 import {
   AlertDialog,
@@ -202,13 +201,15 @@ export default function ProfilePage() {
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'BELUM PERNAH LOGIN'
-    return new Date(dateString).toLocaleString('id-ID', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).toUpperCase()
+    return new Date(dateString)
+      .toLocaleString('id-ID', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+      .toUpperCase()
   }
 
   const handleAvatarSelect = (avatarId: string) => {
@@ -226,7 +227,7 @@ export default function ProfilePage() {
         {/* Decoration Lines */}
         <div className="absolute top-0 right-0 w-64 h-64 border-l-2 border-b-2 border-slate-700 opacity-30" />
         <div className="absolute bottom-0 left-0 w-48 h-48 border-r-2 border-t-2 border-slate-700 opacity-30" />
-        
+
         <div className="max-w-4xl mx-auto text-center w-full relative z-10">
           <div className="relative inline-block mb-6 group">
             <div className="relative">
@@ -239,7 +240,7 @@ export default function ProfilePage() {
               <div className="absolute -top-2 -left-2 w-4 h-4 border-t-4 border-l-4 border-yellow-400" />
               <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b-4 border-r-4 border-yellow-400" />
             </div>
-            
+
             {isEditingProfile && (
               <button
                 onClick={() => setShowAvatarModal(true)}
@@ -254,16 +255,16 @@ export default function ProfilePage() {
             {user?.fullName}
           </h1>
           <div className="inline-flex items-center gap-3 mt-2">
-            <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 ${
-              user?.role === 'admin' 
-                ? 'bg-purple-500 border-purple-900 text-white' 
-                : 'bg-blue-500 border-blue-900 text-white'
-            }`}>
+            <span
+              className={`px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 ${
+                user?.role === 'admin'
+                  ? 'bg-purple-500 border-purple-900 text-white'
+                  : 'bg-blue-500 border-blue-900 text-white'
+              }`}
+            >
               {user?.role === 'admin' ? 'Administrator' : 'Operator'}
             </span>
-            <span className="text-slate-400 font-mono text-sm">
-              {user?.email}
-            </span>
+            <span className="text-slate-400 font-mono text-sm">{user?.email}</span>
           </div>
         </div>
       </div>
@@ -345,7 +346,9 @@ export default function ProfilePage() {
                   <div className="p-4 border-2 border-slate-200 bg-slate-50/50 hover:border-black transition-colors">
                     <div className="flex items-center gap-3 mb-2">
                       <UserIcon className="h-5 w-5 text-slate-400" />
-                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Username</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Username
+                      </p>
                     </div>
                     <p className="text-lg font-bold text-slate-900 pl-8">{user?.username}</p>
                   </div>
@@ -353,7 +356,9 @@ export default function ProfilePage() {
                   <div className="p-4 border-2 border-slate-200 bg-slate-50/50 hover:border-black transition-colors">
                     <div className="flex items-center gap-3 mb-2">
                       <Mail className="h-5 w-5 text-slate-400" />
-                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Email</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Email
+                      </p>
                     </div>
                     <p className="text-lg font-bold text-slate-900 pl-8">{user?.email}</p>
                   </div>
@@ -361,7 +366,9 @@ export default function ProfilePage() {
                   <div className="p-4 border-2 border-slate-200 bg-slate-50/50 hover:border-black transition-colors">
                     <div className="flex items-center gap-3 mb-2">
                       <UserIcon className="h-5 w-5 text-slate-400" />
-                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Role</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Role
+                      </p>
                     </div>
                     <div className="pl-8">
                       <span
@@ -380,7 +387,9 @@ export default function ProfilePage() {
                     <div className="p-4 border-2 border-slate-200 bg-slate-50/50 hover:border-black transition-colors">
                       <div className="flex items-center gap-3 mb-2">
                         <UserIcon className="h-5 w-5 text-slate-400" />
-                        <p className="text-xs font-bold uppercase tracking-wider text-slate-500">OPD</p>
+                        <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                          OPD
+                        </p>
                       </div>
                       <p className="text-lg font-bold text-slate-900 pl-8">{userOPD.nama}</p>
                     </div>
@@ -389,9 +398,13 @@ export default function ProfilePage() {
                   <div className="p-4 border-2 border-slate-200 bg-slate-50/50 hover:border-black transition-colors md:col-span-2">
                     <div className="flex items-center gap-3 mb-2">
                       <UserIcon className="h-5 w-5 text-slate-400" />
-                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Login Terakhir</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Login Terakhir
+                      </p>
                     </div>
-                    <p className="text-lg font-bold text-slate-900 pl-8 font-mono">{formatDate(user?.lastLogin || null)}</p>
+                    <p className="text-lg font-bold text-slate-900 pl-8 font-mono">
+                      {formatDate(user?.lastLogin || null)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -438,7 +451,9 @@ export default function ProfilePage() {
                       }
                       className="w-full px-4 py-3 border-2 border-black bg-white focus:bg-yellow-50 focus:outline-none font-medium"
                     />
-                    <p className="mt-2 text-xs font-bold text-slate-400 uppercase">Minimal 6 karakter</p>
+                    <p className="mt-2 text-xs font-bold text-slate-400 uppercase">
+                      Minimal 6 karakter
+                    </p>
                   </div>
 
                   <div>
@@ -483,9 +498,7 @@ export default function ProfilePage() {
             ) : (
               <div className="flex items-center justify-between p-6 bg-slate-50 border-2 border-dashed border-slate-300">
                 <div>
-                  <p className="font-bold text-slate-900 uppercase mb-1">
-                    Ubah Password
-                  </p>
+                  <p className="font-bold text-slate-900 uppercase mb-1">Ubah Password</p>
                   <p className="text-sm text-slate-600">
                     Pastikan password Anda kuat dan unik untuk keamanan.
                   </p>
@@ -517,7 +530,9 @@ export default function ProfilePage() {
         onOpenChange={(open) => setAlertDialog({ ...alertDialog, open })}
       >
         <AlertDialogContent className="border-2 border-black shadow-hard-lg p-0 overflow-hidden">
-          <div className={`h-2 w-full ${alertDialog.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`} />
+          <div
+            className={`h-2 w-full ${alertDialog.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}
+          />
           <AlertDialogHeader className="p-6 pb-2">
             <AlertDialogTitle className="text-xl font-extrabold uppercase tracking-tight">
               {alertDialog.title}

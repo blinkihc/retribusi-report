@@ -59,7 +59,7 @@ export interface OPDCreateData {
   isActive?: boolean
 }
 
-export interface OPDUpdateData extends Partial<OPDCreateData> { }
+export interface OPDUpdateData extends Partial<OPDCreateData> {}
 
 export interface OPDResponse {
   success: boolean

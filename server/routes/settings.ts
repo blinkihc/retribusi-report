@@ -33,7 +33,7 @@ const settingsUpdateSchema = z.object({
  * Get all settings
  * Permission: All authenticated users can view
  */
-settingsRouter.get('/', authMiddleware, async (req, res, next) => {
+settingsRouter.get('/', authMiddleware, async (_req, res, next) => {
   try {
     const allSettings = await db.select().from(settings)
 

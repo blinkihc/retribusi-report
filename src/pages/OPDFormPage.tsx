@@ -309,8 +309,9 @@ export default function OPDFormPage() {
                 value={formData.kode}
                 onChange={handleChange}
                 disabled={isEditMode} // Kode tidak bisa diubah saat edit
-                className={`mt-1 block w-full rounded-lg border ${errors.kode ? 'border-red-300' : 'border-gray-300'
-                  } px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 disabled:bg-gray-100 disabled:cursor-not-allowed`}
+                className={`mt-1 block w-full rounded-lg border ${
+                  errors.kode ? 'border-red-300' : 'border-gray-300'
+                } px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 disabled:bg-gray-100 disabled:cursor-not-allowed`}
                 placeholder="Contoh: BAPENDA"
               />
               {errors.kode && <p className="mt-1 text-sm text-red-600">{errors.kode}</p>}
@@ -330,8 +331,9 @@ export default function OPDFormPage() {
                 name="nama"
                 value={formData.nama}
                 onChange={handleChange}
-                className={`mt-1 block w-full rounded-lg border ${errors.nama ? 'border-red-300' : 'border-gray-300'
-                  } px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500`}
+                className={`mt-1 block w-full rounded-lg border ${
+                  errors.nama ? 'border-red-300' : 'border-gray-300'
+                } px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500`}
                 placeholder="Contoh: Badan Pendapatan Daerah"
               />
               {errors.nama && <p className="mt-1 text-sm text-red-600">{errors.nama}</p>}
@@ -380,8 +382,9 @@ export default function OPDFormPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`mt-1 block w-full rounded-lg border ${errors.email ? 'border-red-300' : 'border-gray-300'
-                    } px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500`}
+                  className={`mt-1 block w-full rounded-lg border ${
+                    errors.email ? 'border-red-300' : 'border-gray-300'
+                  } px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500`}
                   placeholder="email@opd.go.id"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}

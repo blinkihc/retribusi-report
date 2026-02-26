@@ -1026,7 +1026,10 @@ laporanRetribusiRouter.post('/:id/submit', authMiddleware, async (req, res, next
 
     // ── Buat notifikasi untuk semua admin ──
     try {
-      const adminUsers = await db.select({ id: users.id }).from(users).where(eq(users.role, 'admin'))
+      const adminUsers = await db
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.role, 'admin'))
 
       if (adminUsers.length > 0) {
         const notifValues = adminUsers.map((admin) => ({
@@ -1038,9 +1041,12 @@ laporanRetribusiRouter.post('/:id/submit', authMiddleware, async (req, res, next
           isRead: false,
         }))
 
-        await db.insert(notifications).values(notifValues).catch(() => { })
+        await db
+          .insert(notifications)
+          .values(notifValues)
+          .catch(() => {})
       }
-    } catch (e) {
+    } catch (_e) {
       // Abaikan jika notifikasi gagal
     }
 
@@ -1111,14 +1117,19 @@ laporanRetribusiRouter.post('/:id/reject', authMiddleware, async (req, res, next
       .where(eq(laporanRetribusi.id, id))
 
     // ── Buat notifikasi untuk operator pemilik laporan ──
-    await db.insert(notifications).values({
-      userId: existing.submittedBy,
-      type: 'rejected',
-      title: 'Laporan Ditolak',
-      message: `Laporan ${existing.nomorLaporan} ditolak. Alasan: ${rejectionReason}`,
-      laporanId: id,
-      isRead: false,
-    }).catch(() => {/* Notif gagal tidak block response */ })
+    await db
+      .insert(notifications)
+      .values({
+        userId: existing.submittedBy,
+        type: 'rejected',
+        title: 'Laporan Ditolak',
+        message: `Laporan ${existing.nomorLaporan} ditolak. Alasan: ${rejectionReason}`,
+        laporanId: id,
+        isRead: false,
+      })
+      .catch(() => {
+        /* Notif gagal tidak block response */
+      })
 
     res.json({
       success: true,
@@ -1171,14 +1182,19 @@ laporanRetribusiRouter.post('/:id/verify', authMiddleware, async (req, res, next
       .where(eq(laporanRetribusi.id, id))
 
     // ── Buat notifikasi untuk operator ──
-    await db.insert(notifications).values({
-      userId: existing.submittedBy,
-      type: 'approved',
-      title: 'Laporan Disetujui',
-      message: `Laporan ${existing.nomorLaporan} telah diverifikasi dan disetujui.`,
-      laporanId: id,
-      isRead: false,
-    }).catch(() => {/* Notif gagal tidak block response */ })
+    await db
+      .insert(notifications)
+      .values({
+        userId: existing.submittedBy,
+        type: 'approved',
+        title: 'Laporan Disetujui',
+        message: `Laporan ${existing.nomorLaporan} telah diverifikasi dan disetujui.`,
+        laporanId: id,
+        isRead: false,
+      })
+      .catch(() => {
+        /* Notif gagal tidak block response */
+      })
 
     res.json({ success: true, message: 'Laporan berhasil diverifikasi' })
   } catch (error) {
@@ -1200,13 +1216,17 @@ laporanRetribusiRouter.patch('/bulk-status', authMiddleware, async (req, res, ne
     const { ids, action, rejectionReason } = req.body
 
     if (!Array.isArray(ids) || ids.length === 0) {
-      return res.status(400).json({ success: false, message: 'ids wajib berupa array tidak kosong' })
+      return res
+        .status(400)
+        .json({ success: false, message: 'ids wajib berupa array tidak kosong' })
     }
     if (!['verify', 'reject'].includes(action)) {
       return res.status(400).json({ success: false, message: 'action harus verify atau reject' })
     }
     if (action === 'reject' && (!rejectionReason || !String(rejectionReason).trim())) {
-      return res.status(400).json({ success: false, message: 'rejectionReason wajib diisi untuk reject' })
+      return res
+        .status(400)
+        .json({ success: false, message: 'rejectionReason wajib diisi untuk reject' })
     }
 
     const idList = ids.map(Number)
@@ -1214,7 +1234,12 @@ laporanRetribusiRouter.patch('/bulk-status', authMiddleware, async (req, res, ne
 
     // Ambil semua laporan yang valid (submitted)
     const rows = await db
-      .select({ id: laporanRetribusi.id, submittedBy: laporanRetribusi.submittedBy, nomorLaporan: laporanRetribusi.nomorLaporan, status: laporanRetribusi.status })
+      .select({
+        id: laporanRetribusi.id,
+        submittedBy: laporanRetribusi.submittedBy,
+        nomorLaporan: laporanRetribusi.nomorLaporan,
+        status: laporanRetribusi.status,
+      })
       .from(laporanRetribusi)
       .where(and(inArray(laporanRetribusi.id, idList), sql`${laporanRetribusi.deletedAt} IS NULL`))
 
@@ -1222,7 +1247,9 @@ laporanRetribusiRouter.patch('/bulk-status', authMiddleware, async (req, res, ne
     const validIds = validRows.map((r) => r.id)
 
     if (validIds.length === 0) {
-      return res.status(400).json({ success: false, message: 'Tidak ada laporan submitted yang bisa diproses' })
+      return res
+        .status(400)
+        .json({ success: false, message: 'Tidak ada laporan submitted yang bisa diproses' })
     }
 
     // Update semua sekaligus
@@ -1242,13 +1269,17 @@ laporanRetribusiRouter.patch('/bulk-status', authMiddleware, async (req, res, ne
       userId: r.submittedBy,
       type: action === 'verify' ? 'approved' : 'rejected',
       title: action === 'verify' ? 'Laporan Disetujui' : 'Laporan Ditolak',
-      message: action === 'verify'
-        ? `Laporan ${r.nomorLaporan} telah diverifikasi dan disetujui.`
-        : `Laporan ${r.nomorLaporan} ditolak. Alasan: ${rejectionReason}`,
+      message:
+        action === 'verify'
+          ? `Laporan ${r.nomorLaporan} telah diverifikasi dan disetujui.`
+          : `Laporan ${r.nomorLaporan} ditolak. Alasan: ${rejectionReason}`,
       laporanId: r.id,
       isRead: false,
     }))
-    await db.insert(notifications).values(notifValues).catch(() => { })
+    await db
+      .insert(notifications)
+      .values(notifValues)
+      .catch(() => {})
 
     res.json({
       success: true,

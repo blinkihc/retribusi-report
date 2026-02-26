@@ -19,7 +19,7 @@ export function HelpTooltip({ content }: HelpTooltipProps) {
       >
         <HelpCircle className="h-4 w-4" />
       </button>
-      
+
       {isVisible && (
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-900 text-white text-xs p-3 rounded shadow-lg z-50 text-center leading-relaxed animate-in fade-in zoom-in-95 duration-200">
           {content}

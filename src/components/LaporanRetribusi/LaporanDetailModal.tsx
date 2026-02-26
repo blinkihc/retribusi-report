@@ -1,6 +1,6 @@
-import { ExternalLink, User, Calendar, Clock, FileText, AlertTriangle, CheckCircle } from 'lucide-react'
-import { LaporanRetribusi } from '../../lib/api/laporan-retribusi'
-import { formatDate, formatCurrency } from '../../lib/utils'
+import { Calendar, CheckCircle, Clock, ExternalLink, FileText, User } from 'lucide-react'
+import type { LaporanRetribusi } from '../../lib/api/laporan-retribusi'
+import { formatCurrency, formatDate } from '../../lib/utils'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || ''
@@ -27,26 +27,46 @@ export function LaporanDetailModal({ laporan, open, onOpenChange }: LaporanDetai
         {/* Content */}
         <div className="space-y-6 py-4">
           {/* Status Banner */}
-          <div className={`p-4 border-l-4 ${laporan.status === 'verified' ? 'bg-blue-50 border-blue-500' :
-            laporan.status === 'submitted' ? 'bg-orange-50 border-orange-500' :
-              laporan.status === 'rejected' ? 'bg-red-50 border-red-500' :
-                'bg-yellow-50 border-yellow-500'
-            }`}>
+          <div
+            className={`p-4 border-l-4 ${
+              laporan.status === 'verified'
+                ? 'bg-blue-50 border-blue-500'
+                : laporan.status === 'submitted'
+                  ? 'bg-orange-50 border-orange-500'
+                  : laporan.status === 'rejected'
+                    ? 'bg-red-50 border-red-500'
+                    : 'bg-yellow-50 border-yellow-500'
+            }`}
+          >
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider opacity-70">Status Laporan</p>
-                <p className={`text-lg font-black uppercase ${laporan.status === 'verified' ? 'text-blue-700' :
-                  laporan.status === 'submitted' ? 'text-orange-700' :
-                    laporan.status === 'rejected' ? 'text-red-700' :
-                      'text-yellow-700'
-                  }`}>
-                  {laporan.status === 'verified' ? 'Final' :
-                    laporan.status === 'submitted' ? 'Verifikasi' :
-                      laporan.status === 'rejected' ? 'Ditolak' : 'Draft'}
+                <p className="text-xs font-bold uppercase tracking-wider opacity-70">
+                  Status Laporan
+                </p>
+                <p
+                  className={`text-lg font-black uppercase ${
+                    laporan.status === 'verified'
+                      ? 'text-blue-700'
+                      : laporan.status === 'submitted'
+                        ? 'text-orange-700'
+                        : laporan.status === 'rejected'
+                          ? 'text-red-700'
+                          : 'text-yellow-700'
+                  }`}
+                >
+                  {laporan.status === 'verified'
+                    ? 'Final'
+                    : laporan.status === 'submitted'
+                      ? 'Verifikasi'
+                      : laporan.status === 'rejected'
+                        ? 'Ditolak'
+                        : 'Draft'}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-xs font-bold uppercase tracking-wider opacity-70">Nomor Laporan</p>
+                <p className="text-xs font-bold uppercase tracking-wider opacity-70">
+                  Nomor Laporan
+                </p>
                 <p className="text-lg font-mono font-bold">{laporan.nomorLaporan}</p>
               </div>
             </div>
@@ -55,34 +75,48 @@ export function LaporanDetailModal({ laporan, open, onOpenChange }: LaporanDetai
           {/* Main Info Grid */}
           <div className="grid grid-cols-2 gap-x-8 gap-y-6">
             <div>
-              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">OPD</label>
+              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">
+                OPD
+              </label>
               <p className="font-bold text-slate-900">{laporan.opdNama}</p>
             </div>
             <div>
-              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Jenis Retribusi</label>
+              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">
+                Jenis Retribusi
+              </label>
               <p className="font-bold text-slate-900">{laporan.jenisRetribusiNama}</p>
             </div>
             <div>
-              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Tanggal Setor</label>
+              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">
+                Tanggal Setor
+              </label>
               <p className="font-bold text-slate-900 flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-slate-400" />
                 {formatDate(laporan.tanggalSetor)}
               </p>
             </div>
             <div>
-              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Nominal</label>
-              <p className="font-bold text-slate-900 text-xl">{formatCurrency(Number(laporan.nominal))}</p>
+              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">
+                Nominal
+              </label>
+              <p className="font-bold text-slate-900 text-xl">
+                {formatCurrency(Number(laporan.nominal))}
+              </p>
             </div>
           </div>
 
           {/* Keterangan & Bukti */}
           <div className="space-y-4 border-t-2 border-dashed border-slate-200 pt-4">
             <div>
-              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Keterangan</label>
+              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">
+                Keterangan
+              </label>
               <p className="text-sm font-medium text-slate-700">{laporan.keterangan || '-'}</p>
             </div>
             <div>
-              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider mb-1 block">Bukti Penyetoran</label>
+              <label className="text-xs font-bold uppercase text-slate-500 tracking-wider mb-1 block">
+                Bukti Penyetoran
+              </label>
               {laporan.fileBukti ? (
                 <a
                   href={`${API_BASE_URL}${laporan.fileBukti}`}
@@ -111,7 +145,9 @@ export function LaporanDetailModal({ laporan, open, onOpenChange }: LaporanDetai
                 <p className="font-bold text-white flex items-center gap-1">
                   <User className="h-3 w-3" /> {laporan.submittedByName || '-'}
                 </p>
-                <p className="text-xs font-mono text-slate-400 mt-0.5">{formatDate(laporan.createdAt)}</p>
+                <p className="text-xs font-mono text-slate-400 mt-0.5">
+                  {formatDate(laporan.createdAt)}
+                </p>
               </div>
 
               <div>

@@ -49,7 +49,7 @@ debugRouter.get('/laporan/:id', async (req, res, next) => {
  * GET /api/debug/laporan-latest
  * Get latest 10 laporan with kategori and deskripsi
  */
-debugRouter.get('/laporan-latest', async (req, res, next) => {
+debugRouter.get('/laporan-latest', async (_req, res, next) => {
   try {
     const laporanList = await db
       .select()
@@ -81,7 +81,7 @@ debugRouter.get('/laporan-latest', async (req, res, next) => {
  * GET/POST /api/debug/populate-kategori
  * Populate kategori and deskripsi for all existing laporan
  */
-const populateKategoriHandler = async (req, res, next) => {
+const populateKategoriHandler = async (_req, res, next) => {
   try {
     // Get all laporan without kategori or deskripsi
     const laporanList = await db
@@ -143,7 +143,7 @@ debugRouter.post('/populate-kategori', populateKategoriHandler)
 /**
  * Insert default settings
  */
-const insertDefaultSettingsHandler = async (req: any, res: any, next: any) => {
+const insertDefaultSettingsHandler = async (_req: any, res: any, next: any) => {
   try {
     // Check if settings already exist
     const existingSettings = await db.select().from(settings)
@@ -190,7 +190,7 @@ debugRouter.post('/insert-default-settings', insertDefaultSettingsHandler)
 /**
  * Seed operator users
  */
-const seedOperatorsHandler = async (req: any, res: any, next: any) => {
+const seedOperatorsHandler = async (_req: any, res: any, next: any) => {
   try {
     const { hashPassword } = await import('../../src/lib/auth/bcrypt')
 
@@ -271,7 +271,7 @@ debugRouter.post('/seed-operators', seedOperatorsHandler)
  * GET /api/debug/check-laporan-status
  * Check status of all laporan
  */
-debugRouter.get('/check-laporan-status', async (req, res, next) => {
+debugRouter.get('/check-laporan-status', async (_req, res, next) => {
   try {
     const allLaporan = await db
       .select({
@@ -307,7 +307,7 @@ debugRouter.get('/check-laporan-status', async (req, res, next) => {
  * DELETE /api/debug/fix-invalid-nomor-laporan
  * Delete laporan with invalid nomor (containing placeholders)
  */
-debugRouter.delete('/fix-invalid-nomor-laporan', async (req, res, next) => {
+debugRouter.delete('/fix-invalid-nomor-laporan', async (_req, res, next) => {
   try {
     // Find laporan with placeholder in nomor_laporan
     const invalidLaporan = await db
