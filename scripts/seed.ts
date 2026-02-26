@@ -11,7 +11,7 @@
 import 'dotenv/config'
 import { hashPassword } from '../src/lib/auth/bcrypt'
 import { db } from '../src/lib/db/index'
-import { jenisRetribusi, opd, users } from '../src/lib/db/schema'
+import { jenisRetribusi, opd, settings, users } from '../src/lib/db/schema'
 
 async function seed() {
   console.log('🌱 Starting database seed...')
@@ -150,6 +150,36 @@ async function seed() {
 
     const createdOperators = await db.insert(users).values(operatorData).returning()
     console.log(`✅ Created ${createdOperators.length} operator users`)
+
+    // 5. Seed Default Settings
+    console.log('Creating default settings...')
+    const defaultSettings = [
+      {
+        key: 'nomor_laporan_format',
+        value: 'LR/{TAHUN}/{NOMOR}',
+        description: 'Format nomor laporan otomatis. Placeholder: {TAHUN}, {BULAN}, {NOMOR}',
+      },
+      {
+        key: 'jenis_pemerintahan',
+        value: 'PEMERINTAH KABUPATEN',
+        description: 'Jenis pemerintahan yang tampil di PDF laporan',
+      },
+      {
+        key: 'nama_pemerintahan',
+        value: 'KABUPATEN',
+        description: 'Nama pemerintahan yang tampil di PDF laporan',
+      },
+      {
+        key: 'logo_kabupaten',
+        value: '',
+        description: 'Path logo kabupaten untuk PDF laporan',
+      },
+    ]
+
+    for (const s of defaultSettings) {
+      await db.insert(settings).values(s).onConflictDoNothing()
+    }
+    console.log(`✅ Created ${defaultSettings.length} default settings`)
 
     console.log('\n🎉 Database seed completed successfully!')
     console.log('\n📝 Login credentials:')
