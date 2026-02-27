@@ -4,7 +4,7 @@
  * Dropdown menu in header showing avatar, username, profile link, and logout
  */
 
-import { LogOut, User } from 'lucide-react'
+import { LogOut, Settings, User } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -98,6 +98,17 @@ export default function UserDropdown({ user }: UserDropdownProps) {
               <User className="h-4 w-4" />
               Lihat Profil
             </Link>
+
+            {user.role === 'admin' && (
+              <Link
+                to="/dashboard/settings"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <Settings className="h-4 w-4" />
+                Pengaturan
+              </Link>
+            )}
 
             <button
               onClick={handleLogout}

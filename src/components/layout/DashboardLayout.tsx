@@ -97,8 +97,8 @@ export default function DashboardLayout() {
     { path: '/dashboard', icon: Home, label: 'Dashboard', show: true },
     { path: '/dashboard/laporan-retribusi', icon: FileText, label: 'Laporan', show: true },
     { path: '/dashboard/laporan-retribusi/create', icon: PlusCircle, label: 'Buat', show: true },
+    { path: '/dashboard/target-realisasi', icon: Target, label: 'Realisasi', show: true },
     { path: '/dashboard/profile', icon: User, label: 'Profil', show: true },
-    { path: '/dashboard/settings', icon: Settings, label: 'Settings', show: isAdmin },
   ]
 
   const isActive = (path: string) => location.pathname === path
@@ -210,24 +210,31 @@ export default function DashboardLayout() {
 
       {/* Bottom Navigation - Visible only on mobile/tablet */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-black z-50 safe-bottom shadow-[0_-4px_0_0_rgba(0,0,0,0.1)]">
-        <div className="grid grid-cols-4 h-16">
+        <div className="grid grid-cols-5 h-16">
           {navItems
             .filter((item) => item.show)
-            .slice(0, 4) // Limit to 4 items for mobile
+            .slice(0, 5) // Now exactly 5 items
             .map((item) => {
               const Icon = item.icon
               const active = isActive(item.path)
+              const isProminent = item.path === '/dashboard/laporan-retribusi/create'
+
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex flex-col items-center justify-center gap-1 transition-all border-r-2 last:border-r-0 border-black relative overflow-hidden ${
-                    active
-                      ? 'bg-black text-white'
-                      : 'bg-white text-slate-500 hover:bg-yellow-50 hover:text-black'
+                  className={`flex flex-col items-center justify-center gap-1 transition-all border-r-2 last:border-r-0 border-black relative ${
+                    isProminent
+                      ? 'overflow-visible bg-white text-black'
+                      : 'overflow-hidden ' +
+                        (
+                          active
+                            ? 'bg-black text-white'
+                            : 'bg-white text-slate-500 hover:bg-yellow-50 hover:text-black'
+                        )
                   }`}
                 >
-                  {active && (
+                  {active && !isProminent && (
                     <motion.div
                       layoutId="bottomNavActive"
                       className="absolute inset-0 bg-black z-0"
@@ -236,16 +243,29 @@ export default function DashboardLayout() {
                     />
                   )}
                   <motion.div
-                    className="relative z-10 flex flex-col items-center"
+                    className={`relative z-10 flex flex-col items-center group ${
+                      isProminent
+                        ? 'absolute -top-5 w-14 h-14 bg-yellow-400 rounded-full border-2 border-black shadow-hard justify-center hover:-translate-y-1 hover:shadow-hard-lg transition-transform text-black'
+                        : ''
+                    }`}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <Icon className={`h-5 w-5 ${active ? 'stroke-[2.5]' : 'stroke-2'}`} />
-                    <span
-                      className={`text-[10px] uppercase tracking-wider ${active ? 'font-bold' : 'font-medium'}`}
-                    >
+                    <Icon
+                      className={`h-5 w-5 ${active && !isProminent ? 'stroke-[2.5]' : 'stroke-2'} ${isProminent ? 'h-6 w-6 stroke-[2.5]' : ''}`}
+                    />
+                    {!isProminent && (
+                      <span
+                        className={`text-[10px] uppercase tracking-wider ${active ? 'font-bold' : 'font-medium'}`}
+                      >
+                        {item.label}
+                      </span>
+                    )}
+                  </motion.div>
+                  {isProminent && (
+                    <span className="absolute bottom-1 text-[10px] uppercase tracking-wider font-bold text-black truncate w-full text-center px-0.5">
                       {item.label}
                     </span>
-                  </motion.div>
+                  )}
                 </Link>
               )
             })}
