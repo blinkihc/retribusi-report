@@ -38,8 +38,10 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       // Token expired or invalid
       localStorage.removeItem('auth_token')
-      localStorage.removeItem('user')
-      window.location.href = '/login'
+      localStorage.removeItem('auth_user')
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login'
+      }
     }
     return Promise.reject(error)
   }
