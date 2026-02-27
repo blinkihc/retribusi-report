@@ -13,7 +13,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import { Toaster } from 'sonner'
-import { DynamicFavicon } from './components/DynamicFavicon'
 import { router } from './router'
 import './globals.css'
 
@@ -31,7 +30,6 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <DynamicFavicon />
       <RouterProvider router={router} />
       <Toaster position="top-right" richColors />
     </QueryClientProvider>

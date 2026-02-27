@@ -19,7 +19,10 @@
 import 'dotenv/config'
 import path from 'node:path'
 import cors from 'cors'
+import { eq } from 'drizzle-orm'
 import express from 'express'
+import { db } from '../src/lib/db'
+import { settings } from '../src/lib/db/schema'
 import { authMiddleware } from './middleware/auth'
 import { captchaRouter } from './middleware/captcha'
 import { errorHandler } from './middleware/errorHandler'
@@ -82,6 +85,19 @@ app.get('/health', (_req, res) => {
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
   })
+})
+
+// Dynamic Favicon Route
+app.get('/favicon.ico', async (_req, res, next) => {
+  try {
+    const [logoSetting] = await db.select().from(settings).where(eq(settings.key, 'logo_kabupaten'))
+    if (logoSetting?.value) {
+      return res.redirect(logoSetting.value)
+    }
+  } catch (_error) {
+    // Ignore db errors, just fallback to static favicon
+  }
+  next() // Let static middleware or frontend handle it
 })
 
 // API Routes
